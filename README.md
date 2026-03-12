@@ -74,7 +74,7 @@ Cada mutacion dispara `recalculate()` que ejecuta los 7 motores y actualiza el e
 
 ### Prerequisitos
 
-- Node.js >= 20 (ver [.nvmrc](.nvmrc))
+- Node.js 22.x (ver version exacta en [.nvmrc](.nvmrc))
 - npm
 
 ### Instalacion
