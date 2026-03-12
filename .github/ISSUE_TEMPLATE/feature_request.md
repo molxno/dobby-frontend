@@ -1,20 +1,34 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: ''
+about: Proponer una nueva funcionalidad para el Tutor Financiero
+title: 'feat: '
+labels: 'enhancement'
 assignees: ''
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## Problema
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+<!-- Que problema resuelve esta feature? -->
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## Solucion propuesta
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+<!-- Describe como deberia funcionar -->
+
+## Alternativas consideradas
+
+<!-- Otras opciones que evaluaste y por que no las elegiste -->
+
+## Impacto
+
+- **Pagina(s) afectada(s):** (ej. Dashboard, Deudas, nueva pagina)
+- **Engine(s) afectado(s):** (ej. debtStrategy, goalPlanner, ninguno)
+- **Cambios en tipos:** (si/no — afecta `store/types.ts`?)
+
+## Mockup / Ejemplo (opcional)
+
+<!-- Sketch, screenshot de referencia, o ejemplo de como se veria -->
+
+## Contexto adicional
+
+<!-- Cualquier otro detalle -->

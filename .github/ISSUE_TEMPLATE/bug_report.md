@@ -1,38 +1,41 @@
 ---
 name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
+about: Reportar un error en el Tutor Financiero
+title: 'fix: '
+labels: 'bug'
 assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+## Descripcion del bug
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+<!-- Descripcion clara y concisa del error -->
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+## Pasos para reproducir
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+1. Ir a '...'
+2. Click en '...'
+3. Ver error
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+## Comportamiento esperado
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+<!-- Que deberia pasar -->
 
-**Additional context**
-Add any other context about the problem here.
+## Comportamiento actual
+
+<!-- Que pasa realmente -->
+
+## Screenshots / Console errors
+
+<!-- Si aplica, agrega capturas o errores de consola -->
+
+## Contexto
+
+- **Navegador:** (ej. Chrome 120, Firefox 121)
+- **OS:** (ej. Windows 11, macOS 14)
+- **Pagina afectada:** (ej. Dashboard, Deudas, Quincenal)
+- **Datos en localStorage:** (si puedes exportar el estado, ayuda a reproducir)
+
+## Informacion adicional
+
+<!-- Cualquier otro contexto relevante -->
