@@ -181,7 +181,7 @@ npm run build        # Verificar build completo
 - Zustand persist usa `partialize` para excluir `financialState` (se recalcula)
 - `onRehydrateStorage` dispara `recalculate()` tras cargar de localStorage
 - lightningcss debe estar explícito en devDependencies para Vercel (Linux binaries)
-- Node >=20 requerido — version pinneada en `.nvmrc`
+- Node 22.x requerido — versión pinneada en `.nvmrc`
 - Vercel necesita rewrite `/(.*) → /index.html` para SPA routing si hay 404 en rutas directas
 - **Pre-commit hook** corre typecheck + tests con cobertura — commits bloqueados si < 80%
 - Git hooks viven en `.githooks/` — nuevos clones necesitan `git config core.hooksPath .githooks`
