@@ -75,6 +75,9 @@ export function Header({ onMenuClick }: HeaderProps) {
           <button
             onClick={() => setMenuOpen(o => !o)}
             className="w-8 h-8 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-sm hover:bg-blue-600/30 transition-colors cursor-pointer"
+            aria-label={profile.name ? `Abrir menú de usuario para ${profile.name}` : 'Abrir menú de usuario'}
+            aria-haspopup="menu"
+            aria-expanded={menuOpen}
           >
             {profile.name ? profile.name.charAt(0).toUpperCase() : '👤'}
           </button>
