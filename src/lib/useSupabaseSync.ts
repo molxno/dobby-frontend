@@ -146,6 +146,10 @@ export function useSupabaseSync() {
           // Stop loading but keep whatever is in the local store (do not overwrite with empty).
           setCloudLoading(false);
           setCloudHydrated(false);
+          // Mark load as completed for this session and initialize the last saved snapshot
+          // so that future local changes can be saved, without immediately overwriting cloud data.
+          lastSavedSnapshot.current = getPersistedSnapshot(useFinancialStore.getState());
+          loaded.current = true;
         }
       }
     }
