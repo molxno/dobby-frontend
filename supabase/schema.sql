@@ -27,7 +27,7 @@ create table if not exists public.incomes (
   name text not null,
   amount numeric not null default 0,
   frequency text not null default 'monthly' check (frequency in ('monthly', 'biweekly', 'weekly')),
-  pay_days jsonb not null default '[]',
+  pay_days jsonb not null default '[]'::jsonb,
   is_net boolean not null default true,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
