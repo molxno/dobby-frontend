@@ -94,18 +94,16 @@ export function useSupabaseSync() {
 
     // For logged-in users, clear any existing user-specific data before starting cloud loading
     // to avoid briefly showing a previous user's financial data after a new login.
-    useFinancialStore.setState(() => ({
-      profile: null,
+    useFinancialStore.setState({
+      profile: { name: '', country: 'Colombia', currency: 'COP', locale: 'es-CO' },
       incomes: [],
       expenses: [],
       debts: [],
       goals: [],
       transactions: [],
-      currentFund: null,
+      currentFund: 0,
       onboardingCompleted: false,
-      // Keep non-sensitive UI preferences (e.g., darkMode) as-is; they are not user secrets.
-      // debtStrategy and goalMode will be hydrated from the backend; leave them unchanged here.
-    } as Partial<FinancialStore>));
+    });
 
     setCloudLoading(true);
     setCloudHydrated(false);
