@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import type { UserProfile, Income, Expense, Debt, Goal, Transaction } from '../store/types';
+import type { UserProfile, Income, Expense, Debt, Goal, Transaction, DebtStrategy, GoalMode } from '../store/types';
 
 // ============================================================
 // LOAD: Fetch all user data from Supabase
@@ -133,8 +133,8 @@ export async function loadUserData(userId: string) {
 export async function saveProfile(userId: string, profile: UserProfile, settings: {
   onboardingCompleted: boolean;
   darkMode: boolean;
-  debtStrategy: string;
-  goalMode: string;
+  debtStrategy: DebtStrategy;
+  goalMode: GoalMode;
   currentFund: number;
 }) {
   const { error } = await supabase.from('profiles').upsert({
