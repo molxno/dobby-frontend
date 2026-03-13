@@ -198,7 +198,7 @@ git config core.hooksPath .githooks
 | Hook | Qué hace |
 |---|---|
 | `pre-commit` | Corre typecheck + tests con cobertura >= 80% |
-| `commit-msg` | Valida formato Conventional Commits  |
+| `commit-msg` | Valida formato Conventional Commits |
 | `pre-push` | Bloquea push directo a `main` |
 
 ---
