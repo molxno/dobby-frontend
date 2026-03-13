@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import type { UserProfile, Income, Expense, Debt, Goal, Transaction } from '../store/types';
+import type { UserProfile, Income, Expense, Debt, Goal, Transaction, DebtStrategy, GoalMode } from '../store/types';
 
 // ============================================================
 // LOAD: Fetch all user data from Supabase
