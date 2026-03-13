@@ -37,6 +37,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (!session) {
         // Clear persisted store when there is no active session to prevent data leakage
         localStorage.removeItem('tutor-financiero-store');
+        // Force a full reload to reset all in-memory state (including Zustand stores)
+        window.location.reload();
+        return;
       }
       setState({ user: session?.user ?? null, session, loading: false });
     });
