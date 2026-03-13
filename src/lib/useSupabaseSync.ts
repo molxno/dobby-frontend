@@ -92,7 +92,21 @@ export function useSupabaseSync() {
       return;
     }
 
-    // For logged-in users, start cloud loading without clearing the local cache yet.
+    // For logged-in users, clear any existing user-specific data before starting cloud loading
+    // to avoid briefly showing a previous user's financial data after a new login.
+    useFinancialStore.setState(() => ({
+      profile: null,
+      incomes: [],
+      expenses: [],
+      debts: [],
+      goals: [],
+      transactions: [],
+      currentFund: null,
+      onboardingCompleted: false,
+      // Keep non-sensitive UI preferences (e.g., darkMode) as-is; they are not user secrets.
+      // debtStrategy and goalMode will be hydrated from the backend; leave them unchanged here.
+    } as Partial<FinancialStore>));
+
     setCloudLoading(true);
     setCloudHydrated(false);
 
