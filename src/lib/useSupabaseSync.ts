@@ -23,6 +23,23 @@ export function useSupabaseSync() {
       saveTimer.current = null;
     }
 
+    // Clear current store data to avoid showing previous user's data
+    useFinancialStore.setState({
+      profile: null,
+      incomes: [],
+      expenses: [],
+      debts: [],
+      goals: [],
+      transactions: [],
+      currentFund: 0,
+      onboardingCompleted: false,
+      darkMode: false,
+      debtStrategy: null,
+      goalMode: null,
+    });
+    // Recalculate derived values after clearing the store
+    useFinancialStore.getState().recalculate();
+
     if (!userId) {
       return;
     }
