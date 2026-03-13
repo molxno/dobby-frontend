@@ -131,10 +131,13 @@ alter table public.goals enable row level security;
 alter table public.transactions enable row level security;
 
 -- Profiles: users can only access their own row
+drop policy if exists "Users can view own profile" on public.profiles;
 create policy "Users can view own profile"
   on public.profiles for select using (auth.uid() = id);
+drop policy if exists "Users can insert own profile" on public.profiles;
 create policy "Users can insert own profile"
   on public.profiles for insert with check (auth.uid() = id);
+drop policy if exists "Users can update own profile" on public.profiles;
 create policy "Users can update own profile"
   on public.profiles for update using (auth.uid() = id);
 
@@ -146,7 +149,15 @@ begin
   for tbl in select unnest(array['incomes', 'expenses', 'debts', 'goals', 'transactions'])
   loop
     execute format(
+      'drop policy if exists "Users can view own %1$s" on public.%1$s',
+      tbl
+    );
+    execute format(
       'create policy "Users can view own %1$s" on public.%1$s for select using (auth.uid() = user_id)',
+      tbl
+    );
+    execute format(
+      'drop policy if exists "Users can insert own %1$s" on public.%1$s',
       tbl
     );
     execute format(
@@ -154,7 +165,15 @@ begin
       tbl
     );
     execute format(
+      'drop policy if exists "Users can update own %1$s" on public.%1$s',
+      tbl
+    );
+    execute format(
       'create policy "Users can update own %1$s" on public.%1$s for update using (auth.uid() = user_id)',
+      tbl
+    );
+    execute format(
+      'drop policy if exists "Users can delete own %1$s" on public.%1$s',
       tbl
     );
     execute format(
