@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useFinancialStore } from '../store/useFinancialStore';
+import type { FinancialStore } from '../store/types';
 import { useAuth } from '../contexts/AuthContext';
 import {
   loadUserData,
@@ -18,7 +19,7 @@ import {
  */
 
 // Extract only the slices that are actually persisted to Supabase
-function getPersistedSnapshot(state: any) {
+function getPersistedSnapshot(state: FinancialStore) {
   return {
     profile: state.profile,
     incomes: state.incomes,
