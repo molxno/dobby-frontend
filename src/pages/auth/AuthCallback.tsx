@@ -2,15 +2,26 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 
+function isPasswordRecoveryUrl(): boolean {
+  const hash = window.location.hash;
+  const params = new URLSearchParams(hash.replace('#', '?'));
+  return params.get('type') === 'recovery';
+}
+
 export function AuthCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // If the URL contains recovery params, go straight to reset-password
+    // before getSession() can race and redirect to /
+    if (isPasswordRecoveryUrl()) {
+      navigate('/auth/reset-password', { replace: true });
+      return;
+    }
+
     let isMounted = true;
 
-    // First, check if a session already exists when this component mounts.
-    // This avoids getting stuck on this screen if the SIGNED_IN event
-    // has already fired before we subscribe to onAuthStateChange.
+    // Check if a session already exists when this component mounts.
     (async () => {
       const { data, error } = await supabase.auth.getSession();
       if (!isMounted || error) return;
@@ -19,14 +30,14 @@ export function AuthCallback() {
       }
     })();
 
-    // Also listen for future auth state changes (e.g. OAuth/magic-link completion).
+    // Listen for future auth state changes (e.g. OAuth/magic-link completion).
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_IN') {
-        navigate('/', { replace: true });
-      } else if (event === 'PASSWORD_RECOVERY') {
+      if (event === 'PASSWORD_RECOVERY') {
         navigate('/auth/reset-password', { replace: true });
+      } else if (event === 'SIGNED_IN') {
+        navigate('/', { replace: true });
       }
     });
 

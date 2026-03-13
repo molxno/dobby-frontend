@@ -27,6 +27,7 @@ function createQueryChain(data: unknown = [], error: unknown = null) {
   const chain: Record<string, unknown> = {};
   chain.select = vi.fn().mockReturnValue(chain);
   chain.eq = vi.fn().mockReturnValue(chain);
+  chain.not = vi.fn().mockReturnValue(chain);
   chain.single = vi.fn().mockResolvedValue({ data, error });
   chain.order = vi.fn().mockResolvedValue({ data, error });
   chain.delete = vi.fn().mockReturnValue(chain);
@@ -239,7 +240,7 @@ describe('syncService', () => {
   });
 
   describe('saveIncomes', () => {
-    it('deletes existing then inserts new incomes', async () => {
+    it('upserts rows then deletes removed ones', async () => {
       const chain = createQueryChain();
       mockFrom.mockReturnValue(chain);
 
@@ -247,52 +248,110 @@ describe('syncService', () => {
         { id: 'i1', name: 'Salario', amount: 3000000, frequency: 'monthly', payDays: [1], isNet: true },
       ]);
 
-      // First call: delete
       expect(mockFrom).toHaveBeenCalledWith('incomes');
-      expect(chain.delete).toHaveBeenCalled();
-      // Second call: insert
-      expect(chain.insert).toHaveBeenCalledWith([
+      // Upsert called with mapped data
+      expect(chain.upsert).toHaveBeenCalledWith([
         { id: 'i1', user_id: 'user-123', name: 'Salario', amount: 3000000, frequency: 'monthly', pay_days: [1], is_net: true },
       ]);
+      // Delete called for cleanup of removed IDs
+      expect(chain.delete).toHaveBeenCalled();
+      expect(chain.not).toHaveBeenCalledWith('id', 'in', '(i1)');
     });
 
-    it('skips insert when incomes array is empty', async () => {
+    it('only deletes when incomes array is empty (no upsert)', async () => {
       const chain = createQueryChain();
       mockFrom.mockReturnValue(chain);
 
       await saveIncomes('user-123', []);
 
+      expect(chain.upsert).not.toHaveBeenCalled();
       expect(chain.delete).toHaveBeenCalled();
-      expect(chain.insert).not.toHaveBeenCalled();
     });
 
-    it('throws on delete error', async () => {
-      const chain = createQueryChain(null, { message: 'delete failed' });
+    it('throws on upsert error', async () => {
+      const chain = createQueryChain(null, { message: 'upsert failed' });
       mockFrom.mockReturnValue(chain);
 
       await expect(saveIncomes('user-123', [
         { id: 'i1', name: 'Salario', amount: 3000000, frequency: 'monthly', payDays: [1], isNet: true },
-      ])).rejects.toThrow('Failed to delete incomes: delete failed');
+      ])).rejects.toThrow('Failed to save incomes: upsert failed');
     });
 
-    it('throws on insert error', async () => {
-      // Delete succeeds (no error), but insert fails
-      const deleteChain = createQueryChain(null, null);
-      const insertChain = createQueryChain(null, { message: 'insert failed' });
+    it('throws on cleanup delete error', async () => {
+      // Upsert succeeds, but the cleanup delete fails
+      const upsertChain = createQueryChain(null, null);
+      const deleteChain = createQueryChain(null, { message: 'delete failed' });
+      let callCount = 0;
       mockFrom.mockImplementation(() => {
-        // First call returns delete chain, second returns insert chain
-        if (mockFrom.mock.calls.length <= 1) return deleteChain;
-        return insertChain;
+        callCount++;
+        if (callCount <= 1) return upsertChain;
+        return deleteChain;
       });
 
       await expect(saveIncomes('user-123', [
         { id: 'i1', name: 'Salario', amount: 3000000, frequency: 'monthly', payDays: [1], isNet: true },
-      ])).rejects.toThrow('Failed to save incomes: insert failed');
+      ])).rejects.toThrow('Failed to clean up incomes: delete failed');
+    });
+  });
+
+  describe('saveExpenses', () => {
+    it('upserts rows then deletes removed ones', async () => {
+      const chain = createQueryChain();
+      mockFrom.mockReturnValue(chain);
+
+      await saveExpenses('user-123', [
+        { id: 'e1', name: 'Arriendo', amount: 1500000, category: 'housing', isFixed: true, isEssential: true, paymentMethod: 'debit' },
+      ]);
+
+      expect(chain.upsert).toHaveBeenCalled();
+      expect(chain.delete).toHaveBeenCalled();
+    });
+  });
+
+  describe('saveDebts', () => {
+    it('upserts rows then deletes removed ones', async () => {
+      const chain = createQueryChain();
+      mockFrom.mockReturnValue(chain);
+
+      await saveDebts('user-123', [
+        { id: 'd1', name: 'Visa', type: 'credit_card', currentBalance: 5000000, monthlyPayment: 200000, interestRate: 2.5, dueDay: 15 },
+      ]);
+
+      expect(chain.upsert).toHaveBeenCalled();
+      expect(chain.delete).toHaveBeenCalled();
+    });
+  });
+
+  describe('saveGoals', () => {
+    it('upserts rows then deletes removed ones', async () => {
+      const chain = createQueryChain();
+      mockFrom.mockReturnValue(chain);
+
+      await saveGoals('user-123', [
+        { id: 'g1', name: 'Vacaciones', icon: '', targetAmount: 5000000, currentSaved: 1000000, priority: 1, category: 'travel', isFlexible: true },
+      ]);
+
+      expect(chain.upsert).toHaveBeenCalled();
+      expect(chain.delete).toHaveBeenCalled();
+    });
+  });
+
+  describe('saveTransactions', () => {
+    it('upserts rows then deletes removed ones', async () => {
+      const chain = createQueryChain();
+      mockFrom.mockReturnValue(chain);
+
+      await saveTransactions('user-123', [
+        { id: 't1', date: '2026-03-01', amount: 50000, type: 'expense', category: 'food', description: 'Almuerzo', paymentMethod: 'cash', isRecurring: false },
+      ]);
+
+      expect(chain.upsert).toHaveBeenCalled();
+      expect(chain.delete).toHaveBeenCalled();
     });
   });
 
   describe('saveAllUserData', () => {
-    it('calls all save functions in parallel', async () => {
+    it('saves profile first, then other entities in parallel', async () => {
       const chain = createQueryChain();
       mockFrom.mockReturnValue(chain);
 
@@ -310,10 +369,10 @@ describe('syncService', () => {
         currentFund: 0,
       });
 
-      // profiles + 5 entity tables (delete calls) + profiles upsert
-      expect(mockFrom).toHaveBeenCalled();
+      // Profile upsert should be the first call
+      expect(mockFrom.mock.calls[0][0]).toBe('profiles');
+      // All entity tables should also be called
       const calledTables = mockFrom.mock.calls.map((c: unknown[]) => c[0]);
-      expect(calledTables).toContain('profiles');
       expect(calledTables).toContain('incomes');
       expect(calledTables).toContain('expenses');
       expect(calledTables).toContain('debts');

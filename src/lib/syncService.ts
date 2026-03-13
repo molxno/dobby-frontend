@@ -155,13 +155,11 @@ export async function saveProfile(userId: string, profile: UserProfile, settings
 }
 
 export async function saveIncomes(userId: string, incomes: Income[]) {
-  // Delete all then insert (simple full-sync approach)
-  const { error: deleteError } = await supabase.from('incomes').delete().eq('user_id', userId);
-  if (deleteError) {
-    throw new Error(`Failed to delete incomes: ${deleteError.message}`);
-  }
+  const currentIds = incomes.map(i => i.id);
+
+  // Upsert existing + new rows
   if (incomes.length > 0) {
-    const { error: insertError } = await supabase.from('incomes').insert(
+    const { error: upsertError } = await supabase.from('incomes').upsert(
       incomes.map(i => ({
         id: i.id,
         user_id: userId,
@@ -172,19 +170,27 @@ export async function saveIncomes(userId: string, incomes: Income[]) {
         is_net: i.isNet,
       }))
     );
-    if (insertError) {
-      throw new Error(`Failed to save incomes: ${insertError.message}`);
+    if (upsertError) {
+      throw new Error(`Failed to save incomes: ${upsertError.message}`);
     }
+  }
+
+  // Delete rows removed from the store
+  const { error: deleteError } = await supabase
+    .from('incomes')
+    .delete()
+    .eq('user_id', userId)
+    .not('id', 'in', `(${currentIds.join(',')})`);
+  if (deleteError) {
+    throw new Error(`Failed to clean up incomes: ${deleteError.message}`);
   }
 }
 
 export async function saveExpenses(userId: string, expenses: Expense[]) {
-  const { error: deleteError } = await supabase.from('expenses').delete().eq('user_id', userId);
-  if (deleteError) {
-    throw new Error(`Failed to delete expenses: ${deleteError.message}`);
-  }
+  const currentIds = expenses.map(e => e.id);
+
   if (expenses.length > 0) {
-    const { error: insertError } = await supabase.from('expenses').insert(
+    const { error: upsertError } = await supabase.from('expenses').upsert(
       expenses.map(e => ({
         id: e.id,
         user_id: userId,
@@ -198,19 +204,26 @@ export async function saveExpenses(userId: string, expenses: Expense[]) {
         notes: e.notes ?? null,
       }))
     );
-    if (insertError) {
-      throw new Error(`Failed to save expenses: ${insertError.message}`);
+    if (upsertError) {
+      throw new Error(`Failed to save expenses: ${upsertError.message}`);
     }
+  }
+
+  const { error: deleteError } = await supabase
+    .from('expenses')
+    .delete()
+    .eq('user_id', userId)
+    .not('id', 'in', `(${currentIds.join(',')})`);
+  if (deleteError) {
+    throw new Error(`Failed to clean up expenses: ${deleteError.message}`);
   }
 }
 
 export async function saveDebts(userId: string, debts: Debt[]) {
-  const { error: deleteError } = await supabase.from('debts').delete().eq('user_id', userId);
-  if (deleteError) {
-    throw new Error(`Failed to delete debts: ${deleteError.message}`);
-  }
+  const currentIds = debts.map(d => d.id);
+
   if (debts.length > 0) {
-    const { error: insertError } = await supabase.from('debts').insert(
+    const { error: upsertError } = await supabase.from('debts').upsert(
       debts.map(d => ({
         id: d.id,
         user_id: userId,
@@ -231,19 +244,26 @@ export async function saveDebts(userId: string, debts: Debt[]) {
         product_value: d.productValue ?? null,
       }))
     );
-    if (insertError) {
-      throw new Error(`Failed to save debts: ${insertError.message}`);
+    if (upsertError) {
+      throw new Error(`Failed to save debts: ${upsertError.message}`);
     }
+  }
+
+  const { error: deleteError } = await supabase
+    .from('debts')
+    .delete()
+    .eq('user_id', userId)
+    .not('id', 'in', `(${currentIds.join(',')})`);
+  if (deleteError) {
+    throw new Error(`Failed to clean up debts: ${deleteError.message}`);
   }
 }
 
 export async function saveGoals(userId: string, goals: Goal[]) {
-  const { error: deleteError } = await supabase.from('goals').delete().eq('user_id', userId);
-  if (deleteError) {
-    throw new Error(`Failed to delete goals: ${deleteError.message}`);
-  }
+  const currentIds = goals.map(g => g.id);
+
   if (goals.length > 0) {
-    const { error: insertError } = await supabase.from('goals').insert(
+    const { error: upsertError } = await supabase.from('goals').upsert(
       goals.map(g => ({
         id: g.id,
         user_id: userId,
@@ -258,19 +278,26 @@ export async function saveGoals(userId: string, goals: Goal[]) {
         notes: g.notes ?? null,
       }))
     );
-    if (insertError) {
-      throw new Error(`Failed to save goals: ${insertError.message}`);
+    if (upsertError) {
+      throw new Error(`Failed to save goals: ${upsertError.message}`);
     }
+  }
+
+  const { error: deleteError } = await supabase
+    .from('goals')
+    .delete()
+    .eq('user_id', userId)
+    .not('id', 'in', `(${currentIds.join(',')})`);
+  if (deleteError) {
+    throw new Error(`Failed to clean up goals: ${deleteError.message}`);
   }
 }
 
 export async function saveTransactions(userId: string, transactions: Transaction[]) {
-  const { error: deleteError } = await supabase.from('transactions').delete().eq('user_id', userId);
-  if (deleteError) {
-    throw new Error(`Failed to delete transactions: ${deleteError.message}`);
-  }
+  const currentIds = transactions.map(t => t.id);
+
   if (transactions.length > 0) {
-    const { error: insertError } = await supabase.from('transactions').insert(
+    const { error: upsertError } = await supabase.from('transactions').upsert(
       transactions.map(t => ({
         id: t.id,
         user_id: userId,
@@ -283,9 +310,18 @@ export async function saveTransactions(userId: string, transactions: Transaction
         is_recurring: t.isRecurring,
       }))
     );
-    if (insertError) {
-      throw new Error(`Failed to save transactions: ${insertError.message}`);
+    if (upsertError) {
+      throw new Error(`Failed to save transactions: ${upsertError.message}`);
     }
+  }
+
+  const { error: deleteError } = await supabase
+    .from('transactions')
+    .delete()
+    .eq('user_id', userId)
+    .not('id', 'in', `(${currentIds.join(',')})`);
+  if (deleteError) {
+    throw new Error(`Failed to clean up transactions: ${deleteError.message}`);
   }
 }
 
@@ -308,14 +344,16 @@ export async function saveAllUserData(
     currentFund: number;
   }
 ) {
+  // Ensure profile exists before saving entities that FK-reference it
+  await saveProfile(userId, data.profile, {
+    onboardingCompleted: data.onboardingCompleted,
+    darkMode: data.darkMode,
+    debtStrategy: data.debtStrategy,
+    goalMode: data.goalMode,
+    currentFund: data.currentFund,
+  });
+
   await Promise.all([
-    saveProfile(userId, data.profile, {
-      onboardingCompleted: data.onboardingCompleted,
-      darkMode: data.darkMode,
-      debtStrategy: data.debtStrategy,
-      goalMode: data.goalMode,
-      currentFund: data.currentFund,
-    }),
     saveIncomes(userId, data.incomes),
     saveExpenses(userId, data.expenses),
     saveDebts(userId, data.debts),

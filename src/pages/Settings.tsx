@@ -223,8 +223,8 @@ export function Settings() {
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-300">Resetear toda la app</p>
-              <p className="text-xs text-gray-500">Borra todos los datos permanentemente</p>
+              <p className="text-sm text-gray-300">Resetear datos locales</p>
+              <p className="text-xs text-gray-500">Limpia la caché local. Tus datos en la nube se recargarán al volver a entrar.</p>
             </div>
             <button
               onClick={() => setShowResetModal(true)}
@@ -251,13 +251,13 @@ export function Settings() {
       <Modal isOpen={showResetModal} onClose={() => setShowResetModal(false)} title="Confirmar Reset" size="sm">
         <div className="text-center space-y-4">
           <p className="text-3xl">⚠️</p>
-          <p className="text-sm text-gray-300">¿Seguro que quieres borrar todos los datos? Esta acción no se puede deshacer.</p>
+          <p className="text-sm text-gray-300">Esto limpia los datos locales de tu navegador. Tus datos en la nube no se verán afectados y se recargarán automáticamente.</p>
           <div className="flex gap-3">
             <button onClick={() => setShowResetModal(false)} className="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm py-2.5 rounded-xl transition-colors">
               Cancelar
             </button>
             <button onClick={handleReset} className="flex-1 bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-2.5 rounded-xl transition-colors">
-              Sí, borrar todo
+              Sí, limpiar caché
             </button>
           </div>
         </div>
