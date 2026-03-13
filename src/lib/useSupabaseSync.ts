@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import { useFinancialStore } from '../store/useFinancialStore';
 import type { FinancialStore } from '../store/types';
 import { useAuth } from '../contexts/AuthContext';
@@ -56,6 +56,8 @@ export function useSupabaseSync() {
   // Tracks the snapshot of persisted data after the last successful save (or load)
   const lastSavedSnapshot = useRef<ReturnType<typeof getPersistedSnapshot> | null>(null);
   const userId = user?.id;
+  const [cloudLoading, setCloudLoading] = useState(false);
+  const [cloudHydrated, setCloudHydrated] = useState(false);
 
   // Load data from Supabase when user logs in
   useEffect(() => {
@@ -67,26 +69,31 @@ export function useSupabaseSync() {
       saveTimer.current = null;
     }
 
-    // Clear current store data to avoid showing previous user's data
-    useFinancialStore.setState({
-      profile: { name: '', country: 'Colombia', currency: 'COP', locale: 'es-CO' },
-      incomes: [],
-      expenses: [],
-      debts: [],
-      goals: [],
-      transactions: [],
-      currentFund: 0,
-      onboardingCompleted: false,
-      darkMode: false,
-      debtStrategy: 'avalanche',
-      goalMode: 'sequential',
-    });
-    // Recalculate derived values after clearing the store
-    useFinancialStore.getState().recalculate();
-
+    // If there is no user (logout), clear the store and stop here.
     if (!userId) {
+      useFinancialStore.setState({
+        profile: { name: '', country: 'Colombia', currency: 'COP', locale: 'es-CO' },
+        incomes: [],
+        expenses: [],
+        debts: [],
+        goals: [],
+        transactions: [],
+        currentFund: 0,
+        onboardingCompleted: false,
+        darkMode: false,
+        debtStrategy: 'avalanche',
+        goalMode: 'sequential',
+      });
+      // Recalculate derived values after clearing the store
+      useFinancialStore.getState().recalculate();
+      setCloudLoading(false);
+      setCloudHydrated(false);
       return;
     }
+
+    // For logged-in users, start cloud loading without clearing the local cache yet.
+    setCloudLoading(true);
+    setCloudHydrated(false);
 
     let cancelled = false;
 
@@ -116,8 +123,15 @@ export function useSupabaseSync() {
         // Record the loaded state so the subscription doesn't re-save it immediately
         lastSavedSnapshot.current = getPersistedSnapshot(useFinancialStore.getState());
         loaded.current = true;
+        setCloudLoading(false);
+        setCloudHydrated(true);
       } catch (err) {
         console.error('Error loading data from Supabase:', err);
+        if (!cancelled) {
+          // Stop loading but keep whatever is in the local store (do not overwrite with empty).
+          setCloudLoading(false);
+          setCloudHydrated(false);
+        }
       }
     }
 
@@ -204,4 +218,8 @@ export function useSupabaseSync() {
       if (saveTimer.current) clearTimeout(saveTimer.current);
     };
   }, [userId, saveToCloud]);
+  return {
+    cloudLoading,
+    cloudHydrated,
+  };
 }
