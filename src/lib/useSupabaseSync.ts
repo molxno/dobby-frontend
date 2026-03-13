@@ -80,7 +80,7 @@ export function useSupabaseSync() {
         transactions: [],
         currentFund: 0,
         onboardingCompleted: false,
-        darkMode: false,
+        darkMode: true,
         debtStrategy: 'avalanche',
         goalMode: 'sequential',
       });
