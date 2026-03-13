@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFinancialStore } from '../store/useFinancialStore';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -21,6 +21,10 @@ export function Settings() {
   const [localProfile, setLocalProfile] = useState({ ...profile });
   const [loggingOut, setLoggingOut] = useState(false);
   const [logoutError, setLogoutError] = useState('');
+
+  useEffect(() => {
+    setLocalProfile({ ...profile });
+  }, [profile]);
 
   const saveProfile = () => {
     setProfile(localProfile);
