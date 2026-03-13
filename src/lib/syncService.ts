@@ -349,8 +349,8 @@ export async function saveAllUserData(
     transactions: Transaction[];
     onboardingCompleted: boolean;
     darkMode: boolean;
-    debtStrategy: string;
-    goalMode: string;
+    debtStrategy: DebtStrategy;
+    goalMode: GoalMode;
     currentFund: number;
   }
 ) {

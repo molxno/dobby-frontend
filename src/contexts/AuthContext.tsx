@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (!session) {
-        if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
+        if (event === 'SIGNED_OUT') {
           // Clear persisted store when the user has explicitly signed out or been deleted
           localStorage.removeItem('tutor-financiero-store');
           // Force a full reload to reset all in-memory state (including Zustand stores)
