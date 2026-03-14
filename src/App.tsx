@@ -20,7 +20,7 @@ import { AuthCallback } from './pages/auth/AuthCallback';
 import { ResetPassword } from './pages/auth/ResetPassword';
 import { AppLoader } from './components/shared/AppLoader';
 import { ErrorBoundary } from './components/shared/ErrorBoundary';
-import { ToastContainer, addToast } from './components/shared/ToastContainer';
+import { ToastContainer } from './components/shared/ToastContainer';
 
 function AppRoutes() {
   const { onboardingCompleted } = useFinancialStore();
@@ -112,11 +112,6 @@ function AppRouter() {
       <Route path="/*" element={<AuthenticatedApp />} />
     </Routes>
   );
-}
-
-// Expose addToast globally for use outside React components (e.g., sync error handlers)
-if (typeof window !== 'undefined') {
-  (window as unknown as Record<string, unknown>).__addToast = addToast;
 }
 
 export default function App() {

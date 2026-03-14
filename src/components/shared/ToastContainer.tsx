@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 
 export interface Toast {
   id: string;
@@ -33,8 +33,11 @@ export function removeToast(id: string) {
 }
 
 function useToasts() {
-  const [state, setState] = useState<Toast[]>([]);
+  // Initialize from current toasts so pre-mount calls are reflected
+  const [state, setState] = useState<Toast[]>(() => [...toasts]);
   useEffect(() => {
+    // Sync with any toasts added between initial render and effect
+    setState([...toasts]);
     listeners.push(setState);
     return () => {
       listeners = listeners.filter(l => l !== setState);
@@ -57,12 +60,26 @@ export function ToastContainer() {
     removeToast(id);
   }, []);
 
-  // Auto-dismiss after 8 seconds
+  // Auto-dismiss each toast after 8 seconds
+  const dismissTimers = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
   useEffect(() => {
-    if (items.length === 0) return;
-    const latest = items[items.length - 1];
-    const timer = setTimeout(() => removeToast(latest.id), 8000);
-    return () => clearTimeout(timer);
+    for (const toast of items) {
+      if (!dismissTimers.current.has(toast.id)) {
+        const timer = setTimeout(() => {
+          removeToast(toast.id);
+          dismissTimers.current.delete(toast.id);
+        }, 8000);
+        dismissTimers.current.set(toast.id, timer);
+      }
+    }
+    // Clean up timers for removed toasts
+    const currentIds = new Set(items.map(t => t.id));
+    for (const [id, timer] of dismissTimers.current) {
+      if (!currentIds.has(id)) {
+        clearTimeout(timer);
+        dismissTimers.current.delete(id);
+      }
+    }
   }, [items]);
 
   if (items.length === 0) return null;
@@ -86,6 +103,7 @@ export function ToastContainer() {
               </div>
               <button
                 onClick={() => dismiss(toast.id)}
+                aria-label="Cerrar notificación"
                 className="text-gray-600 hover:text-gray-400 text-xs shrink-0"
               >
                 x

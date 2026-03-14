@@ -96,6 +96,10 @@ export function useSupabaseSync() {
       return;
     }
 
+    // Snapshot the current localStorage-persisted state before clearing, so we can
+    // restore it if the cloud load fails (avoids leaving user with empty store).
+    const localFallback = getPersistedSnapshot(useFinancialStore.getState());
+
     // For logged-in users, clear any existing user-specific data before starting cloud loading
     // to avoid briefly showing a previous user's financial data after a new login.
     useFinancialStore.setState({
@@ -148,6 +152,10 @@ export function useSupabaseSync() {
       } catch (err) {
         console.error('Error loading data from Supabase:', err);
         if (!cancelled) {
+          // Restore the locally-persisted state so the user isn't left with an empty store
+          useFinancialStore.setState(localFallback);
+          useFinancialStore.getState().recalculate();
+
           const message = err instanceof Error ? err.message : 'Error desconocido al cargar datos';
           setCloudError(message);
           setCloudLoading(false);
