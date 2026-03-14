@@ -184,6 +184,7 @@ export interface BudgetPlan {
 }
 
 export interface BiweeklyPayment {
+  key: string;
   name: string;
   amount: number;
   type: 'expense' | 'debt' | 'savings' | 'buffer';
