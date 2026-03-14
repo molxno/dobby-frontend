@@ -60,8 +60,6 @@ export function useSupabaseSync() {
   const lastSavedSnapshot = useRef<ReturnType<typeof getPersistedSnapshot> | null>(null);
   const userId = user?.id;
   const [cloudLoading, setCloudLoading] = useState(!!userId);
-  const [cloudHydrated, setCloudHydrated] = useState(false);
-  const [cloudError, setCloudError] = useState<string | null>(null);
 
   // Load data from Supabase when user logs in
   useEffect(() => {
@@ -92,7 +90,6 @@ export function useSupabaseSync() {
       // Recalculate derived values after clearing the store
       useFinancialStore.getState().recalculate();
       setCloudLoading(false);
-      setCloudHydrated(false);
       return;
     }
 
@@ -118,8 +115,6 @@ export function useSupabaseSync() {
     });
 
     setCloudLoading(true);
-    setCloudHydrated(false);
-    setCloudError(null);
 
     let cancelled = false;
 
@@ -151,7 +146,6 @@ export function useSupabaseSync() {
         lastSavedSnapshot.current = getPersistedSnapshot(useFinancialStore.getState());
         loaded.current = true;
         setCloudLoading(false);
-        setCloudHydrated(true);
       } catch (err) {
         console.error('Error loading data from Supabase:', err);
         if (!cancelled) {
@@ -160,10 +154,7 @@ export function useSupabaseSync() {
           useFinancialStore.getState().recalculate();
 
           const message = err instanceof Error ? err.message : 'Error desconocido al cargar datos';
-          setCloudError(message);
           setCloudLoading(false);
-          // Mark as hydrated so the app proceeds with restored local data instead of blocking
-          setCloudHydrated(true);
           addToast({
             type: 'warning',
             title: 'Sincronización fallida',
@@ -269,9 +260,5 @@ export function useSupabaseSync() {
       if (saveTimer.current) clearTimeout(saveTimer.current);
     };
   }, [userId, saveToCloud]);
-  return {
-    cloudLoading,
-    cloudHydrated,
-    cloudError,
-  };
+  return { cloudLoading };
 }

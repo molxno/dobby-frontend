@@ -80,6 +80,14 @@ export function ToastContainer() {
         dismissTimers.current.delete(id);
       }
     }
+
+    // Clear all timers on unmount
+    return () => {
+      for (const timer of dismissTimers.current.values()) {
+        clearTimeout(timer);
+      }
+      dismissTimers.current.clear();
+    };
   }, [items]);
 
   if (items.length === 0) return null;
