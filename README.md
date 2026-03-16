@@ -79,6 +79,7 @@ Cada mutación dispara `recalculate()` que ejecuta los 7 motores y actualiza el 
 
 - Node.js 22.x (ver versión exacta en [.nvmrc](.nvmrc))
 - npm
+- Proyecto en [Supabase](https://supabase.com) (auth + PostgreSQL)
 
 ### Instalación
 
@@ -90,10 +91,16 @@ cd administra-gastos
 # 2. Instalar dependencias
 npm install
 
-# 3. Configurar git hooks (IMPORTANTE)
+# 3. Configurar variables de entorno
+cp .env.example .env
+# Editar .env con las credenciales de tu proyecto Supabase:
+#   VITE_SUPABASE_URL=https://tu-proyecto.supabase.co
+#   VITE_SUPABASE_ANON_KEY=tu-anon-key
+
+# 4. Configurar git hooks (IMPORTANTE)
 git config core.hooksPath .githooks
 
-# 4. Iniciar servidor de desarrollo
+# 5. Iniciar servidor de desarrollo
 npm run dev
 ```
 
