@@ -134,7 +134,6 @@ export const useFinancialStore = create<FinancialStore>()(
       darkMode: true,
       debtStrategy: 'avalanche',
       goalMode: 'sequential',
-      biweeklyCheckedItems: {},
       financialState: null,
 
       // Profile
@@ -195,28 +194,26 @@ export const useFinancialStore = create<FinancialStore>()(
 
       toggleBiweeklyCheck: (payment) => {
         const s = get();
-        const isChecked = s.biweeklyCheckedItems[payment.key];
+        const hasTransaction = s.transactions.some(t => t.biweeklyKey === payment.key);
 
-        if (isChecked) {
-          // Unchecking: remove the linked transaction and uncheck
-          const next = { ...s.biweeklyCheckedItems };
-          delete next[payment.key];
-          set({ biweeklyCheckedItems: next });
+        if (hasTransaction) {
+          // Unchecking: remove the linked transaction
           set(state => ({
             transactions: state.transactions.filter(t => t.biweeklyKey !== payment.key),
           }));
         } else {
-          // Checking: create a linked transaction and check
+          // Checking: create a linked transaction
           const transaction = createTransactionFromPayment(payment);
-          set(state => ({
-            biweeklyCheckedItems: { ...state.biweeklyCheckedItems, [payment.key]: true },
-          }));
           set(state => ({
             transactions: [transaction, ...state.transactions],
           }));
         }
       },
-      resetBiweeklyChecks: () => { set({ biweeklyCheckedItems: {} }); },
+      resetBiweeklyChecks: () => {
+        set(state => ({
+          transactions: state.transactions.filter(t => !t.biweeklyKey),
+        }));
+      },
 
       // Recalculate all computed state
       recalculate: () => {
@@ -243,7 +240,6 @@ export const useFinancialStore = create<FinancialStore>()(
         darkMode: state.darkMode,
         debtStrategy: state.debtStrategy,
         goalMode: state.goalMode,
-        biweeklyCheckedItems: state.biweeklyCheckedItems,
       }),
       onRehydrateStorage: () => (state) => {
         if (state) {

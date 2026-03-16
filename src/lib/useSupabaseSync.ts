@@ -33,7 +33,6 @@ function getPersistedSnapshot(state: FinancialStore) {
     darkMode: state.darkMode,
     debtStrategy: state.debtStrategy,
     goalMode: state.goalMode,
-    biweeklyCheckedItems: state.biweeklyCheckedItems,
   };
 }
 
@@ -85,7 +84,6 @@ export function useSupabaseSync() {
         darkMode: true,
         debtStrategy: 'avalanche',
         goalMode: 'sequential',
-        biweeklyCheckedItems: {},
       });
       // Recalculate derived values after clearing the store
       useFinancialStore.getState().recalculate();
@@ -111,7 +109,6 @@ export function useSupabaseSync() {
       darkMode: true,
       debtStrategy: 'avalanche',
       goalMode: 'sequential',
-      biweeklyCheckedItems: {},
     });
 
     setCloudLoading(true);
@@ -136,7 +133,6 @@ export function useSupabaseSync() {
           darkMode: data.darkMode,
           debtStrategy: data.debtStrategy,
           goalMode: data.goalMode,
-          biweeklyCheckedItems: data.biweeklyCheckedItems,
         });
 
         // Recalculate after full hydration
@@ -193,8 +189,7 @@ export function useSupabaseSync() {
         current.darkMode !== prev.darkMode ||
         current.debtStrategy !== prev.debtStrategy ||
         current.goalMode !== prev.goalMode ||
-        current.currentFund !== prev.currentFund ||
-        current.biweeklyCheckedItems !== prev.biweeklyCheckedItems;
+        current.currentFund !== prev.currentFund;
 
       // Save profile first (other tables FK-reference profiles)
       if (profileSettingsChanged) {
@@ -205,7 +200,6 @@ export function useSupabaseSync() {
             debtStrategy: s.debtStrategy,
             goalMode: s.goalMode,
             currentFund: s.currentFund,
-            biweeklyCheckedItems: s.biweeklyCheckedItems,
           });
           saved.profile = current.profile;
           saved.onboardingCompleted = current.onboardingCompleted;
@@ -213,7 +207,6 @@ export function useSupabaseSync() {
           saved.debtStrategy = current.debtStrategy;
           saved.goalMode = current.goalMode;
           saved.currentFund = current.currentFund;
-          saved.biweeklyCheckedItems = current.biweeklyCheckedItems;
         } catch (err) {
           hasError = true;
           console.error('Error saving profile to Supabase:', err);

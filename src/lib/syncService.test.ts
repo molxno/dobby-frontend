@@ -66,7 +66,6 @@ describe('syncService', () => {
       expect(result.debtStrategy).toBe('avalanche');
       expect(result.goalMode).toBe('sequential');
       expect(result.currentFund).toBe(0);
-      expect(result.biweeklyCheckedItems).toEqual({});
       expect(result.incomes).toEqual([]);
       expect(result.expenses).toEqual([]);
       expect(result.debts).toEqual([]);
@@ -85,7 +84,6 @@ describe('syncService', () => {
         debt_strategy: 'snowball',
         goal_mode: 'parallel',
         current_fund: 5000000,
-        biweekly_checked_items: { '1-0': true, '2-1': true },
       };
       const profileChain = createQueryChain(profileData);
       const emptyChain = createQueryChain([]);
@@ -103,7 +101,6 @@ describe('syncService', () => {
       expect(result.debtStrategy).toBe('snowball');
       expect(result.goalMode).toBe('parallel');
       expect(result.currentFund).toBe(5000000);
-      expect(result.biweeklyCheckedItems).toEqual({ '1-0': true, '2-1': true });
     });
 
     it('maps income rows from snake_case to camelCase', async () => {
@@ -206,7 +203,6 @@ describe('syncService', () => {
         debtStrategy: 'avalanche',
         goalMode: 'sequential',
         currentFund: 1000,
-        biweeklyCheckedItems: { '1-0': true },
       });
 
       expect(mockFrom).toHaveBeenCalledWith('profiles');
@@ -221,7 +217,6 @@ describe('syncService', () => {
         debt_strategy: 'avalanche',
         goal_mode: 'sequential',
         current_fund: 1000,
-        biweekly_checked_items: { '1-0': true },
       });
     });
 
@@ -240,7 +235,6 @@ describe('syncService', () => {
         debtStrategy: 'avalanche',
         goalMode: 'sequential',
         currentFund: 1000,
-        biweeklyCheckedItems: {},
       })).rejects.toThrow('Failed to save profile: upsert failed');
     });
   });
@@ -258,7 +252,7 @@ describe('syncService', () => {
       // Upsert called with mapped data
       expect(chain.upsert).toHaveBeenCalledWith([
         { id: 'i1', user_id: 'user-123', name: 'Salario', amount: 3000000, frequency: 'monthly', pay_days: [1], is_net: true },
-      ]);
+      ], { onConflict: 'id' });
       // Delete called for cleanup of removed IDs
       expect(chain.delete).toHaveBeenCalled();
       expect(chain.not).toHaveBeenCalledWith('id', 'in', '(i1)');

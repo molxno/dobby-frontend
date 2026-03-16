@@ -1,16 +1,19 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { createTransactionFromPayment } from './useFinancialStore';
-import type { BiweeklyPayment } from './types';
-
-// Mock nanoid to produce deterministic IDs
 vi.mock('../components/shared/nanoid', () => ({
   nanoid: () => 'test-id-123',
 }));
+
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { createTransactionFromPayment } from './useFinancialStore';
+import type { BiweeklyPayment } from './types';
 
 describe('createTransactionFromPayment', () => {
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-03-16'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('maps an expense payment with category correctly', () => {

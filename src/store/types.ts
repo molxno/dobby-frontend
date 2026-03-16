@@ -290,7 +290,6 @@ export interface FinancialStore {
   darkMode: boolean;
   debtStrategy: DebtStrategy;
   goalMode: GoalMode;
-  biweeklyCheckedItems: Record<string, boolean>;
 
   // Computed state
   financialState: FinancialState | null;
