@@ -122,11 +122,11 @@ export function BiweeklyPlan() {
                   aria-checked={isChecked}
                   aria-label={`${payment.name} - ${fmt(payment.amount)}`}
                   tabIndex={0}
-                  onClick={() => toggleBiweeklyCheck(payment.key)}
+                  onClick={() => toggleBiweeklyCheck(payment)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
-                      toggleBiweeklyCheck(payment.key);
+                      toggleBiweeklyCheck(payment);
                     }
                   }}
                   className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all ${

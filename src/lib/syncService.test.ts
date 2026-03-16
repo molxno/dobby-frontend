@@ -85,7 +85,7 @@ describe('syncService', () => {
         debt_strategy: 'snowball',
         goal_mode: 'parallel',
         current_fund: 5000000,
-        biweekly_checked_items: { '1-0': true, '2-1': true },
+        biweekly_checked_items: { '1-0': 'tx-abc', '2-1': 'tx-def' },
       };
       const profileChain = createQueryChain(profileData);
       const emptyChain = createQueryChain([]);
@@ -103,7 +103,7 @@ describe('syncService', () => {
       expect(result.debtStrategy).toBe('snowball');
       expect(result.goalMode).toBe('parallel');
       expect(result.currentFund).toBe(5000000);
-      expect(result.biweeklyCheckedItems).toEqual({ '1-0': true, '2-1': true });
+      expect(result.biweeklyCheckedItems).toEqual({ '1-0': 'tx-abc', '2-1': 'tx-def' });
     });
 
     it('maps income rows from snake_case to camelCase', async () => {
@@ -206,7 +206,7 @@ describe('syncService', () => {
         debtStrategy: 'avalanche',
         goalMode: 'sequential',
         currentFund: 1000,
-        biweeklyCheckedItems: { '1-0': true },
+        biweeklyCheckedItems: { '1-0': 'tx-123' },
       });
 
       expect(mockFrom).toHaveBeenCalledWith('profiles');
@@ -221,7 +221,7 @@ describe('syncService', () => {
         debt_strategy: 'avalanche',
         goal_mode: 'sequential',
         current_fund: 1000,
-        biweekly_checked_items: { '1-0': true },
+        biweekly_checked_items: { '1-0': 'tx-123' },
       });
     });
 

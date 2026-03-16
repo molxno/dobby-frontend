@@ -289,7 +289,7 @@ export interface FinancialStore {
   darkMode: boolean;
   debtStrategy: DebtStrategy;
   goalMode: GoalMode;
-  biweeklyCheckedItems: Record<string, boolean>;
+  biweeklyCheckedItems: Record<string, string>;
 
   // Computed state
   financialState: FinancialState | null;
@@ -325,7 +325,7 @@ export interface FinancialStore {
   setDebtStrategy: (s: DebtStrategy) => void;
   setGoalMode: (m: GoalMode) => void;
 
-  toggleBiweeklyCheck: (key: string) => void;
+  toggleBiweeklyCheck: (payment: BiweeklyPayment) => void;
   resetBiweeklyChecks: () => void;
 
   recalculate: () => void;

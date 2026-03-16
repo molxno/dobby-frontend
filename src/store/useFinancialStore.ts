@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { FinancialStore, FinancialState } from './types';
+import type { FinancialStore, FinancialState, Transaction, BiweeklyPayment, ExpenseCategory } from './types';
+import { nanoid } from '../components/shared/nanoid';
 import { runFinancialDiagnosis } from '../engines/financialDiagnosis';
 import { runDebtStrategy } from '../engines/debtStrategy';
 import { runBudgetOptimizer } from '../engines/budgetOptimizer';
@@ -85,6 +86,33 @@ function computeFinancialState(
   };
 }
 
+const BIWEEKLY_TYPE_TO_TRANSACTION_TYPE: Record<BiweeklyPayment['type'], Transaction['type']> = {
+  expense: 'expense',
+  debt: 'debt_payment',
+  savings: 'savings',
+  buffer: 'expense',
+};
+
+const BIWEEKLY_TYPE_TO_CATEGORY: Record<BiweeklyPayment['type'], ExpenseCategory> = {
+  expense: 'other',
+  debt: 'debt',
+  savings: 'savings',
+  buffer: 'other',
+};
+
+export function createTransactionFromPayment(payment: BiweeklyPayment): Transaction {
+  return {
+    id: nanoid(),
+    date: new Date().toISOString().slice(0, 10),
+    amount: payment.amount,
+    type: BIWEEKLY_TYPE_TO_TRANSACTION_TYPE[payment.type],
+    category: payment.category ?? BIWEEKLY_TYPE_TO_CATEGORY[payment.type],
+    description: payment.name,
+    paymentMethod: 'debit',
+    isRecurring: true,
+  };
+}
+
 // Placeholder for action types
 function getActions(_set: unknown, _get: unknown) {
   return {};
@@ -164,16 +192,28 @@ export const useFinancialStore = create<FinancialStore>()(
       setDebtStrategy: (s) => { set({ debtStrategy: s }); get().recalculate(); },
       setGoalMode: (m) => { set({ goalMode: m }); get().recalculate(); },
 
-      toggleBiweeklyCheck: (key) => {
-        set(s => {
-          const next = { ...s.biweeklyCheckedItems };
-          if (next[key]) {
-            delete next[key];
-          } else {
-            next[key] = true;
-          }
-          return { biweeklyCheckedItems: next };
-        });
+      toggleBiweeklyCheck: (payment) => {
+        const s = get();
+        const existingTxId = s.biweeklyCheckedItems[payment.key];
+
+        if (existingTxId) {
+          // Unchecking: remove the transaction and the checked entry
+          set(state => {
+            const next = { ...state.biweeklyCheckedItems };
+            delete next[payment.key];
+            return {
+              biweeklyCheckedItems: next,
+              transactions: state.transactions.filter(t => t.id !== existingTxId),
+            };
+          });
+        } else {
+          // Checking: create a transaction and store its ID
+          const transaction = createTransactionFromPayment(payment);
+          set(state => ({
+            biweeklyCheckedItems: { ...state.biweeklyCheckedItems, [payment.key]: transaction.id },
+            transactions: [transaction, ...state.transactions],
+          }));
+        }
       },
       resetBiweeklyChecks: () => { set({ biweeklyCheckedItems: {} }); },
 
