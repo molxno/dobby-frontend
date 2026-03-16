@@ -178,8 +178,10 @@ export function useSupabaseSync() {
       const s = useFinancialStore.getState();
       const current = getPersistedSnapshot(s);
       const prev = lastSavedSnapshot.current;
-      // Track which slices saved successfully to build the new baseline snapshot
-      const saved = { ...(prev ?? current) };
+      // Track which slices saved successfully to build the new baseline snapshot.
+      // Start from prev (last known good state); on first save (prev === null) use
+      // an empty object so only slices that actually succeed get recorded.
+      const saved: Partial<ReturnType<typeof getPersistedSnapshot>> = prev ? { ...prev } : {};
       let hasError = false;
 
       const profileSettingsChanged =
@@ -235,7 +237,7 @@ export function useSupabaseSync() {
       }));
 
       // Always update baseline with what succeeded — prevents cascading failures
-      lastSavedSnapshot.current = saved;
+      lastSavedSnapshot.current = saved as ReturnType<typeof getPersistedSnapshot>;
 
       if (hasError) {
         addToast({
@@ -248,8 +250,8 @@ export function useSupabaseSync() {
       console.error('Unexpected error in autosync save:', err);
       addToast({
         type: 'error',
-        title: 'Sync error',
-        message: 'An unexpected error occurred while saving. Changes will be retried.',
+        title: 'Error al guardar',
+        message: 'Ocurrió un error inesperado al sincronizar. Se reintentará automáticamente.',
       });
     } }, 1500); // 1.5s debounce
   }, [userId]);
