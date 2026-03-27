@@ -171,7 +171,7 @@ export function Debts() {
                 {/* Amortization table */}
                 {isExpanded && (
                   <div className="mt-4 pt-4 border-t border-surface-800 overflow-x-auto">
-                    <table className="w-full text-xs text-slate-400 min-w-[500px]">
+                    <table className="w-full text-xs text-slate-400 min-w-125">
                       <thead>
                         <tr className="text-slate-600 border-b border-surface-800">
                           <th className="pb-2 text-left">Mes</th>

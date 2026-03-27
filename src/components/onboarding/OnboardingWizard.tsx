@@ -58,7 +58,7 @@ export function OnboardingWizard() {
       <div className="flex-1 flex flex-col max-w-2xl mx-auto w-full px-5 py-10">
         {/* Step indicator */}
         <div className="flex items-center justify-between mb-10 relative">
-          <div className="absolute top-5 left-0 right-0 h-0.5 bg-surface-800 -z-0" />
+          <div className="absolute top-5 left-0 right-0 h-0.5 bg-surface-800 z-0" />
           {STEPS.map((s) => {
             const StepIcon = s.icon;
             return (
