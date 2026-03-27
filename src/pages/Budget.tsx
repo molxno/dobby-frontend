@@ -28,7 +28,7 @@ export function Budget() {
   }));
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {/* Summary */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="text-center">
@@ -74,7 +74,7 @@ export function Budget() {
           </div>
 
           {/* Savings rate */}
-          <div className="mt-4 p-3 bg-surface-950/60 rounded-xl flex items-center justify-between">
+          <div className="mt-4 p-3 bg-surface-950/60 rounded-lg flex items-center justify-between">
             <span className="text-sm text-slate-400">Tasa de ahorro</span>
             <span className={`text-sm font-bold flex items-center gap-1.5 ${budgetPlan.savingsRate > 0.2 ? 'text-green-400' : budgetPlan.savingsRate > 0.1 ? 'text-yellow-400' : 'text-red-400'}`}>
               {(budgetPlan.savingsRate * 100).toFixed(1)}%
@@ -122,7 +122,7 @@ export function Budget() {
                 tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`} />
               <YAxis dataKey="name" type="category" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} width={90} />
               <Tooltip
-                contentStyle={{ backgroundColor: '#111827', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px' }}
+                contentStyle={{ backgroundColor: '#111827', border: 'none', borderRadius: '8px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)', fontSize: '12px' }}
                 formatter={(value: unknown) => [fmt(Number(value)), '']}
               />
               <Bar dataKey="Monto" radius={[0, 4, 4, 0]}>

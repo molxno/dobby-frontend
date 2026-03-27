@@ -22,7 +22,7 @@ export function Alert({ type, title, message, action, onDismiss }: AlertProps) {
   const cfg = CONFIG[type];
   const Icon = cfg.icon;
   return (
-    <div className={cn(cfg.bg, 'rounded-xl p-4')}>
+    <div className={cn(cfg.bg, 'rounded-lg p-4')}>
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3 flex-1">
           <Icon className={cn(cfg.title, 'mt-0.5 shrink-0')} size={16} />

@@ -41,7 +41,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
     )}>
       {/* Logo */}
       <div className="flex items-center gap-3 px-6 py-6">
-        <div className="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center shadow-lg shadow-brand-600/20">
+        <div className="w-10 h-10 bg-brand-600 rounded-lg flex items-center justify-center shadow-lg shadow-brand-600/20">
           <Sparkles className="text-white" size={20} />
         </div>
         <div>
@@ -58,7 +58,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
       {/* Health Score */}
       {financialState && (
         <div className="px-5 pb-4">
-          <div className="bg-surface-900 rounded-xl p-4">
+          <div className="bg-surface-900 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2.5">
               <span className="text-xs text-slate-400">Salud Financiera</span>
               <span className="text-sm font-bold font-heading" style={{ color: getScoreColor(healthScore) }}>
@@ -97,7 +97,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
                 onClick={mobile ? onClose : undefined}
                 className={({ isActive }) =>
                   cn(
-                    'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all',
+                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all',
                     isActive
                       ? 'bg-brand-600/15 text-brand-400 font-medium'
                       : 'text-slate-400 hover:text-slate-200 hover:bg-surface-800/50'
@@ -119,7 +119,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
           onClick={mobile ? onClose : undefined}
           className={({ isActive }) =>
             cn(
-              'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all',
+              'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all',
               isActive ? 'bg-brand-600/15 text-brand-400 font-medium' : 'text-slate-400 hover:text-slate-200 hover:bg-surface-800/50'
             )
           }

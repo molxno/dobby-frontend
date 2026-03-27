@@ -73,7 +73,7 @@ export function Settings() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {/* Account */}
       <Card title="Cuenta" subtitle="Tu sesión activa">
         <div className="flex items-center justify-between mt-3">
@@ -89,7 +89,7 @@ export function Settings() {
           <button
             onClick={handleLogout}
             disabled={loggingOut}
-            className="text-xs bg-surface-800 hover:bg-surface-700 border border-surface-700 text-slate-300 px-4 py-2 rounded-xl transition-colors disabled:opacity-50 flex items-center gap-2"
+            className="text-xs bg-surface-800 hover:bg-surface-700 text-slate-300 px-4 py-2 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
           >
             <LogOut size={14} />
             {loggingOut ? 'Cerrando...' : 'Cerrar sesión'}
@@ -109,7 +109,7 @@ export function Settings() {
               type="text"
               value={localProfile.name}
               onChange={e => setLocalProfile(p => ({ ...p, name: e.target.value }))}
-              className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
+              className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             />
           </div>
           <div>
@@ -118,7 +118,7 @@ export function Settings() {
               type="text"
               value={localProfile.country}
               onChange={e => setLocalProfile(p => ({ ...p, country: e.target.value }))}
-              className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
+              className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             />
           </div>
           <div>
@@ -126,7 +126,7 @@ export function Settings() {
             <select
               value={localProfile.currency}
               onChange={e => setLocalProfile(p => ({ ...p, currency: e.target.value }))}
-              className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
+              className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             >
               <option value="COP">COP - Peso colombiano</option>
               <option value="MXN">MXN - Peso mexicano</option>
@@ -142,7 +142,7 @@ export function Settings() {
             <select
               value={localProfile.locale}
               onChange={e => setLocalProfile(p => ({ ...p, locale: e.target.value }))}
-              className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
+              className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             >
               <option value="es-CO">es-CO (Colombia)</option>
               <option value="es-MX">es-MX (México)</option>
@@ -154,7 +154,7 @@ export function Settings() {
         </div>
         <button
           onClick={saveProfile}
-          className="mt-4 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-6 py-2.5 rounded-xl transition-colors shadow-lg shadow-brand-600/20"
+          className="mt-4 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-6 py-2.5 rounded-lg transition-colors shadow-lg shadow-brand-600/20"
         >
           Guardar perfil
         </button>
@@ -171,7 +171,7 @@ export function Settings() {
                   key={s}
                   onClick={() => setDebtStrategy(s)}
                   className={cn(
-                    'p-3 rounded-xl border text-left transition-all text-sm flex items-center gap-2',
+                    'p-3 rounded-lg border text-left transition-all text-sm flex items-center gap-2',
                     debtStrategy === s
                       ? 'border-brand-500 bg-brand-950/30 text-brand-400'
                       : 'border-surface-700 bg-surface-900 text-slate-400 hover:border-surface-600'
@@ -191,7 +191,7 @@ export function Settings() {
                   key={m}
                   onClick={() => setGoalMode(m)}
                   className={cn(
-                    'p-3 rounded-xl border text-left transition-all text-sm flex items-center gap-2',
+                    'p-3 rounded-lg border text-left transition-all text-sm flex items-center gap-2',
                     goalMode === m
                       ? 'border-purple-500 bg-purple-950/30 text-purple-400'
                       : 'border-surface-700 bg-surface-900 text-slate-400 hover:border-surface-600'
@@ -234,7 +234,7 @@ export function Settings() {
             </div>
             <button
               onClick={() => setOnboardingCompleted(false)}
-              className="text-xs bg-amber-600/20 border border-amber-500/40 text-amber-400 px-3 py-1.5 rounded-xl hover:bg-amber-600/30 transition-colors flex items-center gap-1.5"
+              className="text-xs bg-amber-600/20 border border-amber-500/40 text-amber-400 px-3 py-1.5 rounded-lg hover:bg-amber-600/30 transition-colors flex items-center gap-1.5"
             >
               <RotateCcw size={12} />
               Re-hacer
@@ -247,7 +247,7 @@ export function Settings() {
             </div>
             <button
               onClick={() => setShowResetModal(true)}
-              className="text-xs bg-red-600/20 border border-red-500/40 text-red-400 px-3 py-1.5 rounded-xl hover:bg-red-600/30 transition-colors flex items-center gap-1.5"
+              className="text-xs bg-red-600/20 border border-red-500/40 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-600/30 transition-colors flex items-center gap-1.5"
             >
               <Trash2 size={12} />
               Resetear
@@ -260,7 +260,7 @@ export function Settings() {
             </div>
             <button
               onClick={() => { setShowDeleteModal(true); setDeleteConfirm(''); setDeleteError(''); }}
-              className="text-xs bg-red-600/20 border border-red-500/40 text-red-400 px-3 py-1.5 rounded-xl hover:bg-red-600/30 transition-colors flex items-center gap-1.5"
+              className="text-xs bg-red-600/20 border border-red-500/40 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-600/30 transition-colors flex items-center gap-1.5"
             >
               <UserX size={12} />
               Eliminar
@@ -274,10 +274,10 @@ export function Settings() {
           <AlertTriangle className="mx-auto text-amber-400" size={40} />
           <p className="text-sm text-slate-300">Esto limpia los datos locales de tu navegador. Tus datos en la nube no se verán afectados y se recargarán automáticamente.</p>
           <div className="flex gap-3">
-            <button onClick={() => setShowResetModal(false)} className="flex-1 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm py-2.5 rounded-xl transition-colors">
+            <button onClick={() => setShowResetModal(false)} className="flex-1 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm py-2.5 rounded-lg transition-colors">
               Cancelar
             </button>
-            <button onClick={handleReset} className="flex-1 bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-2.5 rounded-xl transition-colors">
+            <button onClick={handleReset} className="flex-1 bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors">
               Sí, limpiar caché
             </button>
           </div>
@@ -286,7 +286,7 @@ export function Settings() {
 
       <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)} title="Eliminar cuenta" size="sm">
         <div className="space-y-4">
-          <div className="bg-red-950/50 border border-red-500/30 rounded-xl p-3">
+          <div className="bg-red-950/50 border border-red-500/30 rounded-lg p-3">
             <p className="text-sm text-red-400 font-medium">Esta acción es permanente</p>
             <p className="text-xs text-red-400/70 mt-1">
               Se eliminará tu cuenta, todos tus datos financieros, ingresos, gastos, deudas, metas y transacciones. No se puede deshacer.
@@ -302,7 +302,7 @@ export function Settings() {
               value={deleteConfirm}
               onChange={e => setDeleteConfirm(e.target.value)}
               placeholder="ELIMINAR"
-              className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-red-500/50 transition-all"
+              className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-red-500/50 transition-all"
             />
           </div>
 
@@ -313,14 +313,14 @@ export function Settings() {
           <div className="flex gap-3">
             <button
               onClick={() => setShowDeleteModal(false)}
-              className="flex-1 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm py-2.5 rounded-xl transition-colors"
+              className="flex-1 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm py-2.5 rounded-lg transition-colors"
             >
               Cancelar
             </button>
             <button
               onClick={handleDeleteAccount}
               disabled={deleteConfirm !== 'ELIMINAR' || deleting}
-              className="flex-1 bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 rounded-xl transition-colors"
+              className="flex-1 bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 rounded-lg transition-colors"
             >
               {deleting ? 'Eliminando...' : 'Eliminar cuenta'}
             </button>

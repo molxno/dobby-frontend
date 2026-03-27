@@ -35,8 +35,8 @@ export function Signup() {
     return (
       <div className="min-h-screen bg-surface-950 flex items-center justify-center px-4">
         <div className="w-full max-w-md text-center">
-          <div className="bg-surface-900 rounded-2xl p-8 space-y-4">
-            <div className="inline-flex items-center justify-center w-14 h-14 bg-green-600/20 border border-green-500/40 rounded-2xl">
+          <div className="bg-surface-900 rounded-xl p-8 space-y-4">
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-green-600/20 border border-green-500/40 rounded-lg">
               <Mail size={24} className="text-green-400" />
             </div>
             <h2 className="text-xl font-bold text-slate-100 font-heading">Revisa tu email</h2>
@@ -61,7 +61,7 @@ export function Signup() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-600 rounded-2xl mb-4">
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-600 rounded-lg mb-4">
             <Sparkles size={24} className="text-white" />
           </div>
           <h1 className="text-2xl font-bold text-slate-100 font-heading">Create Your Account</h1>
@@ -69,10 +69,10 @@ export function Signup() {
         </div>
 
         {/* Card */}
-        <div className="bg-surface-900 rounded-2xl p-8">
+        <div className="bg-surface-900 rounded-xl p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
-              <div className="bg-red-950/50 border border-red-500/40 rounded-xl p-3">
+              <div className="bg-red-950/50 border border-red-500/40 rounded-lg p-3">
                 <p className="text-sm text-red-400">{error}</p>
               </div>
             )}
@@ -85,7 +85,7 @@ export function Signup() {
                 onChange={e => setName(e.target.value)}
                 required
                 autoComplete="name"
-                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
+                className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
                 placeholder="Tu nombre"
               />
             </div>
@@ -98,7 +98,7 @@ export function Signup() {
                 onChange={e => setEmail(e.target.value)}
                 required
                 autoComplete="email"
-                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
+                className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
                 placeholder="tu@email.com"
               />
             </div>
@@ -112,7 +112,7 @@ export function Signup() {
                 required
                 minLength={6}
                 autoComplete="new-password"
-                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
+                className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
                 placeholder="Mínimo 6 caracteres"
               />
             </div>
@@ -120,7 +120,7 @@ export function Signup() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-brand-600 hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 rounded-xl transition-colors shadow-lg shadow-brand-600/20"
+              className="w-full bg-brand-600 hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 rounded-lg transition-colors shadow-lg shadow-brand-600/20"
             >
               {loading ? 'Creando cuenta...' : 'Crear cuenta'}
             </button>

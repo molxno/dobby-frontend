@@ -47,7 +47,7 @@ export function BiweeklyPlan() {
   const progressPct = period.payments.length > 0 ? (completedCount / period.payments.length) * 100 : 0;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {/* Monthly summary */}
       <div className="grid grid-cols-3 gap-4">
         <Card className="text-center">
@@ -65,7 +65,7 @@ export function BiweeklyPlan() {
       </div>
 
       {/* Period selector */}
-      <div className="flex rounded-xl overflow-hidden border border-surface-700">
+      <div className="flex rounded-lg overflow-hidden bg-surface-900">
         {biweeklyPlan.periods.map(p => (
           <button
             key={p.period}
@@ -119,7 +119,7 @@ export function BiweeklyPlan() {
 
         {/* Checklist */}
         <Card title="Biweekly Checklist" className="lg:col-span-2">
-          <div className="space-y-2 mt-2">
+          <div className="space-y-2 mt-3">
             {period.payments.map((payment) => {
               const isChecked = checkedKeys.has(scopedBiweeklyKey(payment.key));
               const TypeIcon = TYPE_ICONS[payment.type];
@@ -139,10 +139,10 @@ export function BiweeklyPlan() {
                     }
                   }}
                   className={cn(
-                    'flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all',
+                    'flex items-center gap-4 px-4 py-3.5 rounded-lg cursor-pointer transition-all',
                     isChecked
-                      ? 'bg-green-950/30 border border-green-700/40'
-                      : 'bg-surface-900 border border-surface-700 hover:border-surface-700/80'
+                      ? 'bg-emerald-950/20'
+                      : 'bg-surface-800/50 hover:bg-surface-800'
                   )}
                 >
                   <div className={cn(
@@ -178,7 +178,7 @@ export function BiweeklyPlan() {
           </div>
 
           {completedCount === period.payments.length && period.payments.length > 0 && (
-            <div className="mt-4 p-3 bg-green-950/30 border border-green-700/40 rounded-xl text-center flex items-center justify-center gap-2">
+            <div className="mt-4 p-3 bg-green-950/30 border border-green-700/40 rounded-lg text-center flex items-center justify-center gap-2">
               <PartyPopper className="text-green-400" size={16} />
               <div>
                 <p className="text-sm font-semibold text-green-400">Biweekly period completed!</p>
@@ -193,7 +193,7 @@ export function BiweeklyPlan() {
       {fs.currentPhase && (
         <Card className="border-brand-500/20 bg-brand-500/5">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-lg bg-brand-600/20 flex items-center justify-center shrink-0">
               <Pin className="text-brand-400" size={18} />
             </div>
             <div>

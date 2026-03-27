@@ -59,7 +59,7 @@ export function Goals() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {/* Summary */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
         <Card className="text-center">
@@ -84,7 +84,7 @@ export function Goals() {
               key={m}
               onClick={() => setGoalMode(m)}
               className={cn(
-                'p-4 rounded-xl border-2 text-left transition-all',
+                'p-4 rounded-lg border-2 text-left transition-all',
                 goalMode === m ? 'border-purple-500 bg-purple-950/30' : 'border-surface-700 bg-surface-900 hover:border-surface-600'
               )}
             >
@@ -109,7 +109,7 @@ export function Goals() {
           <h3 className="text-sm font-semibold text-slate-200 font-heading">Tus Metas</h3>
           <button
             onClick={() => setShowAddModal(true)}
-            className="text-xs bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1.5"
+            className="text-xs bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5"
           >
             <Plus size={14} />
             Agregar meta
@@ -123,7 +123,7 @@ export function Goals() {
             <p className="text-xs text-slate-500 mt-1">Agrega tus primeras metas financieras</p>
             <button
               onClick={() => setShowAddModal(true)}
-              className="mt-3 text-xs bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl transition-colors inline-flex items-center gap-1.5"
+              className="mt-3 text-xs bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors inline-flex items-center gap-1.5"
             >
               <Plus size={14} />
               Agregar primera meta
@@ -136,7 +136,7 @@ export function Goals() {
                 <div className="flex items-start gap-3">
                   <div className="flex flex-col items-center gap-1">
                     <div className={cn(
-                      'w-10 h-10 rounded-xl flex items-center justify-center',
+                      'w-10 h-10 rounded-lg flex items-center justify-center',
                       goal.status === 'completed' ? 'bg-emerald-500/20 text-emerald-400' :
                       goal.status === 'saving' ? 'bg-purple-500/20 text-purple-400' : 'bg-surface-800 text-slate-500'
                     )}>
@@ -217,7 +217,7 @@ export function Goals() {
                   key={label}
                   onClick={() => setForm(f => ({ ...f, icon: label }))}
                   className={cn(
-                    'w-9 h-9 rounded-xl flex items-center justify-center transition-colors',
+                    'w-9 h-9 rounded-lg flex items-center justify-center transition-colors',
                     form.icon === label
                       ? 'bg-purple-600 border-2 border-purple-400 text-white'
                       : 'bg-surface-800 border border-surface-700 hover:border-surface-600 text-slate-400'
@@ -232,13 +232,13 @@ export function Goals() {
             <label className="block text-sm font-medium text-slate-300 mb-1.5">Nombre de la meta</label>
             <input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
               placeholder="Ej: Apartamento, Viaje a Europa"
-              className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-purple-500/50 transition-all" />
+              className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-purple-500/50 transition-all" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <CurrencyInput label="Costo total" value={form.targetAmount ?? 0} onChange={v => setForm(f => ({ ...f, targetAmount: v }))} currency={currency} required />
             <CurrencyInput label="Ya tienes ahorrado" value={form.currentSaved ?? 0} onChange={v => setForm(f => ({ ...f, currentSaved: v }))} currency={currency} />
           </div>
-          <button onClick={addGoalHandler} className="w-full bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium py-2.5 rounded-xl transition-colors shadow-lg shadow-purple-600/20">
+          <button onClick={addGoalHandler} className="w-full bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors shadow-lg shadow-purple-600/20">
             Agregar meta
           </button>
         </div>

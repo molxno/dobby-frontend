@@ -15,7 +15,7 @@ export function Card({ children, className = '', onClick, title, subtitle, actio
   return (
     <div
       className={cn(
-        'bg-surface-900 rounded-2xl',
+        'bg-surface-900 rounded-xl',
         !noPadding && 'p-6',
         onClick && 'cursor-pointer hover:bg-surface-850 transition-colors',
         className

@@ -58,7 +58,7 @@ export function Header({ onMenuClick }: HeaderProps) {
       <div className="flex items-center gap-3">
         <button
           onClick={onMenuClick}
-          className="lg:hidden text-slate-400 hover:text-slate-200 p-1.5 rounded-xl hover:bg-surface-800 transition-colors"
+          className="lg:hidden text-slate-400 hover:text-slate-200 p-1.5 rounded-lg hover:bg-surface-800 transition-colors"
         >
           <Menu size={20} />
         </button>
@@ -80,7 +80,7 @@ export function Header({ onMenuClick }: HeaderProps) {
           <button
             onClick={() => setMenuOpen(o => !o)}
             className={cn(
-              'flex items-center gap-2 px-2.5 py-1.5 rounded-xl transition-colors',
+              'flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition-colors',
               'hover:bg-surface-800 border border-transparent',
               menuOpen && 'bg-surface-800 border-surface-700'
             )}
@@ -95,7 +95,7 @@ export function Header({ onMenuClick }: HeaderProps) {
           </button>
 
           {menuOpen && (
-            <div className="absolute right-0 mt-2 w-64 bg-surface-900 border border-surface-700 rounded-2xl shadow-xl shadow-black/40 py-2 z-50">
+            <div className="absolute right-0 mt-2 w-64 bg-surface-900 rounded-xl shadow-xl shadow-black/40 py-2 z-50">
               {/* User info */}
               <div className="px-4 py-3 border-b border-surface-800">
                 <p className="text-sm font-medium text-slate-100 truncate">{profile.name || 'Sin nombre'}</p>

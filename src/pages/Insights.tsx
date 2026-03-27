@@ -36,11 +36,11 @@ export function Insights() {
   });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {/* Tutor intro */}
       <Card className="border-brand-500/30 bg-brand-500/5">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 bg-brand-600 rounded-2xl flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 bg-brand-600 rounded-lg flex items-center justify-center shrink-0">
             <Brain className="text-white" size={24} />
           </div>
           <div>
@@ -106,7 +106,7 @@ export function Insights() {
             </div>
             <p className="text-base font-semibold text-slate-100 mb-2">{diagnosis.recommendations[0].title}</p>
             <p className="text-sm text-slate-400 leading-relaxed">{diagnosis.recommendations[0].description}</p>
-            <div className="mt-3 p-2.5 bg-green-950/40 border border-green-700/40 rounded-xl flex items-center gap-2">
+            <div className="mt-3 p-2.5 bg-green-950/40 border border-green-700/40 rounded-lg flex items-center gap-2">
               <TrendingUp className="text-green-400 shrink-0" size={14} />
               <p className="text-xs text-green-400 font-medium">Impact: {diagnosis.recommendations[0].impact}</p>
             </div>
@@ -160,7 +160,7 @@ export function Insights() {
           <div className="space-y-4 mt-3">
             {diagnosis.recommendations.map((rec, i) => (
               <div key={i} className={cn(
-                'border rounded-xl p-4',
+                'border rounded-lg p-4',
                 rec.priority === 'high' ? 'border-red-500/30 bg-red-950/10' :
                 rec.priority === 'medium' ? 'border-yellow-500/30 bg-yellow-950/10' :
                 'border-surface-700 bg-surface-900'
@@ -237,7 +237,7 @@ export function Insights() {
               <YAxis tick={{ fill: '#64748b', fontSize: 10 }} axisLine={false} tickLine={false}
                 tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`} />
               <Tooltip
-                contentStyle={{ backgroundColor: '#111827', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px' }}
+                contentStyle={{ backgroundColor: '#111827', border: 'none', borderRadius: '8px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)', fontSize: '12px' }}
                 formatter={(value: unknown) => [fmt(Number(value)), '']}
               />
               <Legend formatter={(v) => <span style={{ color: '#94a3b8', fontSize: '11px' }}>{v}</span>} />

@@ -96,7 +96,7 @@ export function ToastContainer() {
         return (
           <div
             key={toast.id}
-            className={`${cfg.bg} ${cfg.border} border rounded-xl p-3 shadow-lg backdrop-blur-sm pointer-events-auto animate-slide-in`}
+            className={`${cfg.bg} ${cfg.border} border rounded-lg p-3 shadow-lg backdrop-blur-sm pointer-events-auto animate-slide-in`}
           >
             <div className="flex items-start gap-2.5">
               <Icon className={`${cfg.title} mt-0.5 shrink-0`} size={16} />

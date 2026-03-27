@@ -45,13 +45,13 @@ export function EmergencyFund() {
   }));
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {/* Current level badge */}
       <Card>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div
-              className="w-12 h-12 rounded-2xl flex items-center justify-center"
+              className="w-12 h-12 rounded-lg flex items-center justify-center"
               style={{ backgroundColor: `${levelCfg.color}20` }}
             >
               <LevelIcon style={{ color: levelCfg.color }} size={24} />
@@ -144,7 +144,7 @@ export function EmergencyFund() {
         </div>
 
         {/* Monthly saving info */}
-        <div className="mt-4 p-3 bg-surface-900/60 rounded-xl flex justify-between">
+        <div className="mt-4 p-3 bg-surface-900/60 rounded-lg flex justify-between">
           <span className="text-xs text-slate-400">Monthly savings allocated to fund</span>
           <span className="text-xs font-semibold text-green-400">{fmt(emergencyPlan.monthlySaving)}/mo</span>
         </div>
@@ -154,7 +154,7 @@ export function EmergencyFund() {
       <Card title="What does your fund cover?" subtitle="Essential monthly expenses">
         <div className="mt-3 text-center">
           {/* Thermometer-style display */}
-          <div className="relative mx-auto w-20 h-48 bg-surface-800 rounded-full overflow-hidden border border-surface-700">
+          <div className="relative mx-auto w-20 h-48 bg-surface-800 rounded-full overflow-hidden">
             <div
               className="absolute bottom-0 left-0 right-0 rounded-full transition-all duration-700"
               style={{
@@ -201,7 +201,7 @@ export function EmergencyFund() {
               <YAxis tick={{ fill: '#64748b', fontSize: 10 }} axisLine={false} tickLine={false}
                 tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`} />
               <Tooltip
-                contentStyle={{ backgroundColor: '#111827', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px' }}
+                contentStyle={{ backgroundColor: '#111827', border: 'none', borderRadius: '8px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)', fontSize: '12px' }}
                 formatter={(value: unknown) => [fmt(Number(value)), 'Fund']}
               />
               {emergencyPlan.target3months > 0 && (
@@ -221,7 +221,7 @@ export function EmergencyFund() {
       {/* Recommendations */}
       <Card className="border-brand-500/20 bg-brand-500/5">
         <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-lg bg-brand-600/20 flex items-center justify-center shrink-0">
             <Lightbulb className="text-brand-400" size={18} />
           </div>
           <div>

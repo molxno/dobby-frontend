@@ -83,7 +83,7 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
       </div>
 
       {/* Emergency fund */}
-      <div className="bg-green-950/30 border border-green-700/40 rounded-2xl p-4">
+      <div className="bg-green-950/30 border border-green-700/40 rounded-lg p-4">
         <div className="flex items-center gap-2 mb-3">
           <ShieldCheck className="w-5 h-5 text-green-400" />
           <div>
@@ -105,7 +105,7 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
           {goals.map((goal, i) => {
             const GoalIcon = getGoalIcon(goal.icon);
             return (
-              <div key={goal.id} className="flex items-center gap-3 bg-surface-900 border border-surface-800 rounded-2xl p-3">
+              <div key={goal.id} className="flex items-center gap-3 bg-surface-800/60 rounded-lg p-3">
                 <GoalIcon className="w-5 h-5 text-brand-400" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-slate-200">{goal.name}</p>
@@ -128,7 +128,7 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
 
       {/* Add goal form */}
       {showForm ? (
-        <div className="bg-surface-900 border border-surface-700 rounded-2xl p-4 space-y-4">
+        <div className="bg-surface-800/40 rounded-lg p-4 space-y-4">
           <h3 className="text-sm font-semibold font-heading text-slate-200">Nueva meta</h3>
 
           {/* Icon selector */}
@@ -140,7 +140,7 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
                   key={label}
                   onClick={() => setForm(f => ({ ...f, icon: label }))}
                   className={cn(
-                    'w-9 h-9 rounded-xl flex items-center justify-center transition-colors',
+                    'w-9 h-9 rounded-lg flex items-center justify-center transition-colors',
                     form.icon === label
                       ? 'bg-brand-600 border-2 border-brand-400'
                       : 'bg-surface-800 border border-surface-700 hover:border-surface-500'
@@ -160,7 +160,7 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
                 value={form.name}
                 onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                 placeholder="Ej: Apartamento, Viaje a Europa"
-                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
+                className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               />
             </div>
             <div>
@@ -168,7 +168,7 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
               <select
                 value={form.category}
                 onChange={e => setForm(f => ({ ...f, category: e.target.value as Goal['category'] }))}
-                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
+                className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               >
                 {GOAL_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
               </select>
@@ -192,10 +192,10 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
           </div>
 
           <div className="flex gap-2">
-            <button onClick={addGoal} className="flex-1 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-2.5 px-4 rounded-xl transition-colors shadow-lg shadow-brand-600/20">
+            <button onClick={addGoal} className="flex-1 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition-colors shadow-lg shadow-brand-600/20">
               Agregar meta
             </button>
-            <button onClick={() => setShowForm(false)} className="px-4 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-xl transition-colors">
+            <button onClick={() => setShowForm(false)} className="px-4 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-lg transition-colors">
               Cancelar
             </button>
           </div>
@@ -203,7 +203,7 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
       ) : (
         <button
           onClick={() => setShowForm(true)}
-          className="w-full border-2 border-dashed border-surface-700 hover:border-brand-500 rounded-xl py-3 text-sm text-slate-500 hover:text-brand-400 transition-colors flex items-center justify-center gap-2"
+          className="w-full border-2 border-dashed border-surface-700 hover:border-brand-500 rounded-lg py-3 text-sm text-slate-500 hover:text-brand-400 transition-colors flex items-center justify-center gap-2"
         >
           <Plus className="w-4 h-4" />
           Agregar meta
@@ -211,13 +211,13 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
       )}
 
       <div className="flex gap-3 pt-6 border-t border-surface-800/40">
-        <button onClick={onBack} className="px-5 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-xl py-3 transition-colors flex items-center gap-2">
+        <button onClick={onBack} className="px-5 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-lg py-3 transition-colors flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" />
           Atrás
         </button>
         <button
           onClick={onFinish}
-          className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-3.5 rounded-xl transition-colors shadow-lg shadow-green-600/20 flex items-center justify-center gap-2"
+          className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-3.5 rounded-lg transition-colors shadow-lg shadow-green-600/20 flex items-center justify-center gap-2"
         >
           <Rocket className="w-4 h-4" />
           Generar mi plan financiero

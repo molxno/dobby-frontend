@@ -65,7 +65,7 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
         <p className="text-sm text-slate-500">Préstamos, tarjetas de crédito, compras financiadas</p>
       </div>
 
-      <label className="flex items-center gap-3 p-3 bg-surface-900 border border-surface-800 rounded-2xl cursor-pointer hover:border-surface-700">
+      <label className="flex items-center gap-3 p-4 bg-surface-800/60 rounded-lg cursor-pointer hover:bg-surface-800">
         <input
           type="checkbox"
           checked={noDebts}
@@ -80,7 +80,7 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
           {debts.length > 0 && (
             <div className="space-y-2">
               {debts.map(debt => (
-                <div key={debt.id} className="flex items-center gap-3 bg-surface-900 border border-surface-800 rounded-2xl p-3">
+                <div key={debt.id} className="flex items-center gap-3 bg-surface-800/60 rounded-lg p-3">
                   <div className="text-slate-400">
                     <DebtTypeIcon type={debt.type} className="w-5 h-5" />
                   </div>
@@ -95,7 +95,7 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
                   </button>
                 </div>
               ))}
-              <div className="bg-surface-900/50 rounded-2xl px-4 py-2 flex justify-between">
+              <div className="bg-surface-900/50 rounded-lg px-4 py-2 flex justify-between">
                 <span className="text-sm text-slate-400">Total deuda / cuota mensual</span>
                 <span className="text-sm font-bold text-red-400">
                   {totalDebt.toLocaleString('es-CO')} / {totalMonthly.toLocaleString('es-CO')} {currency}
@@ -105,7 +105,7 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
           )}
 
           {showForm ? (
-            <div className="bg-surface-900 border border-surface-700 rounded-2xl p-4 space-y-4">
+            <div className="bg-surface-800/40 rounded-lg p-4 space-y-4">
               <h3 className="text-sm font-semibold font-heading text-slate-200">Nueva deuda</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -115,7 +115,7 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
                     value={form.name}
                     onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                     placeholder="Ej: TC Bancolombia, Crédito Libre"
-                    className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
+                    className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
                   />
                 </div>
                 <div>
@@ -123,7 +123,7 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
                   <select
                     value={form.type}
                     onChange={e => setForm(f => ({ ...f, type: e.target.value as Debt['type'] }))}
-                    className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
+                    className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
                   >
                     {Object.entries(DEBT_TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                   </select>
@@ -156,7 +156,7 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
                     value={form.interestRate === 0 ? '' : form.interestRate}
                     onChange={e => setForm(f => ({ ...f, interestRate: parseFloat(e.target.value) || 0 }))}
                     placeholder="Ej: 2.2"
-                    className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
+                    className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
                   />
                   <p className="text-xs text-slate-600 mt-1">Tasa mensual. Ej: 2.2 = 2.2%/mes</p>
                 </div>
@@ -168,7 +168,7 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
                     max={31}
                     value={form.dueDay}
                     onChange={e => setForm(f => ({ ...f, dueDay: parseInt(e.target.value) }))}
-                    className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
+                    className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
                   />
                 </div>
               </div>
@@ -191,10 +191,10 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
               )}
 
               <div className="flex gap-2">
-                <button onClick={addDebt} className="flex-1 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-2.5 px-4 rounded-xl transition-colors shadow-lg shadow-brand-600/20">
+                <button onClick={addDebt} className="flex-1 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition-colors shadow-lg shadow-brand-600/20">
                   Agregar deuda
                 </button>
-                <button onClick={() => setShowForm(false)} className="px-4 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-xl transition-colors">
+                <button onClick={() => setShowForm(false)} className="px-4 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-lg transition-colors">
                   Cancelar
                 </button>
               </div>
@@ -202,7 +202,7 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
           ) : (
             <button
               onClick={() => setShowForm(true)}
-              className="w-full border-2 border-dashed border-surface-700 hover:border-brand-500 rounded-xl py-3 text-sm text-slate-500 hover:text-brand-400 transition-colors flex items-center justify-center gap-2"
+              className="w-full border-2 border-dashed border-surface-700 hover:border-brand-500 rounded-lg py-3 text-sm text-slate-500 hover:text-brand-400 transition-colors flex items-center justify-center gap-2"
             >
               <Plus className="w-4 h-4" />
               Agregar deuda
@@ -212,13 +212,13 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
       )}
 
       <div className="flex gap-3 pt-6 border-t border-surface-800/40">
-        <button onClick={onBack} className="px-5 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-xl py-3 transition-colors flex items-center gap-2">
+        <button onClick={onBack} className="px-5 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-lg py-3 transition-colors flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" />
           Atrás
         </button>
         <button
           onClick={onNext}
-          className="flex-1 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-3.5 rounded-xl transition-colors shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2"
+          className="flex-1 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-3.5 rounded-lg transition-colors shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2"
         >
           Continuar
           <ArrowRight className="w-4 h-4" />

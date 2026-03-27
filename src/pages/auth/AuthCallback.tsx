@@ -55,7 +55,7 @@ export function AuthCallback() {
   return (
     <div className="min-h-screen bg-surface-950 flex items-center justify-center">
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-600 rounded-2xl animate-pulse">
+        <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-600 rounded-lg animate-pulse">
           <Sparkles size={24} className="text-white" />
         </div>
         <p className="text-sm text-slate-400">Verifying session...</p>

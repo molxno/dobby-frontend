@@ -35,7 +35,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
       return (
         <div className="min-h-screen bg-surface-950 flex items-center justify-center p-4">
           <div className="max-w-md w-full space-y-6 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-red-600/20 rounded-2xl border border-red-500/30">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-red-600/20 rounded-xl border border-red-500/30">
               <span className="text-3xl text-red-400 font-bold">!</span>
             </div>
 
@@ -46,20 +46,20 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
               </p>
             </div>
 
-            <div className="bg-red-950/30 border border-red-500/30 rounded-xl p-3 text-left">
+            <div className="bg-red-950/30 border border-red-500/30 rounded-lg p-3 text-left">
               <p className="text-xs text-red-400 font-mono break-all">{this.state.error.message}</p>
             </div>
 
             <div className="flex gap-3 justify-center">
               <button
                 onClick={this.handleReset}
-                className="px-4 py-2.5 text-sm font-medium bg-surface-800 text-slate-300 rounded-xl hover:bg-surface-700 transition-colors"
+                className="px-4 py-2.5 text-sm font-medium bg-surface-800 text-slate-300 rounded-lg hover:bg-surface-700 transition-colors"
               >
                 Reintentar
               </button>
               <button
                 onClick={this.handleReload}
-                className="px-4 py-2.5 text-sm font-medium bg-brand-600 text-white rounded-xl hover:bg-brand-700 transition-colors shadow-lg shadow-brand-600/20"
+                className="px-4 py-2.5 text-sm font-medium bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors shadow-lg shadow-brand-600/20"
               >
                 Recargar página
               </button>

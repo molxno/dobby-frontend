@@ -8,7 +8,7 @@ export function AppLoader({ message = 'Cargando tu información...' }: AppLoader
   return (
     <div className="min-h-screen bg-surface-950 flex items-center justify-center">
       <div className="text-center space-y-6">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-600 rounded-2xl animate-pulse shadow-lg shadow-brand-600/20">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-600 rounded-lg animate-pulse shadow-lg shadow-brand-600/20">
           <Sparkles className="text-white" size={28} />
         </div>
         <div className="space-y-2">

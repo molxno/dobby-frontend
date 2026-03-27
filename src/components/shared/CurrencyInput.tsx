@@ -51,7 +51,7 @@ export function CurrencyInput({
           placeholder={placeholder}
           min={min}
           className={cn(
-            'w-full bg-surface-800 rounded-xl pl-9 pr-4 py-3 text-sm text-slate-100 placeholder-slate-600',
+            'w-full bg-surface-800 rounded-lg pl-9 pr-4 py-3 text-sm text-slate-100 placeholder-slate-600',
             'ring-1 transition-all',
             error
               ? 'ring-red-500/50 focus:ring-2 focus:ring-red-500/60'

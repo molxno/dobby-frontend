@@ -45,7 +45,7 @@ export function Debts() {
   }));
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {/* Summary cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="text-center">
@@ -74,7 +74,7 @@ export function Debts() {
               key={s}
               onClick={() => setDebtStrategy(s)}
               className={cn(
-                'p-4 rounded-2xl border-2 text-left transition-all',
+                'p-4 rounded-lg border-2 text-left transition-all',
                 debtStrategy === s
                   ? 'border-brand-500 bg-brand-500/10'
                   : 'border-surface-700 bg-surface-900 hover:border-surface-600'
@@ -107,7 +107,7 @@ export function Debts() {
           <h3 className="text-sm font-semibold font-heading text-slate-200">Inventario de Deudas</h3>
           <button
             onClick={() => setShowAddModal(true)}
-            className="text-xs bg-brand-600 hover:bg-brand-700 text-white px-3 py-1.5 rounded-xl transition-colors shadow-lg shadow-brand-600/20"
+            className="text-xs bg-brand-600 hover:bg-brand-700 text-white px-3 py-1.5 rounded-lg transition-colors shadow-lg shadow-brand-600/20"
           >
             + Agregar deuda
           </button>
@@ -136,7 +136,7 @@ export function Debts() {
                   onClick={() => setExpandedDebt(isExpanded ? null : debt.id)}
                 >
                   <div className={cn(
-                    'w-8 h-8 rounded-xl flex items-center justify-center text-sm font-bold shrink-0',
+                    'w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0',
                     debt.order === 1 ? 'bg-red-500/20 text-red-400' : 'bg-surface-800 text-slate-400'
                   )}>
                     {debt.order}
@@ -223,7 +223,7 @@ export function Debts() {
                 <YAxis tick={{ fill: '#64748b', fontSize: 10 }} axisLine={false} tickLine={false}
                   tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#0c0f1a', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px' }}
+                  contentStyle={{ backgroundColor: '#0c0f1a', border: 'none', borderRadius: '8px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)', fontSize: '12px' }}
                   formatter={(value: unknown) => [fmt(Number(value)), '']}
                 />
                 <Legend formatter={(v) => <span style={{ color: '#94a3b8', fontSize: '11px' }}>{v}</span>} />
@@ -243,12 +243,12 @@ export function Debts() {
               <label className="block text-sm font-medium text-slate-300 mb-1.5">Nombre</label>
               <input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                 placeholder="Ej: TC Bancolombia"
-                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all" />
+                className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all" />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">Tipo</label>
               <select value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value as Debt['type'] }))}
-                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all">
+                className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all">
                 {Object.entries(DEBT_TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
               </select>
             </div>
@@ -263,13 +263,13 @@ export function Debts() {
               <input type="number" step="0.1" value={form.interestRate === 0 ? '' : form.interestRate}
                 onChange={e => setForm(f => ({ ...f, interestRate: parseFloat(e.target.value) || 0 }))}
                 placeholder="2.2"
-                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all" />
+                className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all" />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">Día de pago</label>
               <input type="number" min={1} max={31} value={form.dueDay}
                 onChange={e => setForm(f => ({ ...f, dueDay: parseInt(e.target.value) }))}
-                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all" />
+                className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all" />
             </div>
           </div>
           {form.type === 'credit_card' && (
@@ -278,7 +278,7 @@ export function Debts() {
               <CurrencyInput label="Pago mínimo" value={form.minimumPayment ?? 0} onChange={v => setForm(f => ({ ...f, minimumPayment: v }))} currency={currency} />
             </div>
           )}
-          <button onClick={addDebtHandler} className="w-full bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-2.5 rounded-xl transition-colors shadow-lg shadow-brand-600/20">
+          <button onClick={addDebtHandler} className="w-full bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors shadow-lg shadow-brand-600/20">
             Agregar deuda
           </button>
         </div>
