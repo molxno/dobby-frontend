@@ -39,7 +39,7 @@ export function ResetPassword() {
     <div className="min-h-screen bg-surface-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-10">
           <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-600 rounded-2xl mb-4">
             <Sparkles size={24} className="text-white" />
           </div>
@@ -48,7 +48,7 @@ export function ResetPassword() {
         </div>
 
         {/* Card */}
-        <div className="bg-surface-900 border border-surface-800 rounded-2xl p-6">
+        <div className="bg-surface-900 rounded-2xl p-8">
           {success ? (
             <div className="text-center space-y-4 py-4">
               <div className="inline-flex items-center justify-center w-14 h-14 bg-green-600/20 border border-green-500/40 rounded-2xl">
@@ -66,7 +66,7 @@ export function ResetPassword() {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {error && (
                 <div className="bg-red-950/50 border border-red-500/40 rounded-xl p-3">
                   <p className="text-sm text-red-400">{error}</p>
@@ -82,7 +82,7 @@ export function ResetPassword() {
                   required
                   minLength={6}
                   autoComplete="new-password"
-                  className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                  className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
                   placeholder="Minimum 6 characters"
                 />
               </div>
@@ -96,7 +96,7 @@ export function ResetPassword() {
                   required
                   minLength={6}
                   autoComplete="new-password"
-                  className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                  className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
                   placeholder="Repeat your password"
                 />
               </div>

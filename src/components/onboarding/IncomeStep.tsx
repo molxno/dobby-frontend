@@ -49,7 +49,7 @@ export function IncomeStep({ currency, setCurrency, incomes, setIncomes, onNext 
   const canNext = incomes.length > 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
         <h2 className="text-xl font-bold font-heading text-slate-100 mb-1">¿Cuánto ganas?</h2>
         <p className="text-sm text-slate-500">Configura tu moneda y tus fuentes de ingreso</p>
@@ -60,7 +60,7 @@ export function IncomeStep({ currency, setCurrency, incomes, setIncomes, onNext 
         <select
           value={currency}
           onChange={e => setCurrency(e.target.value)}
-          className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+          className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
         >
           {CURRENCIES.map(c => (
             <option key={c.code} value={c.code}>{c.label}</option>
@@ -90,7 +90,7 @@ export function IncomeStep({ currency, setCurrency, incomes, setIncomes, onNext 
         <div className="bg-surface-900 border border-surface-700 rounded-2xl p-4 space-y-4">
           <h3 className="text-sm font-semibold font-heading text-slate-200">Nueva fuente de ingreso</h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">Nombre <span className="text-red-400">*</span></label>
               <input
@@ -98,7 +98,7 @@ export function IncomeStep({ currency, setCurrency, incomes, setIncomes, onNext 
                 value={form.name}
                 onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                 placeholder="Ej: Salario, Freelance"
-                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               />
             </div>
             <CurrencyInput
@@ -110,13 +110,13 @@ export function IncomeStep({ currency, setCurrency, incomes, setIncomes, onNext 
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">Frecuencia de pago</label>
               <select
                 value={form.frequency}
                 onChange={e => setForm(f => ({ ...f, frequency: e.target.value as Income['frequency'] }))}
-                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               >
                 <option value="monthly">Mensual</option>
                 <option value="biweekly">Quincenal (días 1 y 15)</option>
@@ -130,7 +130,7 @@ export function IncomeStep({ currency, setCurrency, incomes, setIncomes, onNext 
                 value={form.payDays?.join(', ')}
                 onChange={e => setForm(f => ({ ...f, payDays: e.target.value.split(',').map(v => parseInt(v.trim())).filter(n => !isNaN(n)) }))}
                 placeholder="Ej: 1, 15"
-                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               />
             </div>
           </div>
@@ -172,11 +172,11 @@ export function IncomeStep({ currency, setCurrency, incomes, setIncomes, onNext 
         </button>
       )}
 
-      <div className="pt-4 border-t border-surface-800">
+      <div className="pt-6 border-t border-surface-800/40">
         <button
           onClick={onNext}
           disabled={!canNext}
-          className="w-full bg-brand-600 hover:bg-brand-700 disabled:bg-surface-800 disabled:text-slate-600 disabled:opacity-50 disabled:shadow-none text-white text-sm font-medium py-3 rounded-xl transition-colors shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2"
+          className="w-full bg-brand-600 hover:bg-brand-700 disabled:bg-surface-800 disabled:text-slate-600 disabled:opacity-50 disabled:shadow-none text-white text-sm font-medium py-3.5 rounded-xl transition-colors shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2"
         >
           Continuar
           <ArrowRight className="w-4 h-4" />

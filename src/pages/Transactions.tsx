@@ -50,9 +50,9 @@ export function Transactions() {
   const totalExpense = filtered.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Summary */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-4">
         <Card className="text-center">
           <p className="text-base font-bold text-green-400">{fmt(totalIncome)}</p>
           <p className="text-xs text-slate-500 mt-1">Income</p>
@@ -76,7 +76,7 @@ export function Transactions() {
             <select
               value={filterType}
               onChange={e => setFilterType(e.target.value)}
-              className="bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+              className="bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             >
               <option value="all">All types</option>
               <option value="income">Income</option>
@@ -87,7 +87,7 @@ export function Transactions() {
             <select
               value={filterCategory}
               onChange={e => setFilterCategory(e.target.value)}
-              className="bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+              className="bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             >
               <option value="all">All categories</option>
               {Object.entries(CATEGORY_LABELS).map(([k, v]) => (
@@ -169,7 +169,7 @@ export function Transactions() {
               <select
                 value={form.type}
                 onChange={e => setForm(f => ({ ...f, type: e.target.value as Transaction['type'] }))}
-                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               >
                 <option value="expense">Expense</option>
                 <option value="income">Income</option>
@@ -184,7 +184,7 @@ export function Transactions() {
                 type="date"
                 value={form.date}
                 onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               />
             </div>
           </div>
@@ -204,7 +204,7 @@ export function Transactions() {
               value={form.description}
               onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
               placeholder="e.g. Weekly groceries"
-              className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+              className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             />
           </div>
 
@@ -214,7 +214,7 @@ export function Transactions() {
               <select
                 value={form.category}
                 onChange={e => setForm(f => ({ ...f, category: e.target.value as ExpenseCategory }))}
-                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               >
                 {Object.entries(CATEGORY_LABELS).map(([k, v]) => (
                   <option key={k} value={k}>{v}</option>
@@ -226,7 +226,7 @@ export function Transactions() {
               <select
                 value={form.paymentMethod}
                 onChange={e => setForm(f => ({ ...f, paymentMethod: e.target.value as Transaction['paymentMethod'] }))}
-                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               >
                 <option value="debit">Debit</option>
                 <option value="cash">Cash</option>

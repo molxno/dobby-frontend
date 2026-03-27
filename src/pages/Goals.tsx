@@ -59,9 +59,9 @@ export function Goals() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Summary */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
         <Card className="text-center">
           <p className="text-lg font-bold text-purple-400 font-heading">{goalPlan.goals.length}</p>
           <p className="text-xs text-slate-500 mt-1">Metas Activas</p>
@@ -232,7 +232,7 @@ export function Goals() {
             <label className="block text-sm font-medium text-slate-300 mb-1.5">Nombre de la meta</label>
             <input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
               placeholder="Ej: Apartamento, Viaje a Europa"
-              className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 transition-all" />
+              className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-purple-500/50 transition-all" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <CurrencyInput label="Costo total" value={form.targetAmount ?? 0} onChange={v => setForm(f => ({ ...f, targetAmount: v }))} currency={currency} required />

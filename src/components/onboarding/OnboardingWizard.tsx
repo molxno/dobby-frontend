@@ -43,21 +43,21 @@ export function OnboardingWizard() {
   return (
     <div className="min-h-screen bg-surface-950 flex flex-col">
       {/* Header */}
-      <div className="border-b border-surface-800 px-6 py-4">
+      <div className="border-b border-surface-800/60 px-6 py-5">
         <div className="max-w-2xl mx-auto flex items-center gap-3">
-          <div className="w-9 h-9 bg-brand-600 rounded-xl flex items-center justify-center">
+          <div className="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center shadow-lg shadow-brand-600/20">
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-sm font-bold font-heading text-slate-100">Dobby</h1>
+            <h1 className="text-base font-bold font-heading text-slate-100">Dobby</h1>
             <p className="text-xs text-slate-500">Free Your Finances</p>
           </div>
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col max-w-2xl mx-auto w-full px-4 py-8">
+      <div className="flex-1 flex flex-col max-w-2xl mx-auto w-full px-5 py-10">
         {/* Step indicator */}
-        <div className="flex items-center justify-between mb-8 relative">
+        <div className="flex items-center justify-between mb-10 relative">
           <div className="absolute top-5 left-0 right-0 h-0.5 bg-surface-800 -z-0" />
           {STEPS.map((s) => {
             const StepIcon = s.icon;

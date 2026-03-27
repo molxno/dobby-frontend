@@ -45,9 +45,9 @@ export function Debts() {
   }));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Summary cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="text-center">
           <p className="text-lg font-bold font-heading text-red-400">{fmt(debtPlan.totalDebt)}</p>
           <p className="text-xs text-slate-500 mt-1">Deuda Total</p>
@@ -243,12 +243,12 @@ export function Debts() {
               <label className="block text-sm font-medium text-slate-300 mb-1.5">Nombre</label>
               <input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                 placeholder="Ej: TC Bancolombia"
-                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all" />
+                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all" />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">Tipo</label>
               <select value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value as Debt['type'] }))}
-                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all">
+                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all">
                 {Object.entries(DEBT_TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
               </select>
             </div>
@@ -263,13 +263,13 @@ export function Debts() {
               <input type="number" step="0.1" value={form.interestRate === 0 ? '' : form.interestRate}
                 onChange={e => setForm(f => ({ ...f, interestRate: parseFloat(e.target.value) || 0 }))}
                 placeholder="2.2"
-                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all" />
+                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all" />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">Día de pago</label>
               <input type="number" min={1} max={31} value={form.dueDay}
                 onChange={e => setForm(f => ({ ...f, dueDay: parseInt(e.target.value) }))}
-                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all" />
+                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all" />
             </div>
           </div>
           {form.type === 'credit_card' && (

@@ -28,9 +28,9 @@ export function Budget() {
   }));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Summary */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="text-center">
           <p className="text-lg font-bold text-green-400">{fmt(budgetPlan.totalIncome)}</p>
           <p className="text-xs text-slate-500 mt-1">Ingreso Total</p>

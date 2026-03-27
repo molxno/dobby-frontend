@@ -36,20 +36,20 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
 
   return (
     <aside className={cn(
-      'flex flex-col h-full bg-surface-950 border-r border-surface-800',
+      'flex flex-col h-full bg-surface-950',
       mobile ? 'w-72' : 'w-64'
     )}>
       {/* Logo */}
-      <div className="flex items-center gap-3 px-5 py-5 border-b border-surface-800">
-        <div className="w-9 h-9 bg-brand-600 rounded-xl flex items-center justify-center shadow-lg shadow-brand-600/20">
-          <Sparkles className="text-white" size={18} />
+      <div className="flex items-center gap-3 px-6 py-6">
+        <div className="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center shadow-lg shadow-brand-600/20">
+          <Sparkles className="text-white" size={20} />
         </div>
         <div>
-          <h1 className="text-sm font-bold text-slate-100 font-heading">Dobby</h1>
+          <h1 className="text-base font-bold text-slate-100 font-heading">Dobby</h1>
           <p className="text-xs text-slate-500">{profile.name || 'Free Your Finances'}</p>
         </div>
         {mobile && onClose && (
-          <button onClick={onClose} className="ml-auto text-slate-500 hover:text-slate-300 p-1">
+          <button onClick={onClose} className="ml-auto text-slate-500 hover:text-slate-300 p-1.5">
             <X size={18} />
           </button>
         )}
@@ -57,9 +57,9 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
 
       {/* Health Score */}
       {financialState && (
-        <div className="px-4 py-3 border-b border-surface-800">
-          <div className="bg-surface-900 rounded-xl p-3">
-            <div className="flex items-center justify-between mb-2">
+        <div className="px-5 pb-4">
+          <div className="bg-surface-900 rounded-xl p-4">
+            <div className="flex items-center justify-between mb-2.5">
               <span className="text-xs text-slate-400">Salud Financiera</span>
               <span className="text-sm font-bold font-heading" style={{ color: getScoreColor(healthScore) }}>
                 {healthScore}/100
@@ -77,8 +77,8 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
 
       {/* Current Phase */}
       {financialState?.currentPhase && (
-        <div className="px-4 py-3 border-b border-surface-800">
-          <p className="text-xs text-slate-500 mb-1">Fase actual</p>
+        <div className="px-6 pb-4">
+          <p className="text-xs text-slate-500 mb-1.5">Fase actual</p>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: financialState.currentPhase.color }} />
             <span className="text-xs font-medium text-slate-300 leading-tight">{financialState.currentPhase.name}</span>
@@ -87,8 +87,8 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
       )}
 
       {/* Nav */}
-      <nav className="flex-1 px-3 py-3 overflow-y-auto">
-        <ul className="space-y-0.5">
+      <nav className="flex-1 px-4 py-2 overflow-y-auto">
+        <ul className="space-y-1">
           {navItems.map(item => (
             <li key={item.path}>
               <NavLink
@@ -113,7 +113,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
       </nav>
 
       {/* Settings */}
-      <div className="px-3 py-3 border-t border-surface-800">
+      <div className="px-4 py-5">
         <NavLink
           to="/configuracion"
           onClick={mobile ? onClose : undefined}

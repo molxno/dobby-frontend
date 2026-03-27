@@ -76,7 +76,7 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
         <h2 className="text-xl font-bold font-heading text-slate-100 mb-1">¿Qué quieres lograr?</h2>
         <p className="text-sm text-slate-500">Define tus metas financieras — la app las prioriza automáticamente</p>
@@ -152,7 +152,7 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">Nombre de la meta</label>
               <input
@@ -160,7 +160,7 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
                 value={form.name}
                 onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                 placeholder="Ej: Apartamento, Viaje a Europa"
-                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               />
             </div>
             <div>
@@ -168,14 +168,14 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
               <select
                 value={form.category}
                 onChange={e => setForm(f => ({ ...f, category: e.target.value as Goal['category'] }))}
-                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               >
                 {GOAL_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
               </select>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <CurrencyInput
               label="Costo total"
               value={form.targetAmount ?? 0}
@@ -210,14 +210,14 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
         </button>
       )}
 
-      <div className="flex gap-3 pt-4 border-t border-surface-800">
+      <div className="flex gap-3 pt-6 border-t border-surface-800/40">
         <button onClick={onBack} className="px-5 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-xl py-3 transition-colors flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" />
           Atrás
         </button>
         <button
           onClick={onFinish}
-          className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-3 rounded-xl transition-colors shadow-lg shadow-green-600/20 flex items-center justify-center gap-2"
+          className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-3.5 rounded-xl transition-colors shadow-lg shadow-green-600/20 flex items-center justify-center gap-2"
         >
           <Rocket className="w-4 h-4" />
           Generar mi plan financiero

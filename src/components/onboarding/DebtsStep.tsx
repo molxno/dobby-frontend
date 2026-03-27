@@ -59,7 +59,7 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
   const totalMonthly = debts.reduce((s, d) => s + d.monthlyPayment, 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
         <h2 className="text-xl font-bold font-heading text-slate-100 mb-1">¿Tienes deudas?</h2>
         <p className="text-sm text-slate-500">Préstamos, tarjetas de crédito, compras financiadas</p>
@@ -107,7 +107,7 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
           {showForm ? (
             <div className="bg-surface-900 border border-surface-700 rounded-2xl p-4 space-y-4">
               <h3 className="text-sm font-semibold font-heading text-slate-200">Nueva deuda</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1.5">Nombre</label>
                   <input
@@ -115,7 +115,7 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
                     value={form.name}
                     onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                     placeholder="Ej: TC Bancolombia, Crédito Libre"
-                    className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                    className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
                   />
                 </div>
                 <div>
@@ -123,14 +123,14 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
                   <select
                     value={form.type}
                     onChange={e => setForm(f => ({ ...f, type: e.target.value as Debt['type'] }))}
-                    className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                    className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
                   >
                     {Object.entries(DEBT_TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                   </select>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <CurrencyInput
                   label="Saldo actual"
                   value={form.currentBalance ?? 0}
@@ -147,7 +147,7 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1.5">Tasa de interés (%/mes)</label>
                   <input
@@ -156,7 +156,7 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
                     value={form.interestRate === 0 ? '' : form.interestRate}
                     onChange={e => setForm(f => ({ ...f, interestRate: parseFloat(e.target.value) || 0 }))}
                     placeholder="Ej: 2.2"
-                    className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                    className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
                   />
                   <p className="text-xs text-slate-600 mt-1">Tasa mensual. Ej: 2.2 = 2.2%/mes</p>
                 </div>
@@ -168,13 +168,13 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
                     max={31}
                     value={form.dueDay}
                     onChange={e => setForm(f => ({ ...f, dueDay: parseInt(e.target.value) }))}
-                    className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                    className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
                   />
                 </div>
               </div>
 
               {form.type === 'credit_card' && (
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-4">
                   <CurrencyInput
                     label="Cupo total TC"
                     value={form.creditLimit ?? 0}
@@ -211,14 +211,14 @@ export function DebtsStep({ debts, setDebts, currency, onBack, onNext }: DebtsSt
         </>
       )}
 
-      <div className="flex gap-3 pt-4 border-t border-surface-800">
+      <div className="flex gap-3 pt-6 border-t border-surface-800/40">
         <button onClick={onBack} className="px-5 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-xl py-3 transition-colors flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" />
           Atrás
         </button>
         <button
           onClick={onNext}
-          className="flex-1 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-3 rounded-xl transition-colors shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2"
+          className="flex-1 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-3.5 rounded-xl transition-colors shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2"
         >
           Continuar
           <ArrowRight className="w-4 h-4" />

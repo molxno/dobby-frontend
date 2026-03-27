@@ -73,7 +73,7 @@ export function Settings() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Account */}
       <Card title="Cuenta" subtitle="Tu sesión activa">
         <div className="flex items-center justify-between mt-3">
@@ -109,7 +109,7 @@ export function Settings() {
               type="text"
               value={localProfile.name}
               onChange={e => setLocalProfile(p => ({ ...p, name: e.target.value }))}
-              className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+              className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             />
           </div>
           <div>
@@ -118,7 +118,7 @@ export function Settings() {
               type="text"
               value={localProfile.country}
               onChange={e => setLocalProfile(p => ({ ...p, country: e.target.value }))}
-              className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+              className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             />
           </div>
           <div>
@@ -126,7 +126,7 @@ export function Settings() {
             <select
               value={localProfile.currency}
               onChange={e => setLocalProfile(p => ({ ...p, currency: e.target.value }))}
-              className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+              className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             >
               <option value="COP">COP - Peso colombiano</option>
               <option value="MXN">MXN - Peso mexicano</option>
@@ -142,7 +142,7 @@ export function Settings() {
             <select
               value={localProfile.locale}
               onChange={e => setLocalProfile(p => ({ ...p, locale: e.target.value }))}
-              className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+              className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             >
               <option value="es-CO">es-CO (Colombia)</option>
               <option value="es-MX">es-MX (México)</option>
@@ -302,7 +302,7 @@ export function Settings() {
               value={deleteConfirm}
               onChange={e => setDeleteConfirm(e.target.value)}
               placeholder="ELIMINAR"
-              className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-500 placeholder-slate-600 transition-all"
+              className="w-full bg-surface-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-red-500/50 transition-all"
             />
           </div>
 

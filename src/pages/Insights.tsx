@@ -36,7 +36,7 @@ export function Insights() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Tutor intro */}
       <Card className="border-brand-500/30 bg-brand-500/5">
         <div className="flex items-start gap-4">
@@ -53,7 +53,7 @@ export function Insights() {
       </Card>
 
       {/* Health score breakdown */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card title="Financial Health Score">
           <div className="flex items-center gap-6 mt-3">
             <RingChart
@@ -123,7 +123,7 @@ export function Insights() {
       </div>
 
       {/* Strengths & Weaknesses */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card title="Strengths" className="border-green-500/20">
           {diagnosis.strengths.length === 0 ? (
             <p className="text-sm text-slate-500 mt-2">Working on identifying strengths...</p>

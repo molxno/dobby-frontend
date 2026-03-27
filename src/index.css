@@ -46,13 +46,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Inputs — borderless by default, subtle ring on focus */
+input, select, textarea {
+  outline: none;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background-color: var(--color-surface-900);
+  background-color: transparent;
 }
 ::-webkit-scrollbar-thumb {
   background-color: var(--color-surface-700);

@@ -11,25 +11,25 @@ interface AlertProps {
   onDismiss?: () => void;
 }
 
-const CONFIG: Record<AlertType, { bg: string; border: string; title: string; icon: LucideIcon }> = {
-  danger: { bg: 'bg-red-950/50', border: 'border-red-500/30', title: 'text-red-400', icon: AlertCircle },
-  warning: { bg: 'bg-amber-950/50', border: 'border-amber-500/30', title: 'text-amber-400', icon: AlertTriangle },
-  info: { bg: 'bg-brand-950/50', border: 'border-brand-500/30', title: 'text-brand-400', icon: Info },
-  success: { bg: 'bg-emerald-950/50', border: 'border-emerald-500/30', title: 'text-emerald-400', icon: CheckCircle2 },
+const CONFIG: Record<AlertType, { bg: string; title: string; icon: LucideIcon }> = {
+  danger: { bg: 'bg-red-950/40', title: 'text-red-400', icon: AlertCircle },
+  warning: { bg: 'bg-amber-950/40', title: 'text-amber-400', icon: AlertTriangle },
+  info: { bg: 'bg-brand-950/40', title: 'text-brand-400', icon: Info },
+  success: { bg: 'bg-emerald-950/40', title: 'text-emerald-400', icon: CheckCircle2 },
 };
 
 export function Alert({ type, title, message, action, onDismiss }: AlertProps) {
   const cfg = CONFIG[type];
   const Icon = cfg.icon;
   return (
-    <div className={cn(cfg.bg, cfg.border, 'border rounded-xl p-3')}>
+    <div className={cn(cfg.bg, 'rounded-xl p-4')}>
       <div className="flex items-start justify-between gap-3">
-        <div className="flex items-start gap-2.5 flex-1">
+        <div className="flex items-start gap-3 flex-1">
           <Icon className={cn(cfg.title, 'mt-0.5 shrink-0')} size={16} />
           <div className="flex-1 min-w-0">
             <p className={cn('text-sm font-semibold', cfg.title)}>{title}</p>
-            <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">{message}</p>
-            {action && <p className="text-xs text-slate-500 mt-1 italic">{action}</p>}
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">{message}</p>
+            {action && <p className="text-xs text-slate-500 mt-1.5 italic">{action}</p>}
           </div>
         </div>
         {onDismiss && (

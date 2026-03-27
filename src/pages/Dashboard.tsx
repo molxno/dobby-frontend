@@ -82,9 +82,9 @@ export function Dashboard() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Quick stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {quickStats.map(stat => {
           const IconComp = stat.icon;
           return (
@@ -100,7 +100,7 @@ export function Dashboard() {
       </div>
 
       {/* Health score + indicators */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Health score */}
         <Card className="lg:col-span-1 text-center">
           <div className="flex flex-col items-center gap-3 py-2">
@@ -168,7 +168,7 @@ export function Dashboard() {
 
         {/* Phase roadmap */}
         <Card className="lg:col-span-2" title="Hoja de Ruta Financiera" subtitle="Tu camino paso a paso a la libertad financiera">
-          <div className="space-y-2 mt-1">
+          <div className="space-y-3 mt-2">
             {fs.phases.map((phase, i) => (
               <div
                 key={phase.id}
@@ -209,7 +209,7 @@ export function Dashboard() {
       </div>
 
       {/* Next step + Alerts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Próximo paso */}
         {fs.diagnosis.recommendations.length > 0 && (
           <Card className="border-brand-500/30 bg-brand-950/20">
@@ -240,7 +240,7 @@ export function Dashboard() {
 
         {/* Alerts */}
         <Card title="Alertas Activas">
-          <div className="space-y-2 mt-1">
+          <div className="space-y-3 mt-2">
             {fs.diagnosis.alerts.slice(0, 3).map((alert, i) => (
               <Alert key={i} type={alert.type} title={alert.title} message={alert.message} action={alert.action} />
             ))}
@@ -252,7 +252,7 @@ export function Dashboard() {
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Trend chart */}
         <Card title="Tendencia Mensual" subtitle="Ingresos vs Gastos">
           <div className="h-48 mt-3">
