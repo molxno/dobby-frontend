@@ -1,9 +1,11 @@
 import { useState, useMemo } from 'react';
 import { useFinancialStore, scopedBiweeklyKey } from '../store/useFinancialStore';
 import { formatCurrency } from '../utils/formatters';
-import { CATEGORY_ICONS } from '../utils/constants';
+import { CategoryIcon } from '../components/shared/CategoryIcon';
 import { Card } from '../components/shared/Card';
 import { ProgressBar } from '../components/shared/ProgressBar';
+import { cn } from '../lib/utils';
+import { Home, CreditCard, PiggyBank, Shield, PartyPopper, Pin, Check, type LucideIcon } from 'lucide-react';
 import type { BiweeklyPayment, ExpenseCategory } from '../store/types';
 
 const TYPE_COLORS: Record<BiweeklyPayment['type'], string> = {
@@ -13,11 +15,11 @@ const TYPE_COLORS: Record<BiweeklyPayment['type'], string> = {
   buffer: '#6b7280',
 };
 
-const TYPE_ICONS: Record<BiweeklyPayment['type'], string> = {
-  expense: '🏠',
-  debt: '💳',
-  savings: '💰',
-  buffer: '🛡️',
+const TYPE_ICONS: Record<BiweeklyPayment['type'], LucideIcon> = {
+  expense: Home,
+  debt: CreditCard,
+  savings: PiggyBank,
+  buffer: Shield,
 };
 
 export function BiweeklyPlan() {
@@ -45,34 +47,35 @@ export function BiweeklyPlan() {
   const progressPct = period.payments.length > 0 ? (completedCount / period.payments.length) * 100 : 0;
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-4">
       {/* Monthly summary */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-4">
         <Card className="text-center">
           <p className="text-base font-bold text-green-400">{fmt(biweeklyPlan.totalMonthlyIncome)}</p>
-          <p className="text-xs text-gray-500 mt-1">Ingreso Mensual</p>
+          <p className="text-xs text-slate-500 mt-1">Monthly Income</p>
         </Card>
         <Card className="text-center">
           <p className="text-base font-bold text-blue-400">{fmt(biweeklyPlan.totalMonthlyExpenses)}</p>
-          <p className="text-xs text-gray-500 mt-1">Gastos Totales</p>
+          <p className="text-xs text-slate-500 mt-1">Total Expenses</p>
         </Card>
         <Card className="text-center">
-          <p className="text-base font-bold text-purple-400">{fmt(biweeklyPlan.monthlySavings)}</p>
-          <p className="text-xs text-gray-500 mt-1">Ahorro Mensual</p>
+          <p className="text-base font-bold text-brand-500">{fmt(biweeklyPlan.monthlySavings)}</p>
+          <p className="text-xs text-slate-500 mt-1">Monthly Savings</p>
         </Card>
       </div>
 
       {/* Period selector */}
-      <div className="flex rounded-xl overflow-hidden border border-gray-800">
+      <div className="flex rounded-lg overflow-hidden bg-surface-900">
         {biweeklyPlan.periods.map(p => (
           <button
             key={p.period}
             onClick={() => setActivePeriod(p.period)}
-            className={`flex-1 py-3 text-sm font-medium transition-colors ${
+            className={cn(
+              'flex-1 py-3 text-sm font-medium transition-colors',
               activePeriod === p.period
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-900 text-gray-400 hover:bg-gray-800'
-            }`}
+                ? 'bg-brand-600 text-white'
+                : 'bg-surface-900 text-slate-400 hover:bg-surface-800'
+            )}
           >
             {p.label}
           </button>
@@ -80,48 +83,46 @@ export function BiweeklyPlan() {
       </div>
 
       {/* Period details */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Period summary */}
         <Card title={period.label} className="lg:col-span-1">
           <div className="space-y-3 mt-2">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-400">Ingreso quincena</span>
+              <span className="text-slate-400">Period income</span>
               <span className="text-green-400 font-medium">{fmt(period.income)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-400">Pagos</span>
+              <span className="text-slate-400">Payments</span>
               <span className="text-red-400 font-medium">{fmt(period.totalPayments)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-400">Ahorro</span>
-              <span className="text-purple-400 font-medium">{fmt(period.savingsAllocation)}</span>
+              <span className="text-slate-400">Savings</span>
+              <span className="text-brand-500 font-medium">{fmt(period.savingsAllocation)}</span>
             </div>
-            <div className="border-t border-gray-800 pt-2 flex justify-between text-sm">
-              <span className="text-gray-300 font-medium">Remanente</span>
-              <span className={`font-bold ${period.remaining >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+            <div className="border-t border-surface-700 pt-2 flex justify-between text-sm">
+              <span className="text-slate-300 font-medium">Remaining</span>
+              <span className={cn('font-bold', period.remaining >= 0 ? 'text-emerald-400' : 'text-red-400')}>
                 {fmt(period.remaining)}
               </span>
             </div>
           </div>
 
           {/* Progress */}
-          <div className="mt-4 pt-3 border-t border-gray-800">
+          <div className="mt-4 pt-3 border-t border-surface-700">
             <div className="flex justify-between text-xs mb-2">
-              <span className="text-gray-400">Tareas completadas</span>
-              <span className="text-gray-300">{completedCount}/{period.payments.length}</span>
+              <span className="text-slate-400">Tasks completed</span>
+              <span className="text-slate-300">{completedCount}/{period.payments.length}</span>
             </div>
             <ProgressBar value={progressPct} color="#22c55e" height="h-2" />
           </div>
         </Card>
 
         {/* Checklist */}
-        <Card title="Checklist de la Quincena" className="lg:col-span-2">
-          <div className="space-y-2 mt-2">
+        <Card title="Biweekly Checklist" className="lg:col-span-2">
+          <div className="space-y-2 mt-3">
             {period.payments.map((payment) => {
               const isChecked = checkedKeys.has(scopedBiweeklyKey(payment.key));
-              const icon = payment.category
-                ? CATEGORY_ICONS[payment.category as ExpenseCategory]
-                : TYPE_ICONS[payment.type];
+              const TypeIcon = TYPE_ICONS[payment.type];
 
               return (
                 <div
@@ -137,24 +138,32 @@ export function BiweeklyPlan() {
                       toggleBiweeklyCheck(payment);
                     }
                   }}
-                  className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all ${
+                  className={cn(
+                    'flex items-center gap-4 px-4 py-3.5 rounded-lg cursor-pointer transition-all',
                     isChecked
-                      ? 'bg-green-950/30 border border-green-700/40'
-                      : 'bg-gray-900 border border-gray-800 hover:border-gray-700'
-                  }`}
+                      ? 'bg-emerald-950/20'
+                      : 'bg-surface-800/50 hover:bg-surface-800'
+                  )}
                 >
-                  <div className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-all ${
-                    isChecked ? 'bg-green-600 border-green-600' : 'border-gray-600'
-                  }`}>
-                    {isChecked && <span className="text-white text-xs">✓</span>}
+                  <div className={cn(
+                    'w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-all',
+                    isChecked ? 'bg-green-600 border-green-600' : 'border-slate-600'
+                  )}>
+                    {isChecked && <Check className="text-white" size={12} />}
                   </div>
-                  <span className="text-base">{icon}</span>
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-surface-800">
+                    {payment.category ? (
+                      <CategoryIcon category={payment.category as ExpenseCategory} className="text-slate-300" size={16} />
+                    ) : (
+                      <TypeIcon className="text-slate-300" size={16} />
+                    )}
+                  </div>
                   <div className="flex-1 min-w-0">
-                    <p className={`text-sm ${isChecked ? 'line-through text-gray-500' : 'text-gray-200'}`}>
+                    <p className={cn('text-sm', isChecked ? 'line-through text-slate-500' : 'text-slate-200')}>
                       {payment.name}
                     </p>
                     {payment.dueDay && (
-                      <p className="text-xs text-gray-600">Vence día {payment.dueDay}</p>
+                      <p className="text-xs text-slate-500">Due day {payment.dueDay}</p>
                     )}
                   </div>
                   <span
@@ -169,9 +178,12 @@ export function BiweeklyPlan() {
           </div>
 
           {completedCount === period.payments.length && period.payments.length > 0 && (
-            <div className="mt-4 p-3 bg-green-950/30 border border-green-700/40 rounded-xl text-center">
-              <p className="text-sm font-semibold text-green-400">🎉 ¡Quincena completada!</p>
-              <p className="text-xs text-gray-500 mt-1">Todas las tareas de esta quincena están listas</p>
+            <div className="mt-4 p-3 bg-green-950/30 border border-green-700/40 rounded-lg text-center flex items-center justify-center gap-2">
+              <PartyPopper className="text-green-400" size={16} />
+              <div>
+                <p className="text-sm font-semibold text-green-400">Biweekly period completed!</p>
+                <p className="text-xs text-slate-500 mt-1">All tasks for this period are done</p>
+              </div>
             </div>
           )}
         </Card>
@@ -179,13 +191,15 @@ export function BiweeklyPlan() {
 
       {/* Phase context */}
       {fs.currentPhase && (
-        <Card className="border-blue-500/20 bg-blue-950/10">
+        <Card className="border-brand-500/20 bg-brand-500/5">
           <div className="flex items-start gap-3">
-            <span className="text-2xl">📌</span>
+            <div className="w-10 h-10 rounded-lg bg-brand-600/20 flex items-center justify-center shrink-0">
+              <Pin className="text-brand-400" size={18} />
+            </div>
             <div>
-              <p className="text-sm font-semibold text-blue-400">Fase actual: {fs.currentPhase.name}</p>
-              <p className="text-xs text-gray-500 mt-1">
-                En esta fase, el objetivo quincenal es: {fs.currentPhase.objectives[0]}
+              <p className="text-sm font-semibold text-brand-400">Current phase: {fs.currentPhase.name}</p>
+              <p className="text-xs text-slate-500 mt-1">
+                In this phase, the biweekly goal is: {fs.currentPhase.objectives[0]}
               </p>
             </div>
           </div>

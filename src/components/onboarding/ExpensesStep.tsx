@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import type { Expense, ExpenseCategory } from '../../store/types';
 import { CurrencyInput } from '../shared/CurrencyInput';
-import { CATEGORY_LABELS, CATEGORY_ICONS } from '../../utils/constants';
+import { CategoryIcon } from '../shared/CategoryIcon';
+import { CATEGORY_LABELS } from '../../utils/constants';
 import { nanoid } from '../shared/nanoid';
+import { Plus, X, Check, ArrowLeft, ArrowRight } from 'lucide-react';
 
 const SUGGESTED_EXPENSES: Partial<Expense>[] = [
   { name: 'Arriendo/Hipoteca', category: 'housing', isFixed: true, isEssential: true },
@@ -58,15 +60,15 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
   const categories = Object.entries(CATEGORY_LABELS).map(([k, v]) => ({ value: k, label: v }));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h2 className="text-xl font-bold text-gray-100 mb-1">¿Cuáles son tus gastos fijos?</h2>
-        <p className="text-sm text-gray-500">Agrega todos tus gastos mensuales recurrentes</p>
+        <h2 className="text-xl font-bold font-heading text-slate-100 mb-1">¿Cuáles son tus gastos fijos?</h2>
+        <p className="text-sm text-slate-500">Agrega todos tus gastos mensuales recurrentes</p>
       </div>
 
       {/* Suggested */}
       <div>
-        <p className="text-xs text-gray-500 mb-2 uppercase tracking-wider">Gastos comunes — click para agregar</p>
+        <p className="text-xs text-slate-500 mb-2 uppercase tracking-wider">Gastos comunes — click para agregar</p>
         <div className="flex flex-wrap gap-2">
           {SUGGESTED_EXPENSES.map(s => {
             const alreadyAdded = expenses.some(e => e.name === s.name);
@@ -75,14 +77,15 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
                 key={s.name}
                 onClick={() => addSuggested(s)}
                 disabled={alreadyAdded}
-                className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
+                className={`text-xs px-3 py-1.5 rounded-lg border transition-colors flex items-center gap-1.5 ${
                   alreadyAdded
                     ? 'bg-green-900/30 border-green-700/50 text-green-400 cursor-default'
-                    : 'bg-gray-900 border-gray-700 text-gray-400 hover:border-blue-500 hover:text-blue-400'
+                    : 'bg-surface-900 border-surface-700 text-slate-400 hover:border-brand-500 hover:text-brand-400'
                 }`}
               >
-                {CATEGORY_ICONS[s.category as ExpenseCategory]} {s.name}
-                {alreadyAdded && ' ✓'}
+                <CategoryIcon category={s.category as ExpenseCategory} size={14} />
+                {s.name}
+                {alreadyAdded && <Check className="w-3 h-3 ml-0.5" />}
               </button>
             );
           })}
@@ -93,11 +96,11 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
       {expenses.length > 0 && (
         <div className="space-y-2">
           {expenses.map(exp => (
-            <div key={exp.id} className="flex items-center gap-3 bg-gray-900 border border-gray-800 rounded-xl p-3">
-              <span className="text-base">{CATEGORY_ICONS[exp.category]}</span>
+            <div key={exp.id} className="flex items-center gap-3 bg-surface-800/60 rounded-lg p-3">
+              <CategoryIcon category={exp.category as ExpenseCategory} size={16} />
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-200 truncate">{exp.name}</p>
-                <p className="text-xs text-gray-500">{exp.isEssential ? 'Esencial' : 'No esencial'} · {exp.isFixed ? 'Fijo' : 'Variable'}</p>
+                <p className="text-sm font-medium text-slate-200 truncate">{exp.name}</p>
+                <p className="text-xs text-slate-500">{exp.isEssential ? 'Esencial' : 'No esencial'} · {exp.isFixed ? 'Fijo' : 'Variable'}</p>
               </div>
               <div className="w-32 shrink-0">
                 <CurrencyInput
@@ -107,12 +110,14 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
                   placeholder="Monto"
                 />
               </div>
-              <button onClick={() => removeExpense(exp.id)} className="text-red-400 hover:text-red-300 text-xs p-1">✕</button>
+              <button onClick={() => removeExpense(exp.id)} className="text-red-400 hover:text-red-300 p-1">
+                <X className="w-4 h-4" />
+              </button>
             </div>
           ))}
-          <div className="bg-gray-900/50 rounded-xl px-4 py-2 flex justify-between">
-            <span className="text-sm text-gray-400">Total mensual</span>
-            <span className="text-sm font-bold text-gray-100">
+          <div className="bg-surface-900/50 rounded-lg px-4 py-2 flex justify-between">
+            <span className="text-sm text-slate-400">Total mensual</span>
+            <span className="text-sm font-bold text-slate-100">
               {expenses.reduce((s, e) => s + e.amount, 0).toLocaleString('es-CO')} {currency}
             </span>
           </div>
@@ -121,17 +126,17 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
 
       {/* Add custom expense */}
       {showForm ? (
-        <div className="bg-gray-900 border border-gray-700 rounded-xl p-4 space-y-3">
-          <h3 className="text-sm font-semibold text-gray-200">Gasto personalizado</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="bg-surface-800/40 rounded-lg p-4 space-y-3">
+          <h3 className="text-sm font-semibold font-heading text-slate-200">Gasto personalizado</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Nombre</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">Nombre</label>
               <input
                 type="text"
                 value={form.name}
                 onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                 placeholder="Ej: Gym, Netflix..."
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-gray-100 placeholder-gray-600 focus:outline-none focus:border-blue-500"
+                className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               />
             </div>
             <CurrencyInput
@@ -141,23 +146,23 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
               currency={currency}
             />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Categoría</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">Categoría</label>
               <select
                 value={form.category}
                 onChange={e => setForm(f => ({ ...f, category: e.target.value as ExpenseCategory }))}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-blue-500"
+                className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               >
                 {categories.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Método de pago</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">Método de pago</label>
               <select
                 value={form.paymentMethod}
                 onChange={e => setForm(f => ({ ...f, paymentMethod: e.target.value as Expense['paymentMethod'] }))}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-blue-500"
+                className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               >
                 <option value="debit">Débito</option>
                 <option value="cash">Efectivo</option>
@@ -168,20 +173,20 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
           <div className="flex gap-4">
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={form.isFixed} onChange={e => setForm(f => ({ ...f, isFixed: e.target.checked }))}
-                className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-blue-600" />
-              <span className="text-sm text-gray-300">Fijo</span>
+                className="w-4 h-4 rounded border-surface-600 bg-surface-800 text-brand-600 accent-brand-600" />
+              <span className="text-sm text-slate-300">Fijo</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={form.isEssential} onChange={e => setForm(f => ({ ...f, isEssential: e.target.checked }))}
-                className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-blue-600" />
-              <span className="text-sm text-gray-300">Esencial</span>
+                className="w-4 h-4 rounded border-surface-600 bg-surface-800 text-brand-600 accent-brand-600" />
+              <span className="text-sm text-slate-300">Esencial</span>
             </label>
           </div>
           <div className="flex gap-2">
-            <button onClick={addExpense} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 rounded-lg transition-colors">
+            <button onClick={addExpense} className="flex-1 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition-colors shadow-lg shadow-brand-600/20">
               Agregar
             </button>
-            <button onClick={() => setShowForm(false)} className="px-4 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm rounded-lg transition-colors">
+            <button onClick={() => setShowForm(false)} className="px-4 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-lg transition-colors">
               Cancelar
             </button>
           </div>
@@ -189,22 +194,25 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
       ) : (
         <button
           onClick={() => setShowForm(true)}
-          className="w-full border-2 border-dashed border-gray-700 hover:border-blue-500 rounded-xl py-3 text-sm text-gray-500 hover:text-blue-400 transition-colors"
+          className="w-full border-2 border-dashed border-surface-700 hover:border-brand-500 rounded-lg py-3 text-sm text-slate-500 hover:text-brand-400 transition-colors flex items-center justify-center gap-2"
         >
-          + Agregar gasto personalizado
+          <Plus className="w-4 h-4" />
+          Agregar gasto personalizado
         </button>
       )}
 
-      <div className="flex gap-3 pt-4 border-t border-gray-800">
-        <button onClick={onBack} className="px-5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm rounded-xl py-3 transition-colors">
-          ← Atrás
+      <div className="flex gap-3 pt-6 border-t border-surface-800/40">
+        <button onClick={onBack} className="px-5 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-lg py-3 transition-colors flex items-center gap-2">
+          <ArrowLeft className="w-4 h-4" />
+          Atrás
         </button>
         <button
           onClick={onNext}
           disabled={expenses.length === 0}
-          className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-800 disabled:text-gray-600 text-white text-sm font-medium py-3 rounded-xl transition-colors"
+          className="flex-1 bg-brand-600 hover:bg-brand-700 disabled:bg-surface-800 disabled:text-slate-600 disabled:opacity-50 disabled:shadow-none text-white text-sm font-medium py-3.5 rounded-lg transition-colors shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2"
         >
-          Continuar →
+          Continuar
+          <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </div>

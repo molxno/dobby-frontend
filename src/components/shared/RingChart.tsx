@@ -13,8 +13,8 @@ export function RingChart({
   value,
   size = 120,
   strokeWidth = 10,
-  color = '#3b82f6',
-  trackColor = '#1f2937',
+  color = '#6366f1',
+  trackColor = '#1e293b',
   label,
   sublabel,
   centerText,
@@ -51,12 +51,12 @@ export function RingChart({
         </svg>
         {centerText && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-lg font-bold text-gray-100">{centerText}</span>
+            <span className="text-lg font-bold text-slate-100 font-heading">{centerText}</span>
           </div>
         )}
       </div>
-      {label && <p className="text-xs font-medium text-gray-300 text-center">{label}</p>}
-      {sublabel && <p className="text-xs text-gray-500 text-center">{sublabel}</p>}
+      {label && <p className="text-xs font-medium text-slate-300 text-center">{label}</p>}
+      {sublabel && <p className="text-xs text-slate-500 text-center">{sublabel}</p>}
     </div>
   );
 }
