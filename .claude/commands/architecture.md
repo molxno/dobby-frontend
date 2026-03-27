@@ -1,58 +1,58 @@
-Actúa como un agente de arquitectura de software especializado en aplicaciones React a escala.
+Act as a software architecture agent specialized in React applications at scale.
 
-Tarea: $ARGUMENTS
+Task: $ARGUMENTS
 
-## Arquitectura actual del proyecto
+## Current project architecture
 
-### Principios establecidos
-1. **Single source of truth**: Zustand store es la única fuente de estado
-2. **Cálculos centralizados**: Los 7 engines procesan todo, las páginas solo leen
-3. **Funciones puras**: Los engines no tienen side effects ni acceden al store directamente
-4. **Recálculo automático**: Toda mutación dispara `recalculate()` que ejecuta los 7 engines
-5. **Persistencia selectiva**: Solo datos del usuario se persisten, `financialState` se recalcula
+### Established principles
+1. **Single source of truth**: Zustand store is the only source of state
+2. **Centralized calculations**: The 7 engines process everything, pages only read
+3. **Pure functions**: Engines have no side effects and do not access the store directly
+4. **Automatic recalculation**: Every mutation triggers `recalculate()` which executes all 7 engines
+5. **Selective persistence**: Only user data is persisted, `financialState` is recalculated
 
-### Flujo de datos (unidireccional)
+### Data flow (unidirectional)
 ```
 UI Input → Store Action → Store State Update → recalculate() → Engines → financialState → UI Render
 ```
 
-### Dependencias entre engines
-Analiza antes de modificar — algunos engines dependen de los outputs de otros:
-- `phaseGenerator` puede depender de `financialDiagnosis`
-- `budgetOptimizer` depende de la fase actual de `phaseGenerator`
-- `biweeklyPlanner` depende de `budgetOptimizer`
-- `goalPlanner` puede depender de la fase y el presupuesto disponible
+### Dependencies between engines
+Analyze before modifying — some engines depend on the outputs of others:
+- `phaseGenerator` may depend on `financialDiagnosis`
+- `budgetOptimizer` depends on the current phase from `phaseGenerator`
+- `biweeklyPlanner` depends on `budgetOptimizer`
+- `goalPlanner` may depend on the phase and available budget
 
-## Checklist para cambios arquitecturales
+## Checklist for architectural changes
 
-### Agregar nuevo engine
-1. Crear función pura en `src/engines/`
-2. Definir tipos de input/output en `src/store/types.ts`
-3. Agregar el output al `FinancialState` en types.ts
-4. Llamar al engine desde `recalculate()` en el store
-5. Verificar orden de ejecución si depende de otros engines
+### Adding a new engine
+1. Create a pure function in `src/engines/`
+2. Define input/output types in `src/store/types.ts`
+3. Add the output to `FinancialState` in types.ts
+4. Call the engine from `recalculate()` in the store
+5. Verify execution order if it depends on other engines
 
-### Agregar nueva página
-1. Crear componente en `src/pages/`
-2. Agregar ruta en `App.tsx`
-3. Agregar link en Sidebar (`src/components/layout/`)
-4. La página lee de `financialState` — NUNCA calcula directo
+### Adding a new page
+1. Create a component in `src/pages/`
+2. Add a route in `App.tsx`
+3. Add a link in Sidebar (`src/components/layout/`)
+4. The page reads from `financialState` — NEVER computes directly
 
-### Agregar nuevo campo de usuario
-1. Agregar tipo en `src/store/types.ts`
-2. Agregar al estado inicial del store
-3. Crear action en el store para mutar el campo
-4. Verificar que `partialize` no lo excluye accidentalmente
-5. Si afecta cálculos, actualizar los engines relevantes
+### Adding a new user field
+1. Add the type in `src/store/types.ts`
+2. Add it to the store's initial state
+3. Create an action in the store to mutate the field
+4. Verify that `partialize` does not accidentally exclude it
+5. If it affects calculations, update the relevant engines
 
-### Modificar store
-1. Verificar compatibilidad con datos existentes en localStorage
-2. Si es breaking change, considerar migración de datos
-3. Verificar que `recalculate()` sigue funcionando correctamente
-4. Verificar que `partialize` y `onRehydrateStorage` están actualizados
+### Modifying the store
+1. Verify compatibility with existing data in localStorage
+2. If it's a breaking change, consider data migration
+3. Verify that `recalculate()` still works correctly
+4. Verify that `partialize` and `onRehydrateStorage` are up to date
 
-## Para revisiones de arquitectura
-- Analiza acoplamiento entre módulos
-- Identifica violaciones de los principios establecidos
-- Sugiere mejoras concretas con impacto medible
-- NO sugieras cambios por el solo hecho de ser "más limpio" — justifica con beneficio real
+## For architecture reviews
+- Analyze coupling between modules
+- Identify violations of the established principles
+- Suggest concrete improvements with measurable impact
+- Do NOT suggest changes just for the sake of being "cleaner" — justify with real benefit

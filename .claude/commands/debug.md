@@ -1,37 +1,37 @@
-Actúa como un agente de debugging experto en React + Zustand + TypeScript.
+Act as an expert debugging agent for React + Zustand + TypeScript.
 
-Diagnostica el problema: $ARGUMENTS
+Diagnose the problem: $ARGUMENTS
 
-## Metodología de debug
+## Debugging methodology
 
-### 1. Recopilar contexto
-- Lee los archivos relevantes al problema reportado
-- Identifica el flujo de datos: Componente → Store → Engine → Store → Componente
-- Verifica el estado del store (qué campos están involucrados)
+### 1. Gather context
+- Read the files relevant to the reported problem
+- Identify the data flow: Component → Store → Engine → Store → Component
+- Verify the store state (which fields are involved)
 
-### 2. Hipótesis y verificación
-- Formula las 3 hipótesis más probables ordenadas por probabilidad
-- Para cada hipótesis, identifica qué verificar
-- Descarta hipótesis sistemáticamente
+### 2. Hypotheses and verification
+- Formulate the 3 most likely hypotheses ordered by probability
+- For each hypothesis, identify what to verify
+- Systematically rule out hypotheses
 
-### 3. Puntos comunes de fallo en este proyecto
-- **Store no recalcula**: ¿Se llama `recalculate()` después de la mutación?
-- **Datos stale en localStorage**: ¿La estructura del store cambió pero localStorage tiene la versión vieja?
-- **Engine recibe undefined**: ¿El onboarding no completó todos los campos requeridos?
-- **Tipo incorrecto**: ¿Se pasa string donde se espera number? (común en inputs de formulario)
-- **Recharts NaN**: ¿El formatter recibe un valor que no es number?
-- **React Router**: ¿La ruta está registrada en App.tsx?
-- **Tailwind v4**: ¿Se usa sintaxis de v3 que no funciona en v4?
+### 3. Common failure points in this project
+- **Store does not recalculate**: Is `recalculate()` called after the mutation?
+- **Stale data in localStorage**: Did the store structure change but localStorage has the old version?
+- **Engine receives undefined**: Did the onboarding not complete all required fields?
+- **Incorrect type**: Is a string passed where a number is expected? (common in form inputs)
+- **Recharts NaN**: Does the formatter receive a value that is not a number?
+- **React Router**: Is the route registered in App.tsx?
+- **Tailwind v4**: Is v3 syntax being used that doesn't work in v4?
 
-### 4. Diagnóstico
-- Identifica la causa raíz exacta (archivo, línea, condición)
-- Explica POR QUÉ ocurre, no solo DÓNDE
-- Propón el fix mínimo necesario
-- Verifica que el fix no rompe otros flujos
+### 4. Diagnosis
+- Identify the exact root cause (file, line, condition)
+- Explain WHY it happens, not just WHERE
+- Propose the minimum necessary fix
+- Verify that the fix does not break other flows
 
-### 5. Verificación
-- Corre `npm run typecheck` para asegurar que el fix compila
-- Si el fix toca un engine, verifica con datos de ejemplo que el output es correcto
-- Lista los archivos modificados y el impacto del cambio
+### 5. Verification
+- Run `npm run typecheck` to ensure the fix compiles
+- If the fix touches an engine, verify with sample data that the output is correct
+- List the modified files and the impact of the change
 
-NO apliques el fix sin explicar primero el diagnóstico al usuario.
+Do NOT apply the fix without first explaining the diagnosis to the user.

@@ -1,40 +1,40 @@
-Actúa como un agente de seguridad especializado en aplicaciones web React/TypeScript.
+Act as a security agent specialized in React/TypeScript web applications.
 
-Realiza una auditoría de seguridad del proyecto Tutor Financiero:
+Perform a security audit of the Financial Tutor project:
 
-## Checklist de seguridad
+## Security checklist
 
-### 1. Datos sensibles en cliente
-- Busca datos financieros que no deberían estar en localStorage sin sanitizar
-- Verifica que `tutor-financiero-store` no almacena datos que deberían estar cifrados
-- Busca tokens, API keys, o secretos hardcodeados en el código fuente
-- Revisa `.env` files y verifica que `.gitignore` los excluye
+### 1. Sensitive data on the client
+- Look for financial data that should not be in localStorage without sanitization
+- Verify that `tutor-financiero-store` does not store data that should be encrypted
+- Look for tokens, API keys, or hardcoded secrets in the source code
+- Review `.env` files and verify that `.gitignore` excludes them
 
-### 2. XSS y sanitización
-- Busca uso de `dangerouslySetInnerHTML` — si existe, verifica que el input está sanitizado
-- Verifica que inputs de usuario (montos, nombres, notas) se sanitizan antes de renderizar
-- Busca `eval()`, `Function()`, `document.write()`, o inyección de scripts
+### 2. XSS and sanitization
+- Look for usage of `dangerouslySetInnerHTML` — if it exists, verify that the input is sanitized
+- Verify that user inputs (amounts, names, notes) are sanitized before rendering
+- Look for `eval()`, `Function()`, `document.write()`, or script injection
 
-### 3. Dependencias
-- Corre `npm audit` para buscar vulnerabilidades conocidas
-- Revisa las dependencias en package.json por versiones con CVEs conocidos
-- Verifica que no hay dependencias innecesarias que amplíen la superficie de ataque
+### 3. Dependencies
+- Run `npm audit` to look for known vulnerabilities
+- Review dependencies in package.json for versions with known CVEs
+- Verify that there are no unnecessary dependencies that widen the attack surface
 
-### 4. Validación de datos financieros
-- Verifica que los engines validan inputs numéricos (no NaN, no Infinity, no negativos donde no aplica)
-- Busca divisiones por cero potenciales en los motores de cálculo
-- Verifica que los montos se manejan con precisión adecuada (no floating point issues en dinero)
+### 4. Financial data validation
+- Verify that engines validate numeric inputs (no NaN, no Infinity, no negatives where not applicable)
+- Look for potential division by zero in the calculation engines
+- Verify that amounts are handled with adequate precision (no floating point issues with money)
 
-### 5. Configuración de build
-- Verifica que source maps no se incluyen en producción
-- Revisa vite.config.ts por configuraciones inseguras
-- Verifica headers de seguridad recomendados para el deploy
+### 5. Build configuration
+- Verify that source maps are not included in production
+- Review vite.config.ts for insecure configurations
+- Verify recommended security headers for deployment
 
-## Formato de reporte
-Para cada hallazgo:
-- 🔴 Crítico / 🟡 Medio / 🟢 Info
-- Archivo y línea
-- Descripción del riesgo
-- Solución recomendada con código
+## Report format
+For each finding:
+- 🔴 Critical / 🟡 Medium / 🟢 Info
+- File and line
+- Risk description
+- Recommended solution with code
 
-Al final, da un score de seguridad 0-100 y las top 3 prioridades a resolver.
+At the end, provide a security score 0-100 and the top 3 priorities to resolve.

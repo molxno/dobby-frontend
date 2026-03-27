@@ -1,52 +1,52 @@
-Actúa como un agente de testing especializado en React + TypeScript.
+Act as a testing agent specialized in React + TypeScript.
 
-Tarea: $ARGUMENTS
+Task: $ARGUMENTS
 
-## Estrategia de testing para este proyecto
+## Testing strategy for this project
 
-### Motores de cálculo (src/engines/) — PRIORIDAD ALTA
-Los engines son funciones puras, ideales para unit tests:
-- `financialDiagnosis.ts` → test con distintos perfiles (sin deudas, muy endeudado, equilibrado)
-- `debtStrategy.ts` → test avalanche vs snowball, edge cases (0 deudas, 1 deuda, muchas)
-- `phaseGenerator.ts` → test que genera fases correctas según situación
-- `budgetOptimizer.ts` → test que presupuesto no excede ingresos
-- `biweeklyPlanner.ts` → test distribución quincenal suma correctamente
-- `goalPlanner.ts` → test secuencial vs paralelo, fechas coherentes
-- `emergencyFundCalculator.ts` → test proyección y niveles
+### Calculation engines (src/engines/) — HIGH PRIORITY
+Engines are pure functions, ideal for unit tests:
+- `financialDiagnosis.ts` → test with different profiles (no debts, heavily indebted, balanced)
+- `debtStrategy.ts` → test avalanche vs snowball, edge cases (0 debts, 1 debt, many)
+- `phaseGenerator.ts` → test that it generates correct phases based on the situation
+- `budgetOptimizer.ts` → test that the budget does not exceed income
+- `biweeklyPlanner.ts` → test that biweekly distribution sums correctly
+- `goalPlanner.ts` → test sequential vs parallel, coherent dates
+- `emergencyFundCalculator.ts` → test projection and levels
 
-### Reglas de negocio — CRÍTICO
-- Deudas >1.5%/mes se priorizan antes de ahorro
-- Fondo de emergencia después de deuda alta, antes de metas
-- Nunca sugerir pagar menos del mínimo
-- Colchón de 3-5% del ingreso siempre presente
+### Business rules — CRITICAL
+- Debts >1.5%/month are prioritized before savings
+- Emergency fund after high debt, before goals
+- Never suggest paying less than the minimum
+- Buffer of 3-5% of income always present
 
-### Store (src/store/) — PRIORIDAD MEDIA
-- Test que recalculate() se dispara en cada mutación
-- Test que persist excluye financialState
-- Test de rehydration desde localStorage
+### Store (src/store/) — MEDIUM PRIORITY
+- Test that recalculate() is triggered on each mutation
+- Test that persist excludes financialState
+- Test rehydration from localStorage
 
-### Componentes — PRIORIDAD BAJA (solo si se pide)
-- Test de rendering sin errores
-- Test de interacciones clave (onboarding flow, agregar deuda, etc.)
+### Components — LOW PRIORITY (only if requested)
+- Test rendering without errors
+- Test key interactions (onboarding flow, adding debt, etc.)
 
-## Setup de testing
-Si no existe configuración de tests:
-1. Sugiere instalar Vitest (compatible con Vite) + @testing-library/react
-2. Configura vitest en vite.config.ts
-3. Crea archivos de test junto a los archivos fuente (colocación)
-4. Naming: `*.test.ts` para engines, `*.test.tsx` para componentes
+## Testing setup
+If no test configuration exists:
+1. Suggest installing Vitest (compatible with Vite) + @testing-library/react
+2. Configure vitest in vite.config.ts
+3. Create test files alongside source files (colocation)
+4. Naming: `*.test.ts` for engines, `*.test.tsx` for components
 
-## Formato de tests
+## Test format
 ```typescript
 import { describe, it, expect } from 'vitest'
 
-describe('NombreDelModulo', () => {
-  describe('nombreDeLaFuncion', () => {
-    it('should [comportamiento esperado] when [condición]', () => {
+describe('ModuleName', () => {
+  describe('functionName', () => {
+    it('should [expected behavior] when [condition]', () => {
       // Arrange → Act → Assert
     })
   })
 })
 ```
 
-Siempre corre los tests después de escribirlos para verificar que pasan.
+Always run the tests after writing them to verify they pass.
