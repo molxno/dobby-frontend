@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Sparkles, CheckCircle2 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 
 export function ResetPassword() {
@@ -35,45 +36,45 @@ export function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-surface-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-600 rounded-2xl mb-4">
-            <span className="text-2xl font-bold text-white">TF</span>
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-600 rounded-2xl mb-4">
+            <Sparkles size={24} className="text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-100">Nueva contraseña</h1>
-          <p className="text-sm text-gray-400 mt-1">Ingresa tu nueva contraseña</p>
+          <h1 className="text-2xl font-bold text-slate-100 font-heading">New Password</h1>
+          <p className="text-sm text-slate-400 mt-1">Enter your new password</p>
         </div>
 
         {/* Card */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <div className="bg-surface-900 border border-surface-800 rounded-2xl p-6">
           {success ? (
             <div className="text-center space-y-4 py-4">
               <div className="inline-flex items-center justify-center w-14 h-14 bg-green-600/20 border border-green-500/40 rounded-2xl">
-                <span className="text-2xl">✅</span>
+                <CheckCircle2 size={24} className="text-green-400" />
               </div>
-              <h2 className="text-lg font-semibold text-gray-100">Contraseña actualizada</h2>
-              <p className="text-sm text-gray-400">
-                Tu contraseña ha sido actualizada correctamente.
+              <h2 className="text-lg font-semibold text-slate-100 font-heading">Password Updated</h2>
+              <p className="text-sm text-slate-400">
+                Your password has been updated successfully.
               </p>
               <button
                 onClick={() => navigate('/', { replace: true })}
-                className="inline-block mt-2 text-sm text-blue-400 hover:text-blue-300 font-medium"
+                className="inline-block mt-2 text-sm text-brand-400 hover:text-brand-300 font-medium"
               >
-                Ir al dashboard
+                Go to dashboard
               </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <div className="bg-red-950/50 border border-red-500/40 rounded-lg p-3">
+                <div className="bg-red-950/50 border border-red-500/40 rounded-xl p-3">
                   <p className="text-sm text-red-400">{error}</p>
                 </div>
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1.5">Nueva contraseña</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1.5">New password</label>
                 <input
                   type="password"
                   value={password}
@@ -81,13 +82,13 @@ export function ResetPassword() {
                   required
                   minLength={6}
                   autoComplete="new-password"
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-blue-500 placeholder-gray-500"
-                  placeholder="Mínimo 6 caracteres"
+                  className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                  placeholder="Minimum 6 characters"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1.5">Confirmar contraseña</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1.5">Confirm password</label>
                 <input
                   type="password"
                   value={confirmPassword}
@@ -95,17 +96,17 @@ export function ResetPassword() {
                   required
                   minLength={6}
                   autoComplete="new-password"
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-blue-500 placeholder-gray-500"
-                  placeholder="Repite la contraseña"
+                  className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
+                  placeholder="Repeat your password"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 rounded-xl transition-colors"
+                className="w-full bg-brand-600 hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 rounded-xl transition-colors shadow-lg shadow-brand-600/20"
               >
-                {loading ? 'Actualizando...' : 'Actualizar contraseña'}
+                {loading ? 'Updating...' : 'Update password'}
               </button>
             </form>
           )}

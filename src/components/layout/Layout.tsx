@@ -10,7 +10,7 @@ export function Layout({ children }: LayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-gray-950 overflow-hidden">
+    <div className="flex h-screen bg-surface-950 overflow-hidden">
       {/* Desktop sidebar */}
       <div className="hidden lg:flex">
         <Sidebar />
@@ -19,7 +19,7 @@ export function Layout({ children }: LayoutProps) {
       {/* Mobile sidebar overlay */}
       {mobileOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
-          <div className="absolute inset-0 bg-black/60" onClick={() => setMobileOpen(false)} />
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
           <div className="relative z-50 h-full">
             <Sidebar mobile onClose={() => setMobileOpen(false)} />
           </div>

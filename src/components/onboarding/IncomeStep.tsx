@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { Income } from '../../store/types';
 import { CurrencyInput } from '../shared/CurrencyInput';
 import { nanoid } from '../shared/nanoid';
+import { Plus, ArrowRight } from 'lucide-react';
 
 interface IncomeStepProps {
   currency: string;
@@ -50,16 +51,16 @@ export function IncomeStep({ currency, setCurrency, incomes, setIncomes, onNext 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-gray-100 mb-1">¿Cuánto ganas?</h2>
-        <p className="text-sm text-gray-500">Configura tu moneda y tus fuentes de ingreso</p>
+        <h2 className="text-xl font-bold font-heading text-slate-100 mb-1">¿Cuánto ganas?</h2>
+        <p className="text-sm text-slate-500">Configura tu moneda y tus fuentes de ingreso</p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-1.5">Moneda</label>
+        <label className="block text-sm font-medium text-slate-300 mb-1.5">Moneda</label>
         <select
           value={currency}
           onChange={e => setCurrency(e.target.value)}
-          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-blue-500"
+          className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
         >
           {CURRENCIES.map(c => (
             <option key={c.code} value={c.code}>{c.label}</option>
@@ -71,10 +72,10 @@ export function IncomeStep({ currency, setCurrency, incomes, setIncomes, onNext 
       {incomes.length > 0 && (
         <div className="space-y-2">
           {incomes.map(inc => (
-            <div key={inc.id} className="flex items-center justify-between bg-gray-900 border border-gray-800 rounded-xl p-3">
+            <div key={inc.id} className="flex items-center justify-between bg-surface-900 border border-surface-800 rounded-2xl p-3">
               <div>
-                <p className="text-sm font-medium text-gray-200">{inc.name}</p>
-                <p className="text-xs text-gray-500">
+                <p className="text-sm font-medium text-slate-200">{inc.name}</p>
+                <p className="text-xs text-slate-500">
                   {inc.amount.toLocaleString('es-CO')} {currency}/mes · {inc.frequency === 'biweekly' ? 'Quincenal' : inc.frequency === 'weekly' ? 'Semanal' : 'Mensual'}
                 </p>
               </div>
@@ -86,18 +87,18 @@ export function IncomeStep({ currency, setCurrency, incomes, setIncomes, onNext 
 
       {/* Add income form */}
       {showForm ? (
-        <div className="bg-gray-900 border border-gray-700 rounded-xl p-4 space-y-4">
-          <h3 className="text-sm font-semibold text-gray-200">Nueva fuente de ingreso</h3>
+        <div className="bg-surface-900 border border-surface-700 rounded-2xl p-4 space-y-4">
+          <h3 className="text-sm font-semibold font-heading text-slate-200">Nueva fuente de ingreso</h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Nombre <span className="text-red-400">*</span></label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">Nombre <span className="text-red-400">*</span></label>
               <input
                 type="text"
                 value={form.name}
                 onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                 placeholder="Ej: Salario, Freelance"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-gray-100 placeholder-gray-600 focus:outline-none focus:border-blue-500"
+                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
               />
             </div>
             <CurrencyInput
@@ -111,11 +112,11 @@ export function IncomeStep({ currency, setCurrency, incomes, setIncomes, onNext 
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Frecuencia de pago</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">Frecuencia de pago</label>
               <select
                 value={form.frequency}
                 onChange={e => setForm(f => ({ ...f, frequency: e.target.value as Income['frequency'] }))}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-blue-500"
+                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
               >
                 <option value="monthly">Mensual</option>
                 <option value="biweekly">Quincenal (días 1 y 15)</option>
@@ -123,13 +124,13 @@ export function IncomeStep({ currency, setCurrency, incomes, setIncomes, onNext 
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Días de pago</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">Días de pago</label>
               <input
                 type="text"
                 value={form.payDays?.join(', ')}
                 onChange={e => setForm(f => ({ ...f, payDays: e.target.value.split(',').map(v => parseInt(v.trim())).filter(n => !isNaN(n)) }))}
                 placeholder="Ej: 1, 15"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-gray-100 placeholder-gray-600 focus:outline-none focus:border-blue-500"
+                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
               />
             </div>
           </div>
@@ -139,9 +140,9 @@ export function IncomeStep({ currency, setCurrency, incomes, setIncomes, onNext 
               type="checkbox"
               checked={form.isNet}
               onChange={e => setForm(f => ({ ...f, isNet: e.target.checked }))}
-              className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-blue-600"
+              className="w-4 h-4 rounded border-surface-600 bg-surface-800 text-brand-600 accent-brand-600"
             />
-            <span className="text-sm text-gray-300">Este monto ya tiene descuentos aplicados (neto)</span>
+            <span className="text-sm text-slate-300">Este monto ya tiene descuentos aplicados (neto)</span>
           </label>
 
           {error && <p className="text-sm text-red-400">{error}</p>}
@@ -149,13 +150,13 @@ export function IncomeStep({ currency, setCurrency, incomes, setIncomes, onNext 
           <div className="flex gap-2">
             <button
               onClick={addIncome}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 rounded-lg transition-colors"
+              className="flex-1 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-2.5 px-4 rounded-xl transition-colors shadow-lg shadow-brand-600/20"
             >
               Agregar ingreso
             </button>
             <button
               onClick={() => setShowForm(false)}
-              className="px-4 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm rounded-lg transition-colors"
+              className="px-4 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-xl transition-colors"
             >
               Cancelar
             </button>
@@ -164,22 +165,23 @@ export function IncomeStep({ currency, setCurrency, incomes, setIncomes, onNext 
       ) : (
         <button
           onClick={() => setShowForm(true)}
-          className="w-full border-2 border-dashed border-gray-700 hover:border-blue-500 rounded-xl py-3 text-sm text-gray-500 hover:text-blue-400 transition-colors flex items-center justify-center gap-2"
+          className="w-full border-2 border-dashed border-surface-700 hover:border-brand-500 rounded-xl py-3 text-sm text-slate-500 hover:text-brand-400 transition-colors flex items-center justify-center gap-2"
         >
-          <span className="text-lg">+</span>
+          <Plus className="w-4 h-4" />
           Agregar fuente de ingreso
         </button>
       )}
 
-      <div className="pt-4 border-t border-gray-800">
+      <div className="pt-4 border-t border-surface-800">
         <button
           onClick={onNext}
           disabled={!canNext}
-          className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-800 disabled:text-gray-600 text-white text-sm font-medium py-3 rounded-xl transition-colors"
+          className="w-full bg-brand-600 hover:bg-brand-700 disabled:bg-surface-800 disabled:text-slate-600 disabled:opacity-50 disabled:shadow-none text-white text-sm font-medium py-3 rounded-xl transition-colors shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2"
         >
-          Continuar →
+          Continuar
+          <ArrowRight className="w-4 h-4" />
         </button>
-        {!canNext && <p className="text-xs text-gray-600 text-center mt-2">Agrega al menos un ingreso para continuar</p>}
+        {!canNext && <p className="text-xs text-slate-600 text-center mt-2">Agrega al menos un ingreso para continuar</p>}
       </div>
     </div>
   );

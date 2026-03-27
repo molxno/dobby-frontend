@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link } from 'react-router-dom';
+import { Sparkles } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export function Login() {
@@ -24,43 +25,43 @@ export function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-surface-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-600 rounded-2xl mb-4">
-            <span className="text-2xl font-bold text-white">TF</span>
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-600 rounded-2xl mb-4">
+            <Sparkles size={24} className="text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-100">Tutor Financiero</h1>
-          <p className="text-sm text-gray-400 mt-1">Inicia sesión para continuar</p>
+          <h1 className="text-2xl font-bold text-slate-100 font-heading">Dobby</h1>
+          <p className="text-sm text-slate-400 mt-1">Free Your Finances</p>
         </div>
 
         {/* Card */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <div className="bg-surface-900 border border-surface-800 rounded-2xl p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="bg-red-950/50 border border-red-500/40 rounded-lg p-3">
+              <div className="bg-red-950/50 border border-red-500/40 rounded-xl p-3">
                 <p className="text-sm text-red-400">{error}</p>
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
                 autoComplete="email"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-blue-500 placeholder-gray-500"
+                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
                 placeholder="tu@email.com"
               />
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-sm font-medium text-gray-300">Contraseña</label>
-                <Link to="/auth/forgot-password" className="text-xs text-blue-400 hover:text-blue-300">
+                <label className="block text-sm font-medium text-slate-300">Contraseña</label>
+                <Link to="/auth/forgot-password" className="text-xs text-brand-400 hover:text-brand-300">
                   ¿Olvidaste tu contraseña?
                 </Link>
               </div>
@@ -70,7 +71,7 @@ export function Login() {
                 onChange={e => setPassword(e.target.value)}
                 required
                 autoComplete="current-password"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-blue-500 placeholder-gray-500"
+                className="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all"
                 placeholder="Tu contraseña"
               />
             </div>
@@ -78,7 +79,7 @@ export function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 rounded-xl transition-colors"
+              className="w-full bg-brand-600 hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 rounded-xl transition-colors shadow-lg shadow-brand-600/20"
             >
               {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
             </button>
@@ -86,9 +87,9 @@ export function Login() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-sm text-gray-500 mt-5">
+        <p className="text-center text-sm text-slate-500 mt-5">
           ¿No tienes cuenta?{' '}
-          <Link to="/auth/signup" className="text-blue-400 hover:text-blue-300 font-medium">
+          <Link to="/auth/signup" className="text-brand-400 hover:text-brand-300 font-medium">
             Regístrate gratis
           </Link>
         </p>

@@ -6,6 +6,9 @@ import { RingChart } from '../components/shared/RingChart';
 import { ProgressBar } from '../components/shared/ProgressBar';
 import { Alert } from '../components/shared/Alert';
 import {
+  Banknote, Home, CreditCard, Waves, Target, TrendingUp, Check,
+} from 'lucide-react';
+import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend
 } from 'recharts';
@@ -18,7 +21,7 @@ export function Dashboard() {
   if (!fs) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-gray-500">Cargando datos financieros...</p>
+        <p className="text-slate-500">Cargando datos financieros...</p>
       </div>
     );
   }
@@ -47,30 +50,34 @@ export function Dashboard() {
     {
       label: 'Ingreso Mensual',
       value: fmt(fs.totalMonthlyIncome),
-      icon: '💵',
+      icon: Banknote,
       color: 'text-green-400',
       bg: 'bg-green-500/10',
+      iconColor: 'text-green-400',
     },
     {
       label: 'Gastos Fijos',
       value: fmt(fs.totalMonthlyExpenses),
-      icon: '🏠',
-      color: 'text-blue-400',
-      bg: 'bg-blue-500/10',
+      icon: Home,
+      color: 'text-brand-400',
+      bg: 'bg-brand-500/10',
+      iconColor: 'text-brand-400',
     },
     {
       label: 'Deudas/mes',
       value: fmt(fs.totalDebtPayments),
-      icon: '💳',
+      icon: CreditCard,
       color: 'text-red-400',
       bg: 'bg-red-500/10',
+      iconColor: 'text-red-400',
     },
     {
       label: 'Flujo Libre',
       value: fmt(fs.freeFlow),
-      icon: '🌊',
+      icon: Waves,
       color: fs.freeFlow >= 0 ? 'text-emerald-400' : 'text-red-400',
       bg: fs.freeFlow >= 0 ? 'bg-emerald-500/10' : 'bg-red-500/10',
+      iconColor: fs.freeFlow >= 0 ? 'text-emerald-400' : 'text-red-400',
     },
   ];
 
@@ -78,15 +85,18 @@ export function Dashboard() {
     <div className="space-y-6">
       {/* Quick stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        {quickStats.map(stat => (
-          <Card key={stat.label} className="text-center">
-            <div className={`w-10 h-10 ${stat.bg} rounded-xl flex items-center justify-center text-xl mx-auto mb-2`}>
-              {stat.icon}
-            </div>
-            <p className={`text-lg font-bold ${stat.color}`}>{stat.value}</p>
-            <p className="text-xs text-gray-500 mt-0.5">{stat.label}</p>
-          </Card>
-        ))}
+        {quickStats.map(stat => {
+          const IconComp = stat.icon;
+          return (
+            <Card key={stat.label} className="text-center">
+              <div className={`w-10 h-10 ${stat.bg} rounded-xl flex items-center justify-center mx-auto mb-2`}>
+                <IconComp className={stat.iconColor} size={20} />
+              </div>
+              <p className={`text-lg font-bold ${stat.color}`}>{stat.value}</p>
+              <p className="text-xs text-slate-500 mt-0.5">{stat.label}</p>
+            </Card>
+          );
+        })}
       </div>
 
       {/* Health score + indicators */}
@@ -106,15 +116,15 @@ export function Dashboard() {
                 <span className="w-1.5 h-1.5 rounded-full bg-current" />
                 {healthCfg.label}
               </div>
-              <p className="text-xs text-gray-500 mt-2">Salud Financiera Global</p>
+              <p className="text-xs text-slate-500 mt-2 font-heading">Salud Financiera Global</p>
             </div>
           </div>
 
           {/* Mini indicators */}
-          <div className="mt-2 space-y-3 pt-3 border-t border-gray-800">
+          <div className="mt-2 space-y-3 pt-3 border-t border-surface-800">
             <div>
               <div className="flex justify-between text-xs mb-1">
-                <span className="text-gray-400">Gasto/Ingreso</span>
+                <span className="text-slate-400">Gasto/Ingreso</span>
                 <span className={fs.expenseToIncomeRatio > 0.8 ? 'text-red-400' : fs.expenseToIncomeRatio > 0.65 ? 'text-yellow-400' : 'text-green-400'}>
                   {(fs.expenseToIncomeRatio * 100).toFixed(1)}%
                 </span>
@@ -128,7 +138,7 @@ export function Dashboard() {
             {fs.creditUtilization !== undefined && (
               <div>
                 <div className="flex justify-between text-xs mb-1">
-                  <span className="text-gray-400">Utilización TC</span>
+                  <span className="text-slate-400">Utilización TC</span>
                   <span className={fs.creditUtilization > 0.5 ? 'text-red-400' : fs.creditUtilization > 0.3 ? 'text-yellow-400' : 'text-green-400'}>
                     {(fs.creditUtilization * 100).toFixed(0)}%
                   </span>
@@ -142,7 +152,7 @@ export function Dashboard() {
             )}
             <div>
               <div className="flex justify-between text-xs mb-1">
-                <span className="text-gray-400">Fondo emergencia</span>
+                <span className="text-slate-400">Fondo emergencia</span>
                 <span className={fs.emergencyFundMonths < 1 ? 'text-red-400' : fs.emergencyFundMonths < 3 ? 'text-yellow-400' : 'text-green-400'}>
                   {fs.emergencyFundMonths.toFixed(1)} meses
                 </span>
@@ -163,7 +173,7 @@ export function Dashboard() {
               <div
                 key={phase.id}
                 className={`flex items-start gap-3 p-3 rounded-xl transition-colors ${
-                  phase.status === 'active' ? 'bg-gray-800 border border-gray-700' : 'opacity-60'
+                  phase.status === 'active' ? 'bg-surface-850 border border-surface-700' : 'opacity-60'
                 }`}
               >
                 <div className="relative flex flex-col items-center">
@@ -173,24 +183,24 @@ export function Dashboard() {
                         ? 'bg-green-600 border-green-600 text-white'
                         : phase.status === 'active'
                         ? 'border-current text-white'
-                        : 'bg-gray-800 border-gray-700 text-gray-500'
+                        : 'bg-surface-800 border-surface-700 text-slate-500'
                     }`}
                     style={phase.status === 'active' ? { backgroundColor: phase.color, borderColor: phase.color } : {}}
                   >
-                    {phase.status === 'completed' ? '✓' : phase.number}
+                    {phase.status === 'completed' ? <Check size={14} /> : phase.number}
                   </div>
-                  {i < fs.phases.length - 1 && <div className="w-0.5 h-3 bg-gray-800 mt-1" />}
+                  {i < fs.phases.length - 1 && <div className="w-0.5 h-3 bg-surface-800 mt-1" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <p className="text-sm font-medium text-gray-200">{phase.name}</p>
+                    <p className="text-sm font-medium text-slate-200">{phase.name}</p>
                     {phase.status === 'active' && (
                       <span className="text-xs px-2 py-0.5 rounded-full text-white" style={{ backgroundColor: phase.color }}>
                         ACTIVA
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-gray-500">{phase.startMonth} → {phase.endMonth} ({phase.durationMonths} meses)</p>
+                  <p className="text-xs text-slate-500">{phase.startMonth} → {phase.endMonth} ({phase.durationMonths} meses)</p>
                 </div>
               </div>
             ))}
@@ -202,18 +212,23 @@ export function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Próximo paso */}
         {fs.diagnosis.recommendations.length > 0 && (
-          <Card className="border-blue-500/30 bg-blue-950/20">
+          <Card className="border-brand-500/30 bg-brand-950/20">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-xl shrink-0">🎯</div>
+              <div className="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center shrink-0">
+                <Target className="text-white" size={20} />
+              </div>
               <div>
-                <p className="text-xs text-blue-400 font-semibold uppercase tracking-wider mb-1">Próximo paso prioritario</p>
-                <p className="text-sm font-semibold text-gray-100 mb-1">{fs.diagnosis.recommendations[0].title}</p>
-                <p className="text-xs text-gray-400 leading-relaxed">{fs.diagnosis.recommendations[0].description}</p>
-                <p className="text-xs text-green-400 mt-2 font-medium">📈 {fs.diagnosis.recommendations[0].impact}</p>
+                <p className="text-xs text-brand-400 font-semibold uppercase tracking-wider mb-1 font-heading">Próximo paso prioritario</p>
+                <p className="text-sm font-semibold text-slate-100 mb-1">{fs.diagnosis.recommendations[0].title}</p>
+                <p className="text-xs text-slate-400 leading-relaxed">{fs.diagnosis.recommendations[0].description}</p>
+                <p className="text-xs text-green-400 mt-2 font-medium flex items-center gap-1">
+                  <TrendingUp size={12} />
+                  {fs.diagnosis.recommendations[0].impact}
+                </p>
                 <ul className="mt-2 space-y-1">
                   {fs.diagnosis.recommendations[0].actionSteps.slice(0, 2).map((step, i) => (
-                    <li key={i} className="text-xs text-gray-500 flex items-start gap-1.5">
-                      <span className="text-blue-400 mt-0.5">→</span>
+                    <li key={i} className="text-xs text-slate-500 flex items-start gap-1.5">
+                      <span className="text-brand-400 mt-0.5">→</span>
                       {step}
                     </li>
                   ))}
@@ -253,12 +268,12 @@ export function Dashboard() {
                     <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />
-                <XAxis dataKey="month" tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: '#6b7280', fontSize: 10 }} axisLine={false} tickLine={false}
+                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fill: '#64748b', fontSize: 10 }} axisLine={false} tickLine={false}
                   tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#111827', border: '1px solid #374151', borderRadius: '8px', fontSize: '12px' }}
+                  contentStyle={{ backgroundColor: '#111827', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px' }}
                   formatter={(value: unknown) => [fmt(Number(value)), '']}
                 />
                 <Area type="monotone" dataKey="ingresos" name="Ingresos" stroke="#22c55e" fill="url(#incomeGrad)" strokeWidth={2} />
@@ -287,11 +302,11 @@ export function Dashboard() {
                   ))}
                 </Pie>
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#111827', border: '1px solid #374151', borderRadius: '8px', fontSize: '12px' }}
+                  contentStyle={{ backgroundColor: '#111827', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px' }}
                   formatter={(value: unknown) => [fmt(Number(value)), '']}
                 />
                 <Legend
-                  formatter={(value) => <span style={{ color: '#9ca3af', fontSize: '11px' }}>{value}</span>}
+                  formatter={(value) => <span style={{ color: '#94a3b8', fontSize: '11px' }}>{value}</span>}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -310,25 +325,25 @@ export function Dashboard() {
               return (
                 <div key={debt.id}>
                   <div className="flex items-center justify-between text-sm mb-1">
-                    <span className="text-gray-300 flex items-center gap-2">
+                    <span className="text-slate-300 flex items-center gap-2">
                       {debt.order === 1 && <span className="text-xs bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded">PRIORIDAD</span>}
                       {debt.name}
                     </span>
                     <div className="text-right">
-                      <span className="text-gray-400 text-xs">{fmt(debt.currentBalance)}</span>
-                      <span className="text-gray-600 text-xs"> · libre {debt.payoffDate}</span>
+                      <span className="text-slate-400 text-xs">{fmt(debt.currentBalance)}</span>
+                      <span className="text-slate-600 text-xs"> · libre {debt.payoffDate}</span>
                     </div>
                   </div>
                   <ProgressBar
                     value={progress}
-                    color={debt.order === 1 ? '#ef4444' : '#3b82f6'}
+                    color={debt.order === 1 ? '#ef4444' : '#6366f1'}
                     height="h-1.5"
                   />
                 </div>
               );
             })}
-            <div className="bg-gray-900/60 rounded-xl p-3 flex justify-between items-center mt-2">
-              <span className="text-xs text-gray-400">Ahorras en intereses con el plan</span>
+            <div className="bg-surface-950/60 rounded-xl p-3 flex justify-between items-center mt-2">
+              <span className="text-xs text-slate-400">Ahorras en intereses con el plan</span>
               <span className="text-sm font-bold text-green-400">{fmt(fs.debtPlan.interestSaved)}</span>
             </div>
           </div>
