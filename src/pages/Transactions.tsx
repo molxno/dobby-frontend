@@ -50,7 +50,7 @@ export function Transactions() {
   const totalExpense = filtered.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
 
   return (
-    <div className="space-y-10">
+    <div className="flex flex-col gap-4">
       {/* Summary */}
       <div className="grid grid-cols-3 gap-4">
         <Card className="text-center">

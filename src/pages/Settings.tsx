@@ -73,7 +73,7 @@ export function Settings() {
   };
 
   return (
-    <div className="space-y-10">
+    <div className="flex flex-col gap-4">
       {/* Account */}
       <Card title="Cuenta" subtitle="Tu sesión activa">
         <div className="flex items-center justify-between mt-3">

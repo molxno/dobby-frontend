@@ -47,7 +47,7 @@ export function BiweeklyPlan() {
   const progressPct = period.payments.length > 0 ? (completedCount / period.payments.length) * 100 : 0;
 
   return (
-    <div className="space-y-10">
+    <div className="flex flex-col gap-4">
       {/* Monthly summary */}
       <div className="grid grid-cols-3 gap-4">
         <Card className="text-center">

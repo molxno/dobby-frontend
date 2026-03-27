@@ -36,7 +36,7 @@ export function Insights() {
   });
 
   return (
-    <div className="space-y-10">
+    <div className="flex flex-col gap-4">
       {/* Tutor intro */}
       <Card className="border-brand-500/30 bg-brand-500/5">
         <div className="flex items-start gap-4">
