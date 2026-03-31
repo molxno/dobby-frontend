@@ -310,7 +310,7 @@
     "clearCache": "S\u00ed, limpiar cach\u00e9",
     "permanentAction": "Esta acci\u00f3n es permanente",
     "deleteWarning": "Se eliminar\u00e1 tu cuenta, todos tus datos financieros, ingresos, gastos, deudas, metas y transacciones. No se puede deshacer.",
-    "typeToConfirm": "Escribe <1>{{word}}</1> para confirmar",
+    "typeToConfirm": "Escribe {{word}} para confirmar",
     "confirmWord": "ELIMINAR",
     "deleting": "Eliminando...",
     "deleteError": "Error al eliminar la cuenta. Intenta de nuevo.",

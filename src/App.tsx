@@ -28,10 +28,13 @@ import { ToastContainer } from './components/shared/ToastContainer';
 function LocaleSync() {
   const { i18n } = useTranslation();
   const locale = useFinancialStore(s => s.profile.locale);
+  const recalculate = useFinancialStore(s => s.recalculate);
   useEffect(() => {
     const lang = localeToLang(locale);
-    if (i18n.language !== lang) i18n.changeLanguage(lang);
-  }, [locale, i18n]);
+    if (i18n.language !== lang) {
+      i18n.changeLanguage(lang).then(() => recalculate());
+    }
+  }, [locale, i18n, recalculate]);
   return null;
 }
 
@@ -62,10 +65,10 @@ function AppRoutes() {
 
 function AuthenticatedApp() {
   const { cloudLoading } = useSupabaseSync();
+  const { t } = useTranslation();
 
   if (cloudLoading) {
-    return <AppLoader />;
-
+    return <AppLoader message={t('loader.syncing')} />;
   }
 
   return (

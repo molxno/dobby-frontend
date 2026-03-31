@@ -19,7 +19,7 @@ const DEBT_TYPE_ICONS: Record<string, React.ComponentType<{ className?: string }
   personal_loan: Building2,
 };
 
-const DEBT_TYPE_KEYS = ['personal_loan', 'credit_card', 'mortgage', 'car_loan', 'student_loan', 'financed_purchase', 'other'];
+const DEBT_TYPE_KEYS = ['personal_loan', 'credit_card', 'mortgage', 'car_loan', 'financed_purchase', 'other'];
 
 function DebtTypeIcon({ type, className = 'w-4 h-4' }: { type: string; className?: string }) {
   const Icon = DEBT_TYPE_ICONS[type] || FileText;

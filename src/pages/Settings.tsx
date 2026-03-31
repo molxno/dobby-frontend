@@ -4,7 +4,6 @@ import {
   LogOut, RotateCcw, Trash2, UserX,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { localeToLang } from '../i18n';
 import { useFinancialStore } from '../store/useFinancialStore';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -178,7 +177,7 @@ export function Settings() {
               className={cn(
                 'p-3 rounded-lg border text-left transition-all text-sm',
                 i18n.language === lang
-                  ? 'border-brand-500 bg-brand-950/30 text-brand-400'
+                  ? 'border-brand-500 bg-brand-900/30 text-brand-400'
                   : 'border-surface-700 bg-surface-900 text-slate-400 hover:border-surface-600'
               )}
             >

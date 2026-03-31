@@ -310,7 +310,7 @@
     "clearCache": "Yes, clear cache",
     "permanentAction": "This action is permanent",
     "deleteWarning": "Your account, all financial data, income, expenses, debts, goals, and transactions will be deleted. This cannot be undone.",
-    "typeToConfirm": "Type <1>{{word}}</1> to confirm",
+    "typeToConfirm": "Type {{word}} to confirm",
     "confirmWord": "DELETE",
     "deleting": "Deleting...",
     "deleteError": "Error deleting account. Please try again.",
