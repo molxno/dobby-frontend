@@ -53,21 +53,21 @@ export function Dashboard() {
   ];
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
 
       {/* Quick stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
         {quickStats.map(stat => {
           const IconComp = stat.icon;
           return (
             <Card key={stat.label}>
               <div className="flex items-center gap-4">
-                <div className={`w-11 h-11 ${stat.bg} rounded-lg flex items-center justify-center shrink-0`}>
-                  <IconComp className={stat.color} size={20} />
+                <div className={`w-12 h-12 ${stat.bg} rounded-xl flex items-center justify-center shrink-0`}>
+                  <IconComp className={stat.color} size={22} />
                 </div>
                 <div className="min-w-0">
-                  <p className={`text-lg font-bold font-heading ${stat.color}`}>{stat.value}</p>
-                  <p className="text-xs text-slate-500">{stat.label}</p>
+                  <p className={`text-xl font-bold font-heading ${stat.color}`}>{stat.value}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">{stat.label}</p>
                 </div>
               </div>
             </Card>

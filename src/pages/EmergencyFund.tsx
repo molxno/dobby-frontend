@@ -47,7 +47,7 @@ export function EmergencyFund() {
   }));
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       {/* Current level badge */}
       <Card>
         <div className="flex items-center justify-between">
