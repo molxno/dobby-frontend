@@ -49,34 +49,34 @@ export function BiweeklyPlan() {
   const progressPct = period.payments.length > 0 ? (completedCount / period.payments.length) * 100 : 0;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       {/* Monthly summary */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-5">
         <Card className="text-center">
-          <p className="text-base font-bold text-green-400">{fmt(biweeklyPlan.totalMonthlyIncome)}</p>
-          <p className="text-xs text-slate-500 mt-1">{t('biweekly.monthlyIncome')}</p>
+          <p className="text-xl font-bold text-green-400 font-heading">{fmt(biweeklyPlan.totalMonthlyIncome)}</p>
+          <p className="text-xs text-slate-500 mt-1.5">{t('biweekly.monthlyIncome')}</p>
         </Card>
         <Card className="text-center">
-          <p className="text-base font-bold text-blue-400">{fmt(biweeklyPlan.totalMonthlyExpenses)}</p>
-          <p className="text-xs text-slate-500 mt-1">{t('biweekly.totalExpenses')}</p>
+          <p className="text-xl font-bold text-blue-400 font-heading">{fmt(biweeklyPlan.totalMonthlyExpenses)}</p>
+          <p className="text-xs text-slate-500 mt-1.5">{t('biweekly.totalExpenses')}</p>
         </Card>
         <Card className="text-center">
-          <p className="text-base font-bold text-brand-500">{fmt(biweeklyPlan.monthlySavings)}</p>
-          <p className="text-xs text-slate-500 mt-1">{t('biweekly.monthlySavings')}</p>
+          <p className="text-xl font-bold text-brand-400 font-heading">{fmt(biweeklyPlan.monthlySavings)}</p>
+          <p className="text-xs text-slate-500 mt-1.5">{t('biweekly.monthlySavings')}</p>
         </Card>
       </div>
 
       {/* Period selector */}
-      <div className="flex rounded-lg overflow-hidden bg-surface-900">
+      <div className="flex rounded-xl overflow-hidden bg-surface-900 border border-surface-800/60">
         {biweeklyPlan.periods.map(p => (
           <button
             key={p.period}
             onClick={() => setActivePeriod(p.period)}
             className={cn(
-              'flex-1 py-3 text-sm font-medium transition-colors',
+              'flex-1 py-3.5 text-sm font-semibold transition-colors',
               activePeriod === p.period
-                ? 'bg-brand-600 text-white'
-                : 'bg-surface-900 text-slate-400 hover:bg-surface-800'
+                ? 'bg-brand-600 text-white shadow-lg shadow-brand-600/20'
+                : 'bg-surface-900 text-slate-400 hover:bg-surface-800 hover:text-slate-200'
             )}
           >
             {p.label}
@@ -121,7 +121,7 @@ export function BiweeklyPlan() {
 
         {/* Checklist */}
         <Card title={t('biweekly.checklist')} className="lg:col-span-2">
-          <div className="space-y-2 mt-3">
+          <div className="space-y-2.5 mt-4">
             {period.payments.map((payment) => {
               const isChecked = checkedKeys.has(scopedBiweeklyKey(payment.key));
               const TypeIcon = TYPE_ICONS[payment.type];
@@ -141,10 +141,10 @@ export function BiweeklyPlan() {
                     }
                   }}
                   className={cn(
-                    'flex items-center gap-4 px-4 py-3.5 rounded-lg cursor-pointer transition-all',
+                    'flex items-center gap-4 px-4 py-4 rounded-xl cursor-pointer transition-all',
                     isChecked
-                      ? 'bg-emerald-950/20'
-                      : 'bg-surface-800/50 hover:bg-surface-800'
+                      ? 'bg-emerald-950/20 border border-emerald-800/30'
+                      : 'bg-surface-800/50 hover:bg-surface-800 border border-transparent'
                   )}
                 >
                   <div className={cn(
@@ -153,7 +153,7 @@ export function BiweeklyPlan() {
                   )}>
                     {isChecked && <Check className="text-white" size={12} />}
                   </div>
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-surface-800">
+                  <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 bg-surface-800">
                     {payment.category ? (
                       <CategoryIcon category={payment.category as ExpenseCategory} className="text-slate-300" size={16} />
                     ) : (
@@ -161,11 +161,11 @@ export function BiweeklyPlan() {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className={cn('text-sm', isChecked ? 'line-through text-slate-500' : 'text-slate-200')}>
+                    <p className={cn('text-sm font-medium', isChecked ? 'line-through text-slate-500' : 'text-slate-200')}>
                       {payment.name}
                     </p>
                     {payment.dueDay && (
-                      <p className="text-xs text-slate-500">{t('biweekly.dueDay', { day: payment.dueDay })}</p>
+                      <p className="text-xs text-slate-500 mt-0.5">{t('biweekly.dueDay', { day: payment.dueDay })}</p>
                     )}
                   </div>
                   <span

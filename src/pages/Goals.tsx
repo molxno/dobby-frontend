@@ -61,7 +61,7 @@ export function Goals() {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       {/* Summary */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
         <Card className="text-center">

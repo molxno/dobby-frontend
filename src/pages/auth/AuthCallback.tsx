@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Sparkles } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import { DobbyLogo } from '../../components/shared/DobbyLogo';
 
 function isPasswordRecoveryUrl(): boolean {
   const hash = window.location.hash;
@@ -57,8 +57,8 @@ export function AuthCallback() {
   return (
     <div className="min-h-screen bg-surface-950 flex items-center justify-center">
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-600 rounded-lg animate-pulse">
-          <Sparkles size={24} className="text-white" />
+        <div className="inline-flex animate-pulse">
+          <DobbyLogo size={64} showWordmark />
         </div>
         <p className="text-sm text-slate-400">{t('auth.verifyingSession')}</p>
       </div>

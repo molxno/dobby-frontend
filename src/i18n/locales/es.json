@@ -27,7 +27,7 @@
     "biweekly": "Plan Quincenal",
     "emergency": "Emergencia",
     "transactions": "Transacciones",
-    "insights": "Insights",
+    "insights": "Análisis",
     "settings": "Configuraci\u00f3n",
     "financialHealth": "Salud Financiera",
     "currentPhase": "Fase actual"
@@ -380,9 +380,18 @@
     "passwordUpdated": "Contrase\u00f1a Actualizada",
     "passwordUpdatedDesc": "Tu contrase\u00f1a ha sido actualizada correctamente.",
     "goToDashboard": "Ir al dashboard",
-    "verifyingSession": "Verificando sesi\u00f3n..."
+    "verifyingSession": "Verificando sesi\u00f3n...",
+    "loginHeadline": "Toma el control de tu dinero.",
+    "loginSubtext": "Dobby te da un plan claro y personalizado para salir de deudas, construir tu fondo de emergencia y alcanzar tus metas financieras.",
+    "signupHeadline": "Tu libertad financiera empieza aqu\u00ed.",
+    "signupSubtext": "Configura tus ingresos, gastos y metas en minutos. Dobby construye un plan personalizado para llevarte a donde quieres llegar.",
+    "featureSmartBudget": "Planificaci\u00f3n inteligente del presupuesto",
+    "featureEmergencyFund": "Seguimiento del fondo de emergencia",
+    "featureGoalRoadmap": "Hoja de ruta financiera basada en metas"
   },
   "onboarding": {
+    "welcome": "Bienvenido, {{name}}",
+    "progress": "Progreso",
     "steps": {
       "income": "Ingresos",
       "incomeDesc": "Cu\u00e1nto y cu\u00e1ndo recibes dinero",

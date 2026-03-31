@@ -75,7 +75,7 @@ export function Settings() {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       {/* Account */}
       <Card title={t('settings.account')} subtitle={t('settings.activeSession')}>
         <div className="flex items-center justify-between mt-3">

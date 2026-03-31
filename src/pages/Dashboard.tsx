@@ -53,21 +53,21 @@ export function Dashboard() {
   ];
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
 
       {/* Quick stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
         {quickStats.map(stat => {
           const IconComp = stat.icon;
           return (
             <Card key={stat.label}>
               <div className="flex items-center gap-4">
-                <div className={`w-11 h-11 ${stat.bg} rounded-lg flex items-center justify-center shrink-0`}>
-                  <IconComp className={stat.color} size={20} />
+                <div className={`w-12 h-12 ${stat.bg} rounded-xl flex items-center justify-center shrink-0`}>
+                  <IconComp className={stat.color} size={22} />
                 </div>
                 <div className="min-w-0">
-                  <p className={`text-lg font-bold font-heading ${stat.color}`}>{stat.value}</p>
-                  <p className="text-xs text-slate-500">{stat.label}</p>
+                  <p className={`text-xl font-bold font-heading ${stat.color}`}>{stat.value}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">{stat.label}</p>
                 </div>
               </div>
             </Card>
@@ -155,12 +155,12 @@ export function Dashboard() {
         {/* Current phase — compact */}
         {fs.currentPhase && (
           <Card>
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="text-sm font-semibold text-slate-200 font-heading">{t('dashboard.currentPhase')}</h3>
-                <p className="text-xs text-slate-500 mt-1">{fs.currentPhase.name}</p>
+                <p className="text-sm text-slate-300 font-medium mt-1">{fs.currentPhase.name}</p>
               </div>
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold text-white" style={{ backgroundColor: fs.currentPhase.color }}>
+              <div className="w-11 h-11 rounded-xl flex items-center justify-center text-sm font-bold text-white shadow-lg" style={{ backgroundColor: fs.currentPhase.color }}>
                 {fs.currentPhase.number}
               </div>
             </div>
@@ -186,15 +186,15 @@ export function Dashboard() {
 
             {/* Quick recommendation */}
             {fs.diagnosis.recommendations.length > 0 && (
-              <div className="mt-5 pt-5 border-t border-surface-800/40">
+              <div className="mt-6 pt-5 border-t border-surface-800/40">
                 <div className="flex items-start gap-3">
                   <TrendingUp size={16} className="text-brand-400 mt-0.5 shrink-0" />
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-slate-200">{fs.diagnosis.recommendations[0].title}</p>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">{fs.diagnosis.recommendations[0].impact}</p>
+                    <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">{fs.diagnosis.recommendations[0].impact}</p>
                   </div>
                 </div>
-                <Link to="/insights" className="mt-4 flex items-center gap-1 text-xs text-brand-400 hover:text-brand-300 font-medium">
+                <Link to="/insights" className="mt-4 flex items-center gap-1.5 text-xs text-brand-400 hover:text-brand-300 font-medium">
                   {t('dashboard.viewFullPlan')} <ArrowRight size={12} />
                 </Link>
               </div>
