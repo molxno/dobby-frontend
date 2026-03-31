@@ -1,8 +1,9 @@
 import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
+import { DobbyLogo } from '../../components/shared/DobbyLogo';
 
 export function ForgotPassword() {
   const { t } = useTranslation();
@@ -30,11 +31,11 @@ export function ForgotPassword() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-600 rounded-lg mb-4">
-            <Sparkles size={24} className="text-white" />
+          <div className="inline-flex mb-5">
+            <DobbyLogo size={56} showWordmark />
           </div>
-          <h1 className="text-2xl font-bold text-slate-100 font-heading">{t('auth.recoverPassword')}</h1>
-          <p className="text-sm text-slate-400 mt-1">{t('auth.recoverDescription')}</p>
+          <h1 className="text-2xl font-bold text-slate-100 font-heading mt-2">{t('auth.recoverPassword')}</h1>
+          <p className="text-sm text-slate-400 mt-1.5">{t('auth.recoverDescription')}</p>
         </div>
 
         {/* Card */}

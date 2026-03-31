@@ -155,12 +155,12 @@ export function Dashboard() {
         {/* Current phase — compact */}
         {fs.currentPhase && (
           <Card>
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="text-sm font-semibold text-slate-200 font-heading">{t('dashboard.currentPhase')}</h3>
-                <p className="text-xs text-slate-500 mt-1">{fs.currentPhase.name}</p>
+                <p className="text-sm text-slate-300 font-medium mt-1">{fs.currentPhase.name}</p>
               </div>
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold text-white" style={{ backgroundColor: fs.currentPhase.color }}>
+              <div className="w-11 h-11 rounded-xl flex items-center justify-center text-sm font-bold text-white shadow-lg" style={{ backgroundColor: fs.currentPhase.color }}>
                 {fs.currentPhase.number}
               </div>
             </div>
@@ -186,15 +186,15 @@ export function Dashboard() {
 
             {/* Quick recommendation */}
             {fs.diagnosis.recommendations.length > 0 && (
-              <div className="mt-5 pt-5 border-t border-surface-800/40">
+              <div className="mt-6 pt-5 border-t border-surface-800/40">
                 <div className="flex items-start gap-3">
                   <TrendingUp size={16} className="text-brand-400 mt-0.5 shrink-0" />
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-slate-200">{fs.diagnosis.recommendations[0].title}</p>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">{fs.diagnosis.recommendations[0].impact}</p>
+                    <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">{fs.diagnosis.recommendations[0].impact}</p>
                   </div>
                 </div>
-                <Link to="/insights" className="mt-4 flex items-center gap-1 text-xs text-brand-400 hover:text-brand-300 font-medium">
+                <Link to="/insights" className="mt-4 flex items-center gap-1.5 text-xs text-brand-400 hover:text-brand-300 font-medium">
                   {t('dashboard.viewFullPlan')} <ArrowRight size={12} />
                 </Link>
               </div>

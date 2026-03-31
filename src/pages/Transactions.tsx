@@ -60,20 +60,20 @@ export function Transactions() {
   return (
     <div className="flex flex-col gap-6">
       {/* Summary */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-5">
         <Card className="text-center">
-          <p className="text-base font-bold text-green-400">{fmt(totalIncome)}</p>
-          <p className="text-xs text-slate-500 mt-1">{t('transactions.income')}</p>
+          <p className="text-xl font-bold text-green-400 font-heading">{fmt(totalIncome)}</p>
+          <p className="text-xs text-slate-500 mt-1.5">{t('transactions.income')}</p>
         </Card>
         <Card className="text-center">
-          <p className="text-base font-bold text-red-400">{fmt(totalExpense)}</p>
-          <p className="text-xs text-slate-500 mt-1">{t('transactions.expenses')}</p>
+          <p className="text-xl font-bold text-red-400 font-heading">{fmt(totalExpense)}</p>
+          <p className="text-xs text-slate-500 mt-1.5">{t('transactions.expenses')}</p>
         </Card>
         <Card className="text-center">
-          <p className={cn('text-base font-bold', totalIncome - totalExpense >= 0 ? 'text-emerald-400' : 'text-red-400')}>
+          <p className={cn('text-xl font-bold font-heading', totalIncome - totalExpense >= 0 ? 'text-emerald-400' : 'text-red-400')}>
             {fmt(totalIncome - totalExpense)}
           </p>
-          <p className="text-xs text-slate-500 mt-1">{t('transactions.balance')}</p>
+          <p className="text-xs text-slate-500 mt-1.5">{t('transactions.balance')}</p>
         </Card>
       </div>
 
@@ -105,7 +105,7 @@ export function Transactions() {
           </div>
           <button
             onClick={() => setShowModal(true)}
-            className="bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition-colors shadow-lg shadow-brand-600/20 inline-flex items-center gap-1.5"
+            className="bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold py-3 px-5 rounded-xl transition-colors shadow-lg shadow-brand-600/20 inline-flex items-center gap-2"
           >
             <Plus size={16} />
             {t('transactions.record')}
@@ -130,34 +130,34 @@ export function Transactions() {
             </button>
           </div>
         ) : (
-          <div className="mt-2 space-y-1">
+          <div className="mt-3 space-y-1.5">
             {filtered.map(tx => {
               const isIncome = tx.type === 'income';
               const color = CATEGORY_COLORS[tx.category] ?? '#64748b';
 
               return (
-                <div key={tx.id} className="flex items-center gap-3 py-3 px-2 border-b border-surface-900 hover:bg-surface-900/40 rounded-lg">
+                <div key={tx.id} className="flex items-center gap-4 py-3.5 px-3 border border-surface-800/40 hover:bg-surface-800/40 rounded-xl transition-colors">
                   <div
-                    className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                     style={{ backgroundColor: `${color}20`, color }}
                   >
-                    <CategoryIcon category={tx.category} size={16} />
+                    <CategoryIcon category={tx.category} size={18} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-slate-200 truncate">{tx.description}</p>
-                    <div className="flex gap-2 text-xs text-slate-500">
+                    <p className="text-sm text-slate-200 truncate font-medium">{tx.description}</p>
+                    <div className="flex gap-2 text-xs text-slate-500 mt-0.5">
                       <span>{getCategoryLabel(tx.category)}</span>
                       <span>·</span>
                       <span>{formatDate(tx.date, locale)}</span>
                       {tx.isRecurring && <span className="text-brand-400">{t('transactions.recurring')}</span>}
                     </div>
                   </div>
-                  <span className={cn('text-sm font-semibold shrink-0', isIncome ? 'text-green-400' : 'text-red-400')}>
+                  <span className={cn('text-sm font-bold shrink-0', isIncome ? 'text-green-400' : 'text-red-400')}>
                     {isIncome ? '+' : '-'}{fmt(tx.amount)}
                   </span>
                   <button
                     onClick={() => removeTransaction(tx.id)}
-                    className="text-slate-600 hover:text-red-400 p-1 shrink-0 transition-colors"
+                    className="text-slate-600 hover:text-red-400 p-1.5 shrink-0 transition-colors rounded-lg hover:bg-red-950/20"
                   >
                     <X size={14} />
                   </button>
