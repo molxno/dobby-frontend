@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-react';
+import i18n from '../../i18n';
 
 export interface Toast {
   id: string;
@@ -106,7 +107,7 @@ export function ToastContainer() {
               </div>
               <button
                 onClick={() => dismiss(toast.id)}
-                aria-label="Cerrar notificación"
+                aria-label={i18n.t('common.closeNotification')}
                 className="text-slate-600 hover:text-slate-400 shrink-0"
               >
                 <X size={14} />

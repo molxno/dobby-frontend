@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useFinancialStore, scopedBiweeklyKey } from '../store/useFinancialStore';
 import { formatCurrency } from '../utils/formatters';
 import { CategoryIcon } from '../components/shared/CategoryIcon';
@@ -23,6 +24,7 @@ const TYPE_ICONS: Record<BiweeklyPayment['type'], LucideIcon> = {
 };
 
 export function BiweeklyPlan() {
+  const { t } = useTranslation();
   const { financialState, profile, transactions, toggleBiweeklyCheck } = useFinancialStore();
   const [activePeriod, setActivePeriod] = useState<1 | 2>(1);
 
@@ -52,15 +54,15 @@ export function BiweeklyPlan() {
       <div className="grid grid-cols-3 gap-4">
         <Card className="text-center">
           <p className="text-base font-bold text-green-400">{fmt(biweeklyPlan.totalMonthlyIncome)}</p>
-          <p className="text-xs text-slate-500 mt-1">Monthly Income</p>
+          <p className="text-xs text-slate-500 mt-1">{t('biweekly.monthlyIncome')}</p>
         </Card>
         <Card className="text-center">
           <p className="text-base font-bold text-blue-400">{fmt(biweeklyPlan.totalMonthlyExpenses)}</p>
-          <p className="text-xs text-slate-500 mt-1">Total Expenses</p>
+          <p className="text-xs text-slate-500 mt-1">{t('biweekly.totalExpenses')}</p>
         </Card>
         <Card className="text-center">
           <p className="text-base font-bold text-brand-500">{fmt(biweeklyPlan.monthlySavings)}</p>
-          <p className="text-xs text-slate-500 mt-1">Monthly Savings</p>
+          <p className="text-xs text-slate-500 mt-1">{t('biweekly.monthlySavings')}</p>
         </Card>
       </div>
 
@@ -88,19 +90,19 @@ export function BiweeklyPlan() {
         <Card title={period.label} className="lg:col-span-1">
           <div className="space-y-3 mt-2">
             <div className="flex justify-between text-sm">
-              <span className="text-slate-400">Period income</span>
+              <span className="text-slate-400">{t('biweekly.periodIncome')}</span>
               <span className="text-green-400 font-medium">{fmt(period.income)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-slate-400">Payments</span>
+              <span className="text-slate-400">{t('biweekly.payments')}</span>
               <span className="text-red-400 font-medium">{fmt(period.totalPayments)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-slate-400">Savings</span>
+              <span className="text-slate-400">{t('biweekly.savings')}</span>
               <span className="text-brand-500 font-medium">{fmt(period.savingsAllocation)}</span>
             </div>
             <div className="border-t border-surface-700 pt-2 flex justify-between text-sm">
-              <span className="text-slate-300 font-medium">Remaining</span>
+              <span className="text-slate-300 font-medium">{t('biweekly.remaining')}</span>
               <span className={cn('font-bold', period.remaining >= 0 ? 'text-emerald-400' : 'text-red-400')}>
                 {fmt(period.remaining)}
               </span>
@@ -110,7 +112,7 @@ export function BiweeklyPlan() {
           {/* Progress */}
           <div className="mt-4 pt-3 border-t border-surface-700">
             <div className="flex justify-between text-xs mb-2">
-              <span className="text-slate-400">Tasks completed</span>
+              <span className="text-slate-400">{t('biweekly.tasksCompleted')}</span>
               <span className="text-slate-300">{completedCount}/{period.payments.length}</span>
             </div>
             <ProgressBar value={progressPct} color="#22c55e" height="h-2" />
@@ -118,7 +120,7 @@ export function BiweeklyPlan() {
         </Card>
 
         {/* Checklist */}
-        <Card title="Biweekly Checklist" className="lg:col-span-2">
+        <Card title={t('biweekly.checklist')} className="lg:col-span-2">
           <div className="space-y-2 mt-3">
             {period.payments.map((payment) => {
               const isChecked = checkedKeys.has(scopedBiweeklyKey(payment.key));
@@ -163,7 +165,7 @@ export function BiweeklyPlan() {
                       {payment.name}
                     </p>
                     {payment.dueDay && (
-                      <p className="text-xs text-slate-500">Due day {payment.dueDay}</p>
+                      <p className="text-xs text-slate-500">{t('biweekly.dueDay', { day: payment.dueDay })}</p>
                     )}
                   </div>
                   <span
@@ -181,8 +183,8 @@ export function BiweeklyPlan() {
             <div className="mt-4 p-3 bg-green-950/30 border border-green-700/40 rounded-lg text-center flex items-center justify-center gap-2">
               <PartyPopper className="text-green-400" size={16} />
               <div>
-                <p className="text-sm font-semibold text-green-400">Biweekly period completed!</p>
-                <p className="text-xs text-slate-500 mt-1">All tasks for this period are done</p>
+                <p className="text-sm font-semibold text-green-400">{t('biweekly.periodCompleted')}</p>
+                <p className="text-xs text-slate-500 mt-1">{t('biweekly.allTasksDone')}</p>
               </div>
             </div>
           )}
@@ -197,9 +199,9 @@ export function BiweeklyPlan() {
               <Pin className="text-brand-400" size={18} />
             </div>
             <div>
-              <p className="text-sm font-semibold text-brand-400">Current phase: {fs.currentPhase.name}</p>
+              <p className="text-sm font-semibold text-brand-400">{t('biweekly.currentPhase', { phase: fs.currentPhase.name })}</p>
               <p className="text-xs text-slate-500 mt-1">
-                In this phase, the biweekly goal is: {fs.currentPhase.objectives[0]}
+                {t('biweekly.phaseObjective', { objective: fs.currentPhase.objectives[0] })}
               </p>
             </div>
           </div>

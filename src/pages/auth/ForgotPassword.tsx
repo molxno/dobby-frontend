@@ -1,9 +1,11 @@
 import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, Mail } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 
 export function ForgotPassword() {
+  const { t } = useTranslation();
   const { resetPassword } = useAuth();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
@@ -31,8 +33,8 @@ export function ForgotPassword() {
           <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-600 rounded-lg mb-4">
             <Sparkles size={24} className="text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-100 font-heading">Recover Password</h1>
-          <p className="text-sm text-slate-400 mt-1">We'll send you a link to reset your password</p>
+          <h1 className="text-2xl font-bold text-slate-100 font-heading">{t('auth.recoverPassword')}</h1>
+          <p className="text-sm text-slate-400 mt-1">{t('auth.recoverDescription')}</p>
         </div>
 
         {/* Card */}
@@ -42,16 +44,15 @@ export function ForgotPassword() {
               <div className="inline-flex items-center justify-center w-14 h-14 bg-green-600/20 border border-green-500/40 rounded-lg">
                 <Mail size={24} className="text-green-400" />
               </div>
-              <h2 className="text-lg font-semibold text-slate-100 font-heading">Link Sent</h2>
+              <h2 className="text-lg font-semibold text-slate-100 font-heading">{t('auth.linkSent')}</h2>
               <p className="text-sm text-slate-400">
-                If an account exists for <span className="text-slate-200 font-medium">{email}</span>,
-                you'll receive a link to reset your password.
+                {t('auth.linkSentDescription', { email })}
               </p>
               <Link
                 to="/auth/login"
                 className="inline-block mt-2 text-sm text-brand-400 hover:text-brand-300 font-medium"
               >
-                Back to login
+                {t('auth.backToLogin')}
               </Link>
             </div>
           ) : (
@@ -63,7 +64,7 @@ export function ForgotPassword() {
               )}
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1.5">Email</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('auth.email')}</label>
                 <input
                   type="email"
                   value={email}
@@ -71,7 +72,7 @@ export function ForgotPassword() {
                   required
                   autoComplete="email"
                   className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
-                  placeholder="tu@email.com"
+                  placeholder={t('auth.emailPlaceholder')}
                 />
               </div>
 
@@ -80,7 +81,7 @@ export function ForgotPassword() {
                 disabled={loading}
                 className="w-full bg-brand-600 hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 rounded-lg transition-colors shadow-lg shadow-brand-600/20"
               >
-                {loading ? 'Sending...' : 'Send link'}
+                {loading ? t('auth.sending') : t('auth.sendLink')}
               </button>
             </form>
           )}
@@ -89,7 +90,7 @@ export function ForgotPassword() {
         {/* Footer */}
         <p className="text-center text-sm text-slate-500 mt-6">
           <Link to="/auth/login" className="text-brand-400 hover:text-brand-300 font-medium">
-            Back to login
+            {t('auth.backToLogin')}
           </Link>
         </p>
       </div>

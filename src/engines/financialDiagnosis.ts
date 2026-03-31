@@ -1,4 +1,9 @@
 import type { Income, Expense, Debt, Goal, Diagnosis, DiagnosisAlert, Recommendation } from '../store/types';
+import i18n from '../i18n';
+
+function fmt(amount: number, locale = 'es-CO'): string {
+  return `$${Math.round(amount).toLocaleString(locale)}`;
+}
 
 export function runFinancialDiagnosis(
   incomes: Income[],
@@ -7,6 +12,7 @@ export function runFinancialDiagnosis(
   goals: Goal[],
   currentFund: number
 ): Diagnosis {
+  const t = i18n.t.bind(i18n);
   const totalIncome = incomes.reduce((s, i) => s + i.amount, 0);
   const totalExpenses = expenses.reduce((s, e) => s + e.amount, 0);
   const totalDebtPayments = debts.reduce((s, d) => s + d.monthlyPayment, 0);
@@ -72,90 +78,89 @@ export function runFinancialDiagnosis(
   if (expenseRatio > 0.85) {
     alerts.push({
       type: 'danger',
-      title: 'Ratio gastos/ingresos crítico',
-      message: `Tus gastos representan el ${(expenseRatio * 100).toFixed(1)}% de tus ingresos. El máximo recomendado es 80%.`,
-      action: 'Revisa gastos no esenciales en la sección de Presupuesto',
+      title: t('diagnosis.criticalExpenseRatio'),
+      message: t('diagnosis.criticalExpenseMsg', { ratio: (expenseRatio * 100).toFixed(1) }),
+      action: t('diagnosis.criticalExpenseAction'),
     });
   } else if (expenseRatio > 0.75) {
     alerts.push({
       type: 'warning',
-      title: 'Gastos elevados',
-      message: `Gastas el ${(expenseRatio * 100).toFixed(1)}% de tus ingresos. Intenta bajar por debajo del 75%.`,
-      action: 'Identifica qué categorías puedes reducir',
+      title: t('diagnosis.highExpenses'),
+      message: t('diagnosis.highExpensesMsg', { ratio: (expenseRatio * 100).toFixed(1) }),
+      action: t('diagnosis.highExpensesAction'),
     });
   }
 
   if (fundMonths < 1) {
     alerts.push({
       type: 'danger',
-      title: 'Sin fondo de emergencia',
+      title: t('diagnosis.noEmergencyFund'),
       message: fundMonths < 0.1
-        ? 'No tienes fondo de emergencia. Un imprevisto puede afectar tus finanzas gravemente.'
-        : `Solo tienes ${fundMonths.toFixed(1)} meses de gastos como fondo de emergencia.`,
-      action: 'Construye un fondo de emergencia de al menos 3 meses',
+        ? t('diagnosis.noEmergencyFundMsg')
+        : t('diagnosis.lowEmergencyFundMsg', { months: fundMonths.toFixed(1) }),
+      action: t('diagnosis.buildEmergencyAction'),
     });
   } else if (fundMonths < 3) {
     alerts.push({
       type: 'warning',
-      title: 'Fondo de emergencia insuficiente',
-      message: `Tienes ${fundMonths.toFixed(1)} meses cubiertos. Se recomiendan 3-6 meses.`,
+      title: t('diagnosis.insufficientFund'),
+      message: t('diagnosis.insufficientFundMsg', { months: fundMonths.toFixed(1) }),
     });
   }
 
   if (creditUtilization > 0.5) {
     alerts.push({
       type: creditUtilization > 0.8 ? 'danger' : 'warning',
-      title: `Utilización de TC: ${(creditUtilization * 100).toFixed(0)}%`,
-      message: `Estás usando el ${(creditUtilization * 100).toFixed(0)}% del cupo de tus tarjetas de crédito. Esto afecta tu historial crediticio.`,
-      action: 'Prioriza pagar el saldo de tus tarjetas',
+      title: t('diagnosis.creditUtilization', { percent: (creditUtilization * 100).toFixed(0) }),
+      message: t('diagnosis.creditUtilizationMsg', { percent: (creditUtilization * 100).toFixed(0) }),
+      action: t('diagnosis.creditUtilizationAction'),
     });
   }
 
   const highInterestDebts = debts.filter(d => d.interestRate > 0.015);
   if (highInterestDebts.length > 0) {
-    const maxRate = Math.max(...highInterestDebts.map(d => d.interestRate));
     const monthlyInterest = highInterestDebts.reduce((s, d) => s + d.currentBalance * d.interestRate, 0);
     alerts.push({
       type: 'danger',
-      title: `Deuda de alto costo detectada`,
-      message: `Tienes ${highInterestDebts.length} deuda(s) con tasas superiores al 1.5%/mes. Te cuestan $${Math.round(monthlyInterest).toLocaleString('es-CO')}/mes en intereses.`,
-      action: 'Activa el plan de pago agresivo para eliminarlas primero',
+      title: t('diagnosis.highCostDebt'),
+      message: t('diagnosis.highCostDebtMsg', { count: highInterestDebts.length, amount: fmt(monthlyInterest) }),
+      action: t('diagnosis.highCostDebtAction'),
     });
   }
 
   if (freeFlow < 0) {
     alerts.push({
       type: 'danger',
-      title: 'Flujo negativo',
-      message: `Tus gastos y deudas superan tus ingresos en $${Math.abs(Math.round(freeFlow)).toLocaleString('es-CO')}/mes.`,
-      action: 'Necesitas reducir gastos o aumentar ingresos urgentemente',
+      title: t('diagnosis.negativeFlow'),
+      message: t('diagnosis.negativeFlowMsg', { amount: fmt(Math.abs(freeFlow)) }),
+      action: t('diagnosis.negativeFlowAction'),
     });
   }
 
   if (savingsRate > 0.15 && debts.length === 0) {
     alerts.push({
       type: 'success',
-      title: '¡Excelente tasa de ahorro!',
-      message: `Estás ahorrando el ${(savingsRate * 100).toFixed(1)}% de tus ingresos. Considera invertir el excedente.`,
+      title: t('diagnosis.excellentSavings'),
+      message: t('diagnosis.excellentSavingsMsg', { rate: (savingsRate * 100).toFixed(1) }),
     });
   }
 
   // Strengths
   const strengths: string[] = [];
-  if (expenseRatio < 0.65) strengths.push('Controlas bien tus gastos — estás por debajo del 65% del ingreso');
-  if (fundMonths >= 3) strengths.push(`Tienes ${fundMonths.toFixed(1)} meses de fondo de emergencia`);
-  if (savingsRate > 0.1) strengths.push(`Estás ahorrando el ${(savingsRate * 100).toFixed(1)}% de tus ingresos`);
-  if (debts.length === 0) strengths.push('No tienes deudas — tienes total libertad financiera en gastos');
-  if (creditUtilization < 0.3 && creditCards.length > 0) strengths.push('Utilizas menos del 30% del cupo de tus tarjetas');
-  if (freeFlow > totalIncome * 0.2) strengths.push('Tienes un flujo libre saludable para construir patrimonio');
+  if (expenseRatio < 0.65) strengths.push(t('diagnosis.strengthExpenses'));
+  if (fundMonths >= 3) strengths.push(t('diagnosis.strengthFund', { months: fundMonths.toFixed(1) }));
+  if (savingsRate > 0.1) strengths.push(t('diagnosis.strengthSavings', { rate: (savingsRate * 100).toFixed(1) }));
+  if (debts.length === 0) strengths.push(t('diagnosis.strengthNoDebt'));
+  if (creditUtilization < 0.3 && creditCards.length > 0) strengths.push(t('diagnosis.strengthCreditLow'));
+  if (freeFlow > totalIncome * 0.2) strengths.push(t('diagnosis.strengthFreeFlow'));
 
   // Weaknesses
   const weaknesses: string[] = [];
-  if (expenseRatio > 0.75) weaknesses.push(`Ratio gasto/ingreso de ${(expenseRatio * 100).toFixed(1)}% — 5+ puntos sobre el máximo`);
-  if (fundMonths < 3) weaknesses.push(`Fondo de emergencia: solo ${fundMonths.toFixed(1)} de 3 meses recomendados`);
-  if (highInterestDebts.length > 0) weaknesses.push(`${highInterestDebts.length} deuda(s) de alto costo activas`);
-  if (creditUtilization > 0.3) weaknesses.push(`Utilización de TC al ${(creditUtilization * 100).toFixed(0)}%`);
-  if (freeFlow < totalIncome * 0.05) weaknesses.push('Poco flujo libre para imprevistos y metas');
+  if (expenseRatio > 0.75) weaknesses.push(t('diagnosis.weakExpenseRatio', { ratio: (expenseRatio * 100).toFixed(1) }));
+  if (fundMonths < 3) weaknesses.push(t('diagnosis.weakFund', { months: fundMonths.toFixed(1) }));
+  if (highInterestDebts.length > 0) weaknesses.push(t('diagnosis.weakHighCostDebt', { count: highInterestDebts.length }));
+  if (creditUtilization > 0.3) weaknesses.push(t('diagnosis.weakCreditUtilization', { percent: (creditUtilization * 100).toFixed(0) }));
+  if (freeFlow < totalIncome * 0.05) weaknesses.push(t('diagnosis.weakLowFreeFlow'));
 
   // Recommendations
   const recommendations: Recommendation[] = [];
@@ -165,13 +170,16 @@ export function runFinancialDiagnosis(
     const monthlyInterest = topDebt.currentBalance * topDebt.interestRate;
     recommendations.push({
       priority: 'high',
-      title: `Elimina "${topDebt.name}" primero`,
-      description: `Esta deuda tiene una tasa del ${(topDebt.interestRate * 100).toFixed(1)}%/mes y te cuesta $${Math.round(monthlyInterest).toLocaleString('es-CO')}/mes solo en intereses.`,
-      impact: `Pagándola en ${Math.ceil(topDebt.currentBalance / (freeFlow > 0 ? freeFlow : topDebt.monthlyPayment))} meses ahorras $${Math.round(topDebt.currentBalance * topDebt.interestRate * 6).toLocaleString('es-CO')} en intereses`,
+      title: t('diagnosis.recEliminate', { name: topDebt.name }),
+      description: t('diagnosis.recEliminateDesc', { rate: (topDebt.interestRate * 100).toFixed(1), interest: fmt(monthlyInterest) }),
+      impact: t('diagnosis.recEliminateImpact', {
+        months: Math.ceil(topDebt.currentBalance / (freeFlow > 0 ? freeFlow : topDebt.monthlyPayment)),
+        savings: fmt(topDebt.currentBalance * topDebt.interestRate * 6),
+      }),
       actionSteps: [
-        'Activa el plan avalanche en la sección de Deudas',
-        `Destina todo tu flujo libre ($${Math.round(freeFlow > 0 ? freeFlow : 0).toLocaleString('es-CO')}) a esta deuda`,
-        'Suspende temporalmente otros ahorros hasta liquidarla',
+        t('diagnosis.recEliminateStep1'),
+        t('diagnosis.recEliminateStep2', { freeFlow: fmt(freeFlow > 0 ? freeFlow : 0) }),
+        t('diagnosis.recEliminateStep3'),
       ],
     });
   }
@@ -181,13 +189,13 @@ export function runFinancialDiagnosis(
     const monthsNeeded = freeFlow > 0 ? Math.ceil(monthlyToFund / (freeFlow * 0.4)) : 12;
     recommendations.push({
       priority: highInterestDebts.length > 0 ? 'medium' : 'high',
-      title: 'Construye tu fondo de emergencia',
-      description: `Necesitas $${Math.round(essentialExpenses * 3 - currentFund).toLocaleString('es-CO')} más para tener 3 meses cubiertos.`,
-      impact: `En ${monthsNeeded} meses tendrás 3 meses de respaldo financiero`,
+      title: t('diagnosis.recBuildFund'),
+      description: t('diagnosis.recBuildFundDesc', { amount: fmt(essentialExpenses * 3 - currentFund) }),
+      impact: t('diagnosis.recBuildFundImpact', { months: monthsNeeded }),
       actionSteps: [
-        'Abre una cuenta de ahorros dedicada solo al fondo de emergencia',
-        `Transfiere automáticamente $${Math.round((freeFlow > 0 ? freeFlow : 0) * 0.4).toLocaleString('es-CO')}/mes`,
-        'No toques este dinero salvo emergencias reales',
+        t('diagnosis.recBuildFundStep1'),
+        t('diagnosis.recBuildFundStep2', { amount: fmt((freeFlow > 0 ? freeFlow : 0) * 0.4) }),
+        t('diagnosis.recBuildFundStep3'),
       ],
     });
   }
@@ -198,10 +206,10 @@ export function runFinancialDiagnosis(
     if (totalNE > totalIncome * 0.05) {
       recommendations.push({
         priority: 'medium',
-        title: 'Revisa gastos fijos no esenciales',
-        description: `Tienes $${Math.round(totalNE).toLocaleString('es-CO')}/mes en gastos fijos no esenciales (gimnasio, suscripciones, etc.).`,
-        impact: `Reducir un 30% libera $${Math.round(totalNE * 0.3).toLocaleString('es-CO')}/mes para objetivos prioritarios`,
-        actionSteps: nonEssentialFixed.slice(0, 3).map(e => `Evalúa si puedes reducir o eliminar: ${e.name} ($${Math.round(e.amount).toLocaleString('es-CO')}/mes)`),
+        title: t('diagnosis.recReviewExpenses'),
+        description: t('diagnosis.recReviewExpensesDesc', { amount: fmt(totalNE) }),
+        impact: t('diagnosis.recReviewExpensesImpact', { amount: fmt(totalNE * 0.3) }),
+        actionSteps: nonEssentialFixed.slice(0, 3).map(e => t('diagnosis.recReviewExpenseStep', { name: e.name, amount: fmt(e.amount) })),
       });
     }
   }

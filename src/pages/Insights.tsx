@@ -1,6 +1,7 @@
+import { useTranslation } from 'react-i18next';
 import { useFinancialStore } from '../store/useFinancialStore';
 import { formatCurrency } from '../utils/formatters';
-import { HEALTH_LEVEL_CONFIG } from '../utils/constants';
+import { HEALTH_LEVEL_CONFIG, getHealthLevelLabel } from '../utils/constants';
 import { Card } from '../components/shared/Card';
 import { Alert } from '../components/shared/Alert';
 import { ProgressBar } from '../components/shared/ProgressBar';
@@ -14,6 +15,7 @@ import {
 } from 'recharts';
 
 export function Insights() {
+  const { t } = useTranslation();
   const { financialState, profile } = useFinancialStore();
   const fs = financialState;
   if (!fs) return null;
@@ -44,9 +46,9 @@ export function Insights() {
             <Brain className="text-white" size={24} />
           </div>
           <div>
-            <p className="text-base font-heading font-bold text-brand-300">Financial Tutor Analysis</p>
+            <p className="text-base font-heading font-bold text-brand-300">{t('insights.title')}</p>
             <p className="text-sm text-slate-400 mt-1 leading-relaxed">
-              Based on your current situation, here is my complete diagnosis and the most effective action plan for your case.
+              {t('insights.subtitle')}
             </p>
           </div>
         </div>
@@ -54,7 +56,7 @@ export function Insights() {
 
       {/* Health score breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card title="Financial Health Score">
+        <Card title={t('insights.healthScore')}>
           <div className="flex items-center gap-6 mt-3">
             <RingChart
               value={diagnosis.healthScore}
@@ -68,27 +70,27 @@ export function Insights() {
                 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold mb-3 border',
                 healthCfg.bg, healthCfg.text, healthCfg.border
               )}>
-                {healthCfg.label}
+                {getHealthLevelLabel(diagnosis.level)}
               </div>
               <div className="space-y-2">
                 <div>
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="text-slate-400">Expense/Income</span>
+                    <span className="text-slate-400">{t('insights.expenseIncome')}</span>
                     <span className={fs.expenseToIncomeRatio > 0.8 ? 'text-red-400' : 'text-yellow-400'}>{(fs.expenseToIncomeRatio * 100).toFixed(1)}%</span>
                   </div>
                   <ProgressBar value={fs.expenseToIncomeRatio * 100} color={fs.expenseToIncomeRatio > 0.8 ? '#ef4444' : '#f59e0b'} height="h-1.5" />
                 </div>
                 <div>
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="text-slate-400">Debt ratio</span>
+                    <span className="text-slate-400">{t('insights.debtRatio')}</span>
                     <span className={fs.debtToIncomeRatio > 0.35 ? 'text-red-400' : 'text-yellow-400'}>{(fs.debtToIncomeRatio * 100).toFixed(1)}%</span>
                   </div>
                   <ProgressBar value={fs.debtToIncomeRatio * 100} color={fs.debtToIncomeRatio > 0.35 ? '#ef4444' : '#f59e0b'} height="h-1.5" />
                 </div>
                 <div>
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="text-slate-400">Emergency fund</span>
-                    <span className={fs.emergencyFundMonths < 3 ? 'text-red-400' : 'text-green-400'}>{fs.emergencyFundMonths.toFixed(1)} months</span>
+                    <span className="text-slate-400">{t('insights.emergencyFund')}</span>
+                    <span className={fs.emergencyFundMonths < 3 ? 'text-red-400' : 'text-green-400'}>{fs.emergencyFundMonths.toFixed(1)} {t('insights.months')}</span>
                   </div>
                   <ProgressBar value={Math.min(100, (fs.emergencyFundMonths / 6) * 100)} color={fs.emergencyFundMonths < 3 ? '#ef4444' : '#22c55e'} height="h-1.5" />
                 </div>
@@ -102,13 +104,13 @@ export function Insights() {
           <Card className="border-orange-500/30 bg-orange-950/10">
             <div className="flex items-center gap-2 mb-3">
               <Target className="text-orange-400" size={20} />
-              <p className="text-sm font-bold text-orange-300">Most Important Action NOW</p>
+              <p className="text-sm font-bold text-orange-300">{t('insights.mostImportantAction')}</p>
             </div>
             <p className="text-base font-semibold text-slate-100 mb-2">{diagnosis.recommendations[0].title}</p>
             <p className="text-sm text-slate-400 leading-relaxed">{diagnosis.recommendations[0].description}</p>
             <div className="mt-3 p-2.5 bg-green-950/40 border border-green-700/40 rounded-lg flex items-center gap-2">
               <TrendingUp className="text-green-400 shrink-0" size={14} />
-              <p className="text-xs text-green-400 font-medium">Impact: {diagnosis.recommendations[0].impact}</p>
+              <p className="text-xs text-green-400 font-medium">{t('insights.impact', { impact: diagnosis.recommendations[0].impact })}</p>
             </div>
             <ul className="mt-3 space-y-1.5">
               {diagnosis.recommendations[0].actionSteps.map((step, i) => (
@@ -124,9 +126,9 @@ export function Insights() {
 
       {/* Strengths & Weaknesses */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card title="Strengths" className="border-green-500/20">
+        <Card title={t('insights.strengths')} className="border-green-500/20">
           {diagnosis.strengths.length === 0 ? (
-            <p className="text-sm text-slate-500 mt-2">Working on identifying strengths...</p>
+            <p className="text-sm text-slate-500 mt-2">{t('insights.identifyingStrengths')}</p>
           ) : (
             <ul className="mt-2 space-y-2">
               {diagnosis.strengths.map((s, i) => (
@@ -138,9 +140,9 @@ export function Insights() {
             </ul>
           )}
         </Card>
-        <Card title="Areas for Improvement" className="border-red-500/20">
+        <Card title={t('insights.weaknesses')} className="border-red-500/20">
           {diagnosis.weaknesses.length === 0 ? (
-            <p className="text-sm text-slate-400 mt-2">No weaknesses detected!</p>
+            <p className="text-sm text-slate-400 mt-2">{t('insights.noWeaknesses')}</p>
           ) : (
             <ul className="mt-2 space-y-2">
               {diagnosis.weaknesses.map((w, i) => (
@@ -156,7 +158,7 @@ export function Insights() {
 
       {/* All recommendations */}
       {diagnosis.recommendations.length > 1 && (
-        <Card title="Complete Action Plan" subtitle="Ordered by priority and impact">
+        <Card title={t('insights.actionPlan')} subtitle={t('insights.actionPlanSubtitle')}>
           <div className="space-y-4 mt-3">
             {diagnosis.recommendations.map((rec, i) => (
               <div key={i} className={cn(
@@ -181,9 +183,9 @@ export function Insights() {
                       )}
                       size={8}
                     />
-                    {rec.priority === 'high' ? 'High' : rec.priority === 'medium' ? 'Medium' : 'Low'} priority
+                    {rec.priority === 'high' ? t('insights.priorityHigh') : rec.priority === 'medium' ? t('insights.priorityMedium') : t('insights.priorityLow')}
                   </span>
-                  <span className="text-xs text-slate-500">Action #{i + 1}</span>
+                  <span className="text-xs text-slate-500">{t('insights.action', { number: i + 1 })}</span>
                 </div>
                 <p className="text-sm font-semibold text-slate-100">{rec.title}</p>
                 <p className="text-xs text-slate-400 mt-1 leading-relaxed">{rec.description}</p>
@@ -206,19 +208,19 @@ export function Insights() {
       )}
 
       {/* Alerts */}
-      <Card title="All Alerts">
+      <Card title={t('insights.allAlerts')}>
         <div className="space-y-2 mt-2">
           {diagnosis.alerts.map((alert, i) => (
             <Alert key={i} type={alert.type} title={alert.title} message={alert.message} action={alert.action} />
           ))}
           {diagnosis.alerts.length === 0 && (
-            <Alert type="success" title="No active alerts" message="Your financial situation is in good shape." />
+            <Alert type="success" title={t('insights.noAlerts')} message={t('insights.noAlertsDescription')} />
           )}
         </div>
       </Card>
 
       {/* Net worth projection */}
-      <Card title="24-Month Projection" subtitle="Net worth evolution">
+      <Card title={t('insights.projection24')} subtitle={t('insights.netWorthEvolution')}>
         <div className="h-52 mt-3">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={netWorthData}>
@@ -241,37 +243,37 @@ export function Insights() {
                 formatter={(value: unknown) => [fmt(Number(value)), '']}
               />
               <Legend formatter={(v) => <span style={{ color: '#94a3b8', fontSize: '11px' }}>{v}</span>} />
-              <Area type="monotone" dataKey="ahorro" name="Savings" stroke="#22c55e" fill="url(#savGrad)" strokeWidth={2} />
-              <Area type="monotone" dataKey="patrimonio" name="Net Worth" stroke="#3b82f6" fill="none" strokeWidth={2} strokeDasharray="4 2" />
+              <Area type="monotone" dataKey="ahorro" name={t('insights.savingsLabel')} stroke="#22c55e" fill="url(#savGrad)" strokeWidth={2} />
+              <Area type="monotone" dataKey="patrimonio" name={t('insights.netWorth')} stroke="#3b82f6" fill="none" strokeWidth={2} strokeDasharray="4 2" />
             </AreaChart>
           </ResponsiveContainer>
         </div>
       </Card>
 
       {/* Key metrics comparison */}
-      <Card title="Key Metrics vs Goals">
+      <Card title={t('insights.keyMetrics')}>
         <div className="mt-2 space-y-3">
           {[
             {
-              label: 'Expense/Income Ratio',
+              label: t('insights.expenseIncomeRatio'),
               current: `${(fs.expenseToIncomeRatio * 100).toFixed(1)}%`,
               target: '< 75%',
               ok: fs.expenseToIncomeRatio < 0.75,
             },
             {
-              label: 'Savings Rate',
+              label: t('insights.savingsRate'),
               current: `${(fs.savingsRate * 100).toFixed(1)}%`,
               target: '> 20%',
               ok: fs.savingsRate > 0.2,
             },
             {
-              label: 'Emergency Fund',
-              current: `${fs.emergencyFundMonths.toFixed(1)} months`,
-              target: '3-6 months',
+              label: t('insights.emergencyFundLabel'),
+              current: `${fs.emergencyFundMonths.toFixed(1)} ${t('insights.months')}`,
+              target: `3-6 ${t('insights.months')}`,
               ok: fs.emergencyFundMonths >= 3,
             },
             {
-              label: 'Debt/Annual Income Ratio',
+              label: t('insights.debtAnnualRatio'),
               current: `${(fs.debtToIncomeRatio * 100).toFixed(1)}%`,
               target: '< 35%',
               ok: fs.debtToIncomeRatio < 0.35,
@@ -281,7 +283,7 @@ export function Insights() {
               <span className="text-sm text-slate-400">{m.label}</span>
               <div className="flex items-center gap-3 text-sm">
                 <span className="text-slate-300 font-medium">{m.current}</span>
-                <span className="text-slate-500 text-xs">goal: {m.target}</span>
+                <span className="text-slate-500 text-xs">{t('insights.goalTarget', { target: m.target })}</span>
                 {m.ok ? (
                   <Check className="text-green-400" size={14} />
                 ) : (

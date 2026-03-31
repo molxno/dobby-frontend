@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useFinancialStore } from '../store/useFinancialStore';
 import { formatCurrency } from '../utils/formatters';
 import { CategoryIcon } from '../components/shared/CategoryIcon';
@@ -13,6 +14,7 @@ import {
 import type { ExpenseCategory } from '../store/types';
 
 export function Budget() {
+  const { t } = useTranslation();
   const { financialState, profile } = useFinancialStore();
   const fs = financialState;
   if (!fs) return null;
@@ -33,27 +35,27 @@ export function Budget() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="text-center">
           <p className="text-lg font-bold text-green-400">{fmt(budgetPlan.totalIncome)}</p>
-          <p className="text-xs text-slate-500 mt-1">Ingreso Total</p>
+          <p className="text-xs text-slate-500 mt-1">{t('budget.totalIncome')}</p>
         </Card>
         <Card className="text-center">
           <p className="text-lg font-bold text-brand-400">{fmt(budgetPlan.totalExpenses)}</p>
-          <p className="text-xs text-slate-500 mt-1">Gastos Fijos</p>
+          <p className="text-xs text-slate-500 mt-1">{t('budget.fixedExpenses')}</p>
         </Card>
         <Card className="text-center">
           <p className="text-lg font-bold text-red-400">{fmt(budgetPlan.totalDebtPayments)}</p>
-          <p className="text-xs text-slate-500 mt-1">Deudas/mes</p>
+          <p className="text-xs text-slate-500 mt-1">{t('budget.debtsPerMonth')}</p>
         </Card>
         <Card className={`text-center border-${budgetPlan.freeFlow >= 0 ? 'green' : 'red'}-500/30`}>
           <p className={`text-lg font-bold ${budgetPlan.freeFlow >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
             {fmt(budgetPlan.freeFlow)}
           </p>
-          <p className="text-xs text-slate-500 mt-1">Flujo Libre</p>
+          <p className="text-xs text-slate-500 mt-1">{t('budget.freeFlow')}</p>
         </Card>
       </div>
 
       {/* Phase budget allocation */}
       {fs.currentPhase && (
-        <Card title={`Presupuesto Fase: ${fs.currentPhase.name}`} subtitle="Distribución óptima del ingreso">
+        <Card title={t('budget.phaseLabel', { phase: fs.currentPhase.name })} subtitle={t('budget.optimalDistribution')}>
           <div className="space-y-3 mt-2">
             {budgetPlan.phaseAllocations.map(alloc => (
               <div key={alloc.category}>
@@ -75,7 +77,7 @@ export function Budget() {
 
           {/* Savings rate */}
           <div className="mt-4 p-3 bg-surface-950/60 rounded-lg flex items-center justify-between">
-            <span className="text-sm text-slate-400">Tasa de ahorro</span>
+            <span className="text-sm text-slate-400">{t('budget.savingsRate')}</span>
             <span className={`text-sm font-bold flex items-center gap-1.5 ${budgetPlan.savingsRate > 0.2 ? 'text-green-400' : budgetPlan.savingsRate > 0.1 ? 'text-yellow-400' : 'text-red-400'}`}>
               {(budgetPlan.savingsRate * 100).toFixed(1)}%
               {budgetPlan.savingsRate > 0.2
@@ -90,7 +92,7 @@ export function Budget() {
       )}
 
       {/* Category breakdown */}
-      <Card title="Gastos por Categoría" subtitle="Comparación presupuestado vs real">
+      <Card title={t('budget.expensesByCategory')} subtitle={t('budget.budgetVsActual')}>
         <div className="space-y-3 mt-2">
           {budgetPlan.categories.map(cat => (
             <div key={cat.category} className="group">
@@ -113,7 +115,7 @@ export function Budget() {
       </Card>
 
       {/* Bar chart */}
-      <Card title="Visualización de Gastos">
+      <Card title={t('budget.expenseVisualization')}>
         <div className="h-56 mt-3">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} layout="vertical">
@@ -137,10 +139,10 @@ export function Budget() {
 
       {/* Recommendations */}
       {budgetPlan.recommendations.length > 0 && (
-        <Card title="Recomendaciones de Optimización">
+        <Card title={t('budget.optimizationRecommendations')}>
           <div className="space-y-2 mt-2">
             {budgetPlan.recommendations.map((rec, i) => (
-              <Alert key={i} type="info" title={`Sugerencia ${i + 1}`} message={rec} />
+              <Alert key={i} type="info" title={t('budget.suggestion', { number: i + 1 })} message={rec} />
             ))}
           </div>
         </Card>

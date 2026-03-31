@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   LayoutDashboard, Wallet, CreditCard, Target, CalendarCheck,
   ShieldCheck, Receipt, Brain, Settings, X, Sparkles,
@@ -7,14 +8,14 @@ import { useFinancialStore } from '../../store/useFinancialStore';
 import { cn } from '../../lib/utils';
 
 const navItems = [
-  { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
-  { path: '/presupuesto', icon: Wallet, label: 'Presupuesto' },
-  { path: '/deudas', icon: CreditCard, label: 'Deudas' },
-  { path: '/metas', icon: Target, label: 'Metas' },
-  { path: '/quincenal', icon: CalendarCheck, label: 'Plan Quincenal' },
-  { path: '/emergencia', icon: ShieldCheck, label: 'Emergencia' },
-  { path: '/transacciones', icon: Receipt, label: 'Transacciones' },
-  { path: '/insights', icon: Brain, label: 'Insights' },
+  { path: '/', icon: LayoutDashboard, labelKey: 'nav.dashboard' },
+  { path: '/presupuesto', icon: Wallet, labelKey: 'nav.budget' },
+  { path: '/deudas', icon: CreditCard, labelKey: 'nav.debts' },
+  { path: '/metas', icon: Target, labelKey: 'nav.goals' },
+  { path: '/quincenal', icon: CalendarCheck, labelKey: 'nav.biweekly' },
+  { path: '/emergencia', icon: ShieldCheck, labelKey: 'nav.emergency' },
+  { path: '/transacciones', icon: Receipt, labelKey: 'nav.transactions' },
+  { path: '/insights', icon: Brain, labelKey: 'nav.insights' },
 ];
 
 interface SidebarProps {
@@ -23,6 +24,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({ mobile, onClose }: SidebarProps) {
+  const { t } = useTranslation();
   const { financialState, profile } = useFinancialStore();
   const healthScore = financialState?.diagnosis.healthScore ?? 0;
 
@@ -60,7 +62,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
         <div className="px-5 pb-4">
           <div className="bg-surface-900 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2.5">
-              <span className="text-xs text-slate-400">Salud Financiera</span>
+              <span className="text-xs text-slate-400">{t('nav.financialHealth')}</span>
               <span className="text-sm font-bold font-heading" style={{ color: getScoreColor(healthScore) }}>
                 {healthScore}/100
               </span>
@@ -78,7 +80,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
       {/* Current Phase */}
       {financialState?.currentPhase && (
         <div className="px-6 pb-4">
-          <p className="text-xs text-slate-500 mb-1.5">Fase actual</p>
+          <p className="text-xs text-slate-500 mb-1.5">{t('nav.currentPhase')}</p>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: financialState.currentPhase.color }} />
             <span className="text-xs font-medium text-slate-300 leading-tight">{financialState.currentPhase.name}</span>
@@ -105,7 +107,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
                 }
               >
                 <item.icon size={18} />
-                <span>{item.label}</span>
+                <span>{t(item.labelKey)}</span>
               </NavLink>
             </li>
           ))}
@@ -125,7 +127,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
           }
         >
           <Settings size={18} />
-          <span>Configuración</span>
+          <span>{t('nav.settings')}</span>
         </NavLink>
       </div>
     </aside>

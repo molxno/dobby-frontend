@@ -1,9 +1,11 @@
 import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, Mail } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 
 export function Signup() {
+  const { t } = useTranslation();
   const { signUp } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -17,7 +19,7 @@ export function Signup() {
     setError('');
 
     if (password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres.');
+      setError(t('auth.passwordMinError'));
       return;
     }
 
@@ -39,16 +41,15 @@ export function Signup() {
             <div className="inline-flex items-center justify-center w-14 h-14 bg-green-600/20 border border-green-500/40 rounded-lg">
               <Mail size={24} className="text-green-400" />
             </div>
-            <h2 className="text-xl font-bold text-slate-100 font-heading">Revisa tu email</h2>
+            <h2 className="text-xl font-bold text-slate-100 font-heading">{t('auth.checkEmail')}</h2>
             <p className="text-sm text-slate-400">
-              Enviamos un enlace de confirmación a <span className="text-slate-200 font-medium">{email}</span>.
-              Haz clic en el enlace para activar tu cuenta.
+              {t('auth.confirmationSent', { email })}
             </p>
             <Link
               to="/auth/login"
               className="inline-block mt-2 text-sm text-brand-400 hover:text-brand-300 font-medium"
             >
-              Volver al login
+              {t('auth.backToLogin')}
             </Link>
           </div>
         </div>
@@ -64,8 +65,8 @@ export function Signup() {
           <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-600 rounded-lg mb-4">
             <Sparkles size={24} className="text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-100 font-heading">Create Your Account</h1>
-          <p className="text-sm text-slate-400 mt-1">Start taking control of your finances</p>
+          <h1 className="text-2xl font-bold text-slate-100 font-heading">{t('auth.createAccount')}</h1>
+          <p className="text-sm text-slate-400 mt-1">{t('auth.startControlling')}</p>
         </div>
 
         {/* Card */}
@@ -78,7 +79,7 @@ export function Signup() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Nombre</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('auth.name')}</label>
               <input
                 type="text"
                 value={name}
@@ -86,12 +87,12 @@ export function Signup() {
                 required
                 autoComplete="name"
                 className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
-                placeholder="Tu nombre"
+                placeholder={t('auth.namePlaceholder')}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Email</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('auth.email')}</label>
               <input
                 type="email"
                 value={email}
@@ -99,12 +100,12 @@ export function Signup() {
                 required
                 autoComplete="email"
                 className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
-                placeholder="tu@email.com"
+                placeholder={t('auth.emailPlaceholder')}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Contraseña</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('auth.password')}</label>
               <input
                 type="password"
                 value={password}
@@ -113,7 +114,7 @@ export function Signup() {
                 minLength={6}
                 autoComplete="new-password"
                 className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
-                placeholder="Mínimo 6 caracteres"
+                placeholder={t('auth.minChars')}
               />
             </div>
 
@@ -122,16 +123,16 @@ export function Signup() {
               disabled={loading}
               className="w-full bg-brand-600 hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 rounded-lg transition-colors shadow-lg shadow-brand-600/20"
             >
-              {loading ? 'Creando cuenta...' : 'Crear cuenta'}
+              {loading ? t('auth.creatingAccount') : t('auth.createAccountBtn')}
             </button>
           </form>
         </div>
 
         {/* Footer */}
         <p className="text-center text-sm text-slate-500 mt-6">
-          ¿Ya tienes cuenta?{' '}
+          {t('auth.hasAccount')}{' '}
           <Link to="/auth/login" className="text-brand-400 hover:text-brand-300 font-medium">
-            Inicia sesión
+            {t('auth.signIn')}
           </Link>
         </p>
       </div>

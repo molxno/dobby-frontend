@@ -211,6 +211,16 @@ gh pr create --base dev --title "<type>(<scope>): <description>" --body "..."
 - When creating issues, check for an existing GitHub Project and add items to it
 - Use `gh issue list` to check for duplicate issues before creating new ones
 
+## Claude Agent Usage — Token Optimization
+
+**Prefer direct tools over spawning agents for file editing tasks.**
+
+- Use `Read`, `Edit`, `Write`, `Grep`, `Glob` directly for reading and modifying files — these are fast, cheap, and exact.
+- Only spawn an `Agent` when the task genuinely requires autonomous multi-step exploration across many unknown files, or when you need to protect the main context window from huge result sets.
+- **Never spawn parallel agents to edit multiple files** — instead, read and edit them sequentially with direct tools. Parallel agents each carry full context overhead and burn tokens fast.
+- Reserve agents for: broad codebase exploration, complex research questions, and tasks where you are not confident which files to read first.
+- For simple "update all pages to use X" tasks: Grep for the pattern, then Read + Edit each file directly.
+
 ## Gotchas
 - Tailwind v4 uses `@import "tailwindcss"` — NOT `@tailwind base/components/utilities`
 - `@tailwindcss/vite` is configured in vite.config.ts as a plugin, no postcss.config

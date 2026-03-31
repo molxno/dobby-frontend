@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useFinancialStore } from '../store/useFinancialStore';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import { Card } from '../components/shared/Card';
@@ -21,6 +22,7 @@ const LEVEL_CONFIG = {
 };
 
 export function EmergencyFund() {
+  const { t } = useTranslation();
   const { financialState, profile, currentFund, setCurrentFund } = useFinancialStore();
   const fs = financialState;
   if (!fs) return null;
@@ -57,7 +59,7 @@ export function EmergencyFund() {
               <LevelIcon style={{ color: levelCfg.color }} size={24} />
             </div>
             <div>
-              <p className="text-xs text-slate-500 uppercase tracking-wider">Current status</p>
+              <p className="text-xs text-slate-500 uppercase tracking-wider">{t('emergency.currentStatus')}</p>
               <p className="text-lg font-heading font-bold" style={{ color: levelCfg.color }}>{levelCfg.label}</p>
             </div>
           </div>
@@ -69,28 +71,28 @@ export function EmergencyFund() {
       </Card>
 
       {/* Update current fund */}
-      <Card title="Update Fund">
+      <Card title={t('emergency.updateFund')}>
         <div className="flex gap-3 items-end mt-2">
           <CurrencyInput
             value={currentFund}
             onChange={setCurrentFund}
             currency={currency}
-            label="Current emergency fund amount"
+            label={t('emergency.currentAmount')}
             className="flex-1"
           />
         </div>
       </Card>
 
       {/* Progress toward targets */}
-      <Card title="Progress Toward Goals">
+      <Card title={t('emergency.progressTitle')}>
         <div className="space-y-5 mt-3">
           {/* 3 months */}
           <div>
             <div className="flex justify-between mb-1.5">
               <div className="flex items-center gap-1.5">
                 <Target className="text-green-400" size={14} />
-                <span className="text-sm font-medium text-slate-200">3-month goal</span>
-                <span className="text-xs text-slate-500 ml-1">(minimum recommended)</span>
+                <span className="text-sm font-medium text-slate-200">{t('emergency.goal3Months')}</span>
+                <span className="text-xs text-slate-500 ml-1">{t('emergency.minimumRecommended')}</span>
               </div>
               <div className="text-right text-xs text-slate-400">
                 <span className="font-medium text-slate-200">{fmt(emergencyPlan.currentFund)}</span>
@@ -99,14 +101,14 @@ export function EmergencyFund() {
             </div>
             <ProgressBar value={progress3} color="#22c55e" height="h-3" />
             <div className="flex justify-between text-xs mt-1">
-              <span className="text-slate-500">{progress3.toFixed(0)}% completed</span>
+              <span className="text-slate-500">{t('emergency.percentComplete', { percent: progress3.toFixed(0) })}</span>
               {emergencyPlan.monthsTo3 > 0 ? (
                 <span className="text-green-400">
-                  In {emergencyPlan.monthsTo3} months ({formatDate(emergencyPlan.dateFor3months, locale)})
+                  {t('emergency.inMonths', { months: emergencyPlan.monthsTo3, date: formatDate(emergencyPlan.dateFor3months, locale) })}
                 </span>
               ) : (
                 <span className="text-green-400 flex items-center gap-1">
-                  <CheckCheck size={12} /> Completed
+                  <CheckCheck size={12} /> {t('emergency.completed')}
                 </span>
               )}
             </div>
@@ -117,8 +119,8 @@ export function EmergencyFund() {
             <div className="flex justify-between mb-1.5">
               <div className="flex items-center gap-1.5">
                 <Trophy className="text-blue-400" size={14} />
-                <span className="text-sm font-medium text-slate-200">6-month goal</span>
-                <span className="text-xs text-slate-500 ml-1">(ideal target)</span>
+                <span className="text-sm font-medium text-slate-200">{t('emergency.goal6Months')}</span>
+                <span className="text-xs text-slate-500 ml-1">{t('emergency.idealTarget')}</span>
               </div>
               <div className="text-right text-xs text-slate-400">
                 <span className="font-medium text-slate-200">{fmt(emergencyPlan.currentFund)}</span>
@@ -127,17 +129,17 @@ export function EmergencyFund() {
             </div>
             <ProgressBar value={progress6} color="#3b82f6" height="h-3" />
             <div className="flex justify-between text-xs mt-1">
-              <span className="text-slate-500">{progress6.toFixed(0)}% completed</span>
+              <span className="text-slate-500">{t('emergency.percentComplete', { percent: progress6.toFixed(0) })}</span>
               {emergencyPlan.monthsTo6 > 0 && emergencyPlan.monthsTo6 < 999 ? (
                 <span className="text-blue-400">
-                  In {emergencyPlan.monthsTo6} months ({formatDate(emergencyPlan.dateFor6months, locale)})
+                  {t('emergency.inMonths', { months: emergencyPlan.monthsTo6, date: formatDate(emergencyPlan.dateFor6months, locale) })}
                 </span>
               ) : emergencyPlan.monthsTo6 === 0 ? (
                 <span className="text-blue-400 flex items-center gap-1">
-                  <CheckCheck size={12} /> Completed
+                  <CheckCheck size={12} /> {t('emergency.completed')}
                 </span>
               ) : (
-                <span className="text-slate-500">Requires increased savings</span>
+                <span className="text-slate-500">{t('emergency.requiresMoreSavings')}</span>
               )}
             </div>
           </div>
@@ -145,13 +147,13 @@ export function EmergencyFund() {
 
         {/* Monthly saving info */}
         <div className="mt-4 p-3 bg-surface-900/60 rounded-lg flex justify-between">
-          <span className="text-xs text-slate-400">Monthly savings allocated to fund</span>
-          <span className="text-xs font-semibold text-green-400">{fmt(emergencyPlan.monthlySaving)}/mo</span>
+          <span className="text-xs text-slate-400">{t('emergency.monthlySavings')}</span>
+          <span className="text-xs font-semibold text-green-400">{fmt(emergencyPlan.monthlySaving)}{t('common.perMonth')}</span>
         </div>
       </Card>
 
       {/* What this covers */}
-      <Card title="What does your fund cover?" subtitle="Essential monthly expenses">
+      <Card title={t('emergency.whatCovered')} subtitle={t('emergency.essentialExpenses')}>
         <div className="mt-3 text-center">
           {/* Thermometer-style display */}
           <div className="relative mx-auto w-20 h-48 bg-surface-800 rounded-full overflow-hidden">
@@ -169,15 +171,15 @@ export function EmergencyFund() {
           </div>
           <div className="mt-3 space-y-1 text-xs text-slate-400">
             <div className="flex justify-between">
-              <span>Essential expenses/mo</span>
+              <span>{t('emergency.essentialPerMonth')}</span>
               <span className="text-slate-200">{fmt(emergencyPlan.essentialExpenses)}</span>
             </div>
             <div className="flex justify-between">
-              <span>3-month goal</span>
+              <span>{t('emergency.goal3Months')}</span>
               <span className="text-green-400">{fmt(emergencyPlan.target3months)}</span>
             </div>
             <div className="flex justify-between">
-              <span>6-month goal</span>
+              <span>{t('emergency.goal6Months')}</span>
               <span className="text-blue-400">{fmt(emergencyPlan.target6months)}</span>
             </div>
           </div>
@@ -185,7 +187,7 @@ export function EmergencyFund() {
       </Card>
 
       {/* Projection chart */}
-      <Card title="24-Month Projection">
+      <Card title={t('emergency.projection24')}>
         <div className="h-52 mt-3">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={chartData}>
@@ -225,23 +227,23 @@ export function EmergencyFund() {
             <Lightbulb className="text-brand-400" size={18} />
           </div>
           <div>
-            <p className="text-sm font-semibold text-brand-400">Where to keep your fund?</p>
+            <p className="text-sm font-semibold text-brand-400">{t('emergency.whereToKeep')}</p>
             <ul className="mt-2 space-y-1.5 text-xs text-slate-400">
               <li className="flex items-start gap-2">
                 <ArrowRight className="text-slate-500 shrink-0 mt-0.5" size={12} />
-                High-yield savings account (separate from daily spending)
+                {t('emergency.tip1')}
               </li>
               <li className="flex items-start gap-2">
                 <ArrowRight className="text-slate-500 shrink-0 mt-0.5" size={12} />
-                A separate account from your everyday use — hard to spend impulsively
+                {t('emergency.tip2')}
               </li>
               <li className="flex items-start gap-2">
                 <ArrowRight className="text-slate-500 shrink-0 mt-0.5" size={12} />
-                Not in stocks or high-risk investments — it must be readily available
+                {t('emergency.tip3')}
               </li>
               <li className="flex items-start gap-2">
                 <ArrowRight className="text-slate-500 shrink-0 mt-0.5" size={12} />
-                Keep at least 1 month always, even while paying off debt
+                {t('emergency.tip4')}
               </li>
             </ul>
           </div>

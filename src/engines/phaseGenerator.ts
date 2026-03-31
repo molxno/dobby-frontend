@@ -1,5 +1,10 @@
 import type { Income, Expense, Debt, Goal, Phase, BudgetAllocation } from '../store/types';
 import { addMonths, formatMonthYear } from '../utils/formatters';
+import i18n from '../i18n';
+
+function fmt(amount: number): string {
+  return `$${Math.round(amount).toLocaleString()}`;
+}
 
 function makeBudget(
   income: number,
@@ -8,25 +13,26 @@ function makeBudget(
   freeFlow: number,
   alloc: { debts?: number; emergency?: number; goals?: number; leisure?: number; buffer?: number }
 ): BudgetAllocation[] {
+  const t = i18n.t.bind(i18n);
   const allocations: BudgetAllocation[] = [
-    { category: 'essential', label: 'Gastos esenciales', amount: essentialExpenses, percentage: essentialExpenses / income, color: '#3b82f6' },
-    { category: 'debt', label: 'Deudas (mínimos)', amount: debtPayments, percentage: debtPayments / income, color: '#ef4444' },
+    { category: 'essential', label: t('phases.essential'), amount: essentialExpenses, percentage: essentialExpenses / income, color: '#3b82f6' },
+    { category: 'debt', label: t('phases.debtMin'), amount: debtPayments, percentage: debtPayments / income, color: '#ef4444' },
   ];
 
   if (alloc.debts && alloc.debts > 0) {
-    allocations.push({ category: 'debt_extra', label: 'Pago extra deuda', amount: freeFlow * alloc.debts, percentage: (freeFlow * alloc.debts) / income, color: '#f97316' });
+    allocations.push({ category: 'debt_extra', label: t('phases.debtExtra'), amount: freeFlow * alloc.debts, percentage: (freeFlow * alloc.debts) / income, color: '#f97316' });
   }
   if (alloc.emergency && alloc.emergency > 0) {
-    allocations.push({ category: 'emergency', label: 'Fondo emergencia', amount: freeFlow * alloc.emergency, percentage: (freeFlow * alloc.emergency) / income, color: '#22c55e' });
+    allocations.push({ category: 'emergency', label: t('phases.emergencyFund'), amount: freeFlow * alloc.emergency, percentage: (freeFlow * alloc.emergency) / income, color: '#22c55e' });
   }
   if (alloc.goals && alloc.goals > 0) {
-    allocations.push({ category: 'goals', label: 'Metas de ahorro', amount: freeFlow * alloc.goals, percentage: (freeFlow * alloc.goals) / income, color: '#a855f7' });
+    allocations.push({ category: 'goals', label: t('phases.savingsGoals'), amount: freeFlow * alloc.goals, percentage: (freeFlow * alloc.goals) / income, color: '#a855f7' });
   }
   if (alloc.leisure && alloc.leisure > 0) {
-    allocations.push({ category: 'leisure', label: 'Ocio/personal', amount: freeFlow * alloc.leisure, percentage: (freeFlow * alloc.leisure) / income, color: '#6366f1' });
+    allocations.push({ category: 'leisure', label: t('phases.leisure'), amount: freeFlow * alloc.leisure, percentage: (freeFlow * alloc.leisure) / income, color: '#6366f1' });
   }
   if (alloc.buffer && alloc.buffer > 0) {
-    allocations.push({ category: 'buffer', label: 'Colchón imprevistos', amount: freeFlow * alloc.buffer, percentage: (freeFlow * alloc.buffer) / income, color: '#6b7280' });
+    allocations.push({ category: 'buffer', label: t('phases.buffer'), amount: freeFlow * alloc.buffer, percentage: (freeFlow * alloc.buffer) / income, color: '#6b7280' });
   }
 
   return allocations.filter(a => a.amount > 0);
@@ -41,6 +47,7 @@ export function generatePhases(
   debtFreeMonths: number,
   startDate = new Date()
 ): Phase[] {
+  const t = i18n.t.bind(i18n);
   const phases: Phase[] = [];
   const totalIncome = incomes.reduce((s, i) => s + i.amount, 0);
   const totalExpenses = expenses.reduce((s, e) => s + e.amount, 0);
@@ -51,7 +58,6 @@ export function generatePhases(
   const highInterestDebts = debts.filter(d => d.interestRate > 0.015);
   const medInterestDebts = debts.filter(d => d.interestRate >= 0.005 && d.interestRate <= 0.015);
   const target3months = essentialExpenses * 3;
-  const target6months = essentialExpenses * 6;
 
   let cursor = 0;
 
@@ -63,18 +69,18 @@ export function generatePhases(
     phases.push({
       id: 'phase-debt-high',
       number: phases.length + 1,
-      name: 'Eliminar Deuda de Alto Costo',
-      description: `Liquida ${highInterestDebts.length} deuda(s) con tasas superiores al 1.5%/mes usando el método avalanche.`,
+      name: t('phases.eliminateHighCost'),
+      description: t('phases.eliminateHighCostDesc', { count: highInterestDebts.length }),
       startMonth: formatMonthYear(start),
       endMonth: formatMonthYear(end),
       durationMonths,
       status: 'active',
       color: '#ef4444',
       objectives: [
-        'Pagar el mínimo en todas las deudas',
-        'Destinar todo el flujo libre a la deuda más costosa',
-        'No asumir nuevas deudas',
-        'Suspender ahorro para metas no urgentes',
+        t('phases.objPayMinimum'),
+        t('phases.objFreeFlowToDebt'),
+        t('phases.objNoNewDebt'),
+        t('phases.objSuspendSavings'),
       ],
       monthlyBudget: makeBudget(totalIncome, totalExpenses, totalDebtPayments, freeFlow, { debts: 0.90, buffer: 0.10 }),
     });
@@ -90,17 +96,17 @@ export function generatePhases(
       phases.push({
         id: 'phase-debt-med',
         number: phases.length + 1,
-        name: 'Liquidar Deudas Restantes',
-        description: `Termina de pagar las deudas de interés moderado mientras empiezas a construir tu base financiera.`,
+        name: t('phases.liquidateRemaining'),
+        description: t('phases.liquidateRemainingDesc'),
         startMonth: formatMonthYear(start),
         endMonth: formatMonthYear(end),
         durationMonths: remaining,
         status: cursor === 0 && highInterestDebts.length === 0 ? 'active' : 'upcoming',
         color: '#f59e0b',
         objectives: [
-          'Liquidar deudas restantes',
-          'Comenzar fondo de emergencia con 20% del flujo libre',
-          'Mantener buffer para imprevistos',
+          t('phases.objLiquidateRemaining'),
+          t('phases.objStartEmergency20'),
+          t('phases.objMaintainBuffer'),
         ],
         monthlyBudget: makeBudget(totalIncome, totalExpenses, totalDebtPayments, freeFlow, { debts: 0.70, emergency: 0.20, buffer: 0.10 }),
       });
@@ -116,17 +122,17 @@ export function generatePhases(
     phases.push({
       id: 'phase-emergency',
       number: phases.length + 1,
-      name: 'Construir Fondo de Emergencia',
-      description: `Acumula ${Math.round(target3months).toLocaleString('es-CO')} COP (3 meses de gastos esenciales) para protegerte de imprevistos.`,
+      name: t('phases.buildEmergency'),
+      description: t('phases.buildEmergencyDesc', { amount: fmt(target3months) }),
       startMonth: formatMonthYear(start),
       endMonth: formatMonthYear(end),
       durationMonths: monthsToFund,
       status: cursor === 0 && debts.length === 0 ? 'active' : 'upcoming',
       color: '#22c55e',
       objectives: [
-        'Ahorrar el 40-50% del flujo libre en cuenta separada',
-        'No usar este dinero excepto emergencias reales',
-        'Empezar a ahorrar para metas de baja prioridad',
+        t('phases.objSave40to50'),
+        t('phases.objDontTouch'),
+        t('phases.objStartLowPriority'),
       ],
       monthlyBudget: makeBudget(totalIncome, totalExpenses, 0, freeFlow, { emergency: 0.50, goals: 0.25, leisure: 0.15, buffer: 0.10 }),
     });
@@ -142,14 +148,14 @@ export function generatePhases(
     phases.push({
       id: 'phase-goals',
       number: phases.length + 1,
-      name: 'Alcanzar Metas',
-      description: `Ahorra para tus ${goals.length} meta(s) en orden de prioridad.`,
+      name: t('phases.reachGoals'),
+      description: t('phases.reachGoalsDesc', { count: goals.length }),
       startMonth: formatMonthYear(start),
       endMonth: formatMonthYear(end),
       durationMonths: monthsForGoals,
       status: 'upcoming',
       color: '#a855f7',
-      objectives: goals.slice(0, 3).map(g => `Ahorrar $${Math.round(g.targetAmount - g.currentSaved).toLocaleString('es-CO')} para: ${g.name}`),
+      objectives: goals.slice(0, 3).map(g => t('phases.objSaveForGoal', { amount: fmt(g.targetAmount - g.currentSaved), name: g.name })),
       monthlyBudget: makeBudget(totalIncome, totalExpenses, 0, freeFlow, { goals: 0.45, emergency: 0.20, leisure: 0.25, buffer: 0.10 }),
     });
     cursor += monthsForGoals;
@@ -162,18 +168,18 @@ export function generatePhases(
     phases.push({
       id: 'phase-freedom',
       number: phases.length + 1,
-      name: 'Libertad e Inversión',
-      description: 'Sin deudas, con fondo de emergencia y metas alcanzadas. Empieza a invertir para el futuro.',
+      name: t('phases.freedomInvestment'),
+      description: t('phases.freedomInvestmentDesc'),
       startMonth: formatMonthYear(start),
       endMonth: `${formatMonthYear(end)}+`,
       durationMonths: 12,
       status: 'upcoming',
       color: '#3b82f6',
       objectives: [
-        'Invertir el 30-40% del ingreso en instrumentos de inversión',
-        'Completar fondo de emergencia a 6 meses',
-        'Planificar jubilación anticipada o independencia financiera',
-        'Mantener estilo de vida sostenible',
+        t('phases.objInvest30to40'),
+        t('phases.objComplete6Months'),
+        t('phases.objPlanRetirement'),
+        t('phases.objSustainableLifestyle'),
       ],
       monthlyBudget: makeBudget(totalIncome, totalExpenses, 0, freeFlow, { goals: 0.35, emergency: 0.15, leisure: 0.40, buffer: 0.10 }),
     });

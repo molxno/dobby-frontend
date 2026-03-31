@@ -1,10 +1,13 @@
 import { Sparkles } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface AppLoaderProps {
   message?: string;
 }
 
-export function AppLoader({ message = 'Cargando tu información...' }: AppLoaderProps) {
+export function AppLoader({ message }: AppLoaderProps) {
+  const { t } = useTranslation();
+  const displayMessage = message ?? t('loader.default');
   return (
     <div className="min-h-screen bg-surface-950 flex items-center justify-center">
       <div className="text-center space-y-6">
@@ -12,7 +15,7 @@ export function AppLoader({ message = 'Cargando tu información...' }: AppLoader
           <Sparkles className="text-white" size={28} />
         </div>
         <div className="space-y-2">
-          <p className="text-sm text-slate-300 font-medium">{message}</p>
+          <p className="text-sm text-slate-300 font-medium">{displayMessage}</p>
           <div className="flex justify-center gap-1">
             <span className="w-1.5 h-1.5 bg-brand-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
             <span className="w-1.5 h-1.5 bg-brand-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />

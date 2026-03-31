@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Expense, ExpenseCategory } from '../../store/types';
 import { CurrencyInput } from '../shared/CurrencyInput';
 import { CategoryIcon } from '../shared/CategoryIcon';
-import { CATEGORY_LABELS } from '../../utils/constants';
+import { getCategoryLabel } from '../../utils/constants';
 import { nanoid } from '../shared/nanoid';
 import { Plus, X, Check, ArrowLeft, ArrowRight } from 'lucide-react';
 
@@ -24,6 +25,7 @@ interface ExpensesStepProps {
 }
 
 export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }: ExpensesStepProps) {
+  const { t } = useTranslation();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<Partial<Expense>>({
     name: '',
@@ -57,18 +59,18 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
 
   const removeExpense = (id: string) => setExpenses(expenses.filter(e => e.id !== id));
 
-  const categories = Object.entries(CATEGORY_LABELS).map(([k, v]) => ({ value: k, label: v }));
+  const categories = (['housing', 'utilities', 'food', 'transport', 'health', 'family', 'education', 'entertainment', 'subscriptions', 'personal', 'debt', 'savings', 'insurance', 'other'] as ExpenseCategory[]).map(k => ({ value: k, label: getCategoryLabel(k) }));
 
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-xl font-bold font-heading text-slate-100 mb-1">¿Cuáles son tus gastos fijos?</h2>
-        <p className="text-sm text-slate-500">Agrega todos tus gastos mensuales recurrentes</p>
+        <h2 className="text-xl font-bold font-heading text-slate-100 mb-1">{t('onboarding.expenses.title')}</h2>
+        <p className="text-sm text-slate-500">{t('onboarding.expenses.subtitle')}</p>
       </div>
 
       {/* Suggested */}
       <div>
-        <p className="text-xs text-slate-500 mb-2 uppercase tracking-wider">Gastos comunes — click para agregar</p>
+        <p className="text-xs text-slate-500 mb-2 uppercase tracking-wider">{t('onboarding.expenses.commonExpenses')}</p>
         <div className="flex flex-wrap gap-2">
           {SUGGESTED_EXPENSES.map(s => {
             const alreadyAdded = expenses.some(e => e.name === s.name);
@@ -100,14 +102,14 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
               <CategoryIcon category={exp.category as ExpenseCategory} size={16} />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-slate-200 truncate">{exp.name}</p>
-                <p className="text-xs text-slate-500">{exp.isEssential ? 'Esencial' : 'No esencial'} · {exp.isFixed ? 'Fijo' : 'Variable'}</p>
+                <p className="text-xs text-slate-500">{exp.isEssential ? t('onboarding.expenses.essentialLabel') : t('onboarding.expenses.nonEssential')} · {exp.isFixed ? t('onboarding.expenses.fixedLabel') : t('onboarding.expenses.variable')}</p>
               </div>
               <div className="w-32 shrink-0">
                 <CurrencyInput
                   value={exp.amount}
                   onChange={v => updateAmount(exp.id, v)}
                   currency={currency}
-                  placeholder="Monto"
+                  placeholder={t('onboarding.expenses.monthlyAmount')}
                 />
               </div>
               <button onClick={() => removeExpense(exp.id)} className="text-red-400 hover:text-red-300 p-1">
@@ -116,7 +118,7 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
             </div>
           ))}
           <div className="bg-surface-900/50 rounded-lg px-4 py-2 flex justify-between">
-            <span className="text-sm text-slate-400">Total mensual</span>
+            <span className="text-sm text-slate-400">{t('onboarding.expenses.totalMonthly')}</span>
             <span className="text-sm font-bold text-slate-100">
               {expenses.reduce((s, e) => s + e.amount, 0).toLocaleString('es-CO')} {currency}
             </span>
@@ -127,20 +129,20 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
       {/* Add custom expense */}
       {showForm ? (
         <div className="bg-surface-800/40 rounded-lg p-4 space-y-3">
-          <h3 className="text-sm font-semibold font-heading text-slate-200">Gasto personalizado</h3>
+          <h3 className="text-sm font-semibold font-heading text-slate-200">{t('onboarding.expenses.customExpense')}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Nombre</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('onboarding.expenses.name')}</label>
               <input
                 type="text"
                 value={form.name}
                 onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                placeholder="Ej: Gym, Netflix..."
+                placeholder={t('onboarding.expenses.namePlaceholder')}
                 className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               />
             </div>
             <CurrencyInput
-              label="Monto mensual"
+              label={t('onboarding.expenses.monthlyAmount')}
               value={form.amount ?? 0}
               onChange={v => setForm(f => ({ ...f, amount: v }))}
               currency={currency}
@@ -148,7 +150,7 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Categoría</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('onboarding.expenses.category')}</label>
               <select
                 value={form.category}
                 onChange={e => setForm(f => ({ ...f, category: e.target.value as ExpenseCategory }))}
@@ -158,15 +160,15 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Método de pago</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('onboarding.expenses.paymentMethod')}</label>
               <select
                 value={form.paymentMethod}
                 onChange={e => setForm(f => ({ ...f, paymentMethod: e.target.value as Expense['paymentMethod'] }))}
                 className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               >
-                <option value="debit">Débito</option>
-                <option value="cash">Efectivo</option>
-                <option value="credit_card">Tarjeta crédito</option>
+                <option value="debit">{t('onboarding.expenses.debit')}</option>
+                <option value="cash">{t('onboarding.expenses.cash')}</option>
+                <option value="credit_card">{t('onboarding.expenses.creditCard')}</option>
               </select>
             </div>
           </div>
@@ -174,20 +176,20 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={form.isFixed} onChange={e => setForm(f => ({ ...f, isFixed: e.target.checked }))}
                 className="w-4 h-4 rounded border-surface-600 bg-surface-800 text-brand-600 accent-brand-600" />
-              <span className="text-sm text-slate-300">Fijo</span>
+              <span className="text-sm text-slate-300">{t('onboarding.expenses.fixed')}</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={form.isEssential} onChange={e => setForm(f => ({ ...f, isEssential: e.target.checked }))}
                 className="w-4 h-4 rounded border-surface-600 bg-surface-800 text-brand-600 accent-brand-600" />
-              <span className="text-sm text-slate-300">Esencial</span>
+              <span className="text-sm text-slate-300">{t('onboarding.expenses.essential')}</span>
             </label>
           </div>
           <div className="flex gap-2">
             <button onClick={addExpense} className="flex-1 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition-colors shadow-lg shadow-brand-600/20">
-              Agregar
+              {t('common.add')}
             </button>
             <button onClick={() => setShowForm(false)} className="px-4 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-lg transition-colors">
-              Cancelar
+              {t('common.cancel')}
             </button>
           </div>
         </div>
@@ -197,21 +199,21 @@ export function ExpensesStep({ expenses, setExpenses, currency, onBack, onNext }
           className="w-full border-2 border-dashed border-surface-700 hover:border-brand-500 rounded-lg py-3 text-sm text-slate-500 hover:text-brand-400 transition-colors flex items-center justify-center gap-2"
         >
           <Plus className="w-4 h-4" />
-          Agregar gasto personalizado
+          {t('onboarding.expenses.addCustom')}
         </button>
       )}
 
       <div className="flex gap-3 pt-6 border-t border-surface-800/40">
         <button onClick={onBack} className="px-5 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-lg py-3 transition-colors flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" />
-          Atrás
+          {t('common.back')}
         </button>
         <button
           onClick={onNext}
           disabled={expenses.length === 0}
           className="flex-1 bg-brand-600 hover:bg-brand-700 disabled:bg-surface-800 disabled:text-slate-600 disabled:opacity-50 disabled:shadow-none text-white text-sm font-medium py-3.5 rounded-lg transition-colors shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2"
         >
-          Continuar
+          {t('common.continue')}
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>

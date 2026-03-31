@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useFinancialStore } from '../store/useFinancialStore';
 import { formatCurrency, formatDate } from '../utils/formatters';
-import { CATEGORY_LABELS, CATEGORY_COLORS } from '../utils/constants';
+import { getCategoryLabel, CATEGORY_COLORS } from '../utils/constants';
 import { CategoryIcon } from '../components/shared/CategoryIcon';
 import { Card } from '../components/shared/Card';
 import { Modal } from '../components/shared/Modal';
@@ -11,7 +12,14 @@ import { cn } from '../lib/utils';
 import { FileText, X, Plus } from 'lucide-react';
 import type { Transaction, ExpenseCategory } from '../store/types';
 
+const CATEGORY_KEYS: ExpenseCategory[] = [
+  'housing', 'utilities', 'food', 'transport', 'health', 'family',
+  'education', 'entertainment', 'subscriptions', 'personal', 'debt',
+  'savings', 'insurance', 'other',
+];
+
 export function Transactions() {
+  const { t } = useTranslation();
   const { transactions, addTransaction, removeTransaction, profile } = useFinancialStore();
   const [showModal, setShowModal] = useState(false);
   const [filterType, setFilterType] = useState<string>('all');
@@ -55,17 +63,17 @@ export function Transactions() {
       <div className="grid grid-cols-3 gap-4">
         <Card className="text-center">
           <p className="text-base font-bold text-green-400">{fmt(totalIncome)}</p>
-          <p className="text-xs text-slate-500 mt-1">Income</p>
+          <p className="text-xs text-slate-500 mt-1">{t('transactions.income')}</p>
         </Card>
         <Card className="text-center">
           <p className="text-base font-bold text-red-400">{fmt(totalExpense)}</p>
-          <p className="text-xs text-slate-500 mt-1">Expenses</p>
+          <p className="text-xs text-slate-500 mt-1">{t('transactions.expenses')}</p>
         </Card>
         <Card className="text-center">
           <p className={cn('text-base font-bold', totalIncome - totalExpense >= 0 ? 'text-emerald-400' : 'text-red-400')}>
             {fmt(totalIncome - totalExpense)}
           </p>
-          <p className="text-xs text-slate-500 mt-1">Balance</p>
+          <p className="text-xs text-slate-500 mt-1">{t('transactions.balance')}</p>
         </Card>
       </div>
 
@@ -78,20 +86,20 @@ export function Transactions() {
               onChange={e => setFilterType(e.target.value)}
               className="bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             >
-              <option value="all">All types</option>
-              <option value="income">Income</option>
-              <option value="expense">Expenses</option>
-              <option value="debt_payment">Debt payment</option>
-              <option value="savings">Savings</option>
+              <option value="all">{t('transactions.allTypes')}</option>
+              <option value="income">{t('transactions.typeIncome')}</option>
+              <option value="expense">{t('transactions.typeExpense')}</option>
+              <option value="debt_payment">{t('transactions.typeDebtPayment')}</option>
+              <option value="savings">{t('transactions.typeSavings')}</option>
             </select>
             <select
               value={filterCategory}
               onChange={e => setFilterCategory(e.target.value)}
               className="bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             >
-              <option value="all">All categories</option>
-              {Object.entries(CATEGORY_LABELS).map(([k, v]) => (
-                <option key={k} value={k}>{v}</option>
+              <option value="all">{t('transactions.allCategories')}</option>
+              {CATEGORY_KEYS.map(k => (
+                <option key={k} value={k}>{getCategoryLabel(k)}</option>
               ))}
             </select>
           </div>
@@ -100,25 +108,25 @@ export function Transactions() {
             className="bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition-colors shadow-lg shadow-brand-600/20 inline-flex items-center gap-1.5"
           >
             <Plus size={16} />
-            Record
+            {t('transactions.record')}
           </button>
         </div>
       </Card>
 
       {/* Transaction list */}
-      <Card title={`Transactions (${filtered.length})`}>
+      <Card title={t('transactions.transactionCount', { count: filtered.length })}>
         {filtered.length === 0 ? (
           <div className="text-center py-8">
             <div className="w-12 h-12 rounded-lg bg-surface-800 flex items-center justify-center mx-auto mb-3">
               <FileText className="text-slate-500" size={24} />
             </div>
-            <p className="text-sm text-slate-400">No transactions recorded</p>
+            <p className="text-sm text-slate-400">{t('transactions.noTransactions')}</p>
             <button
               onClick={() => setShowModal(true)}
               className="mt-3 bg-brand-600 hover:bg-brand-700 text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors shadow-lg shadow-brand-600/20 inline-flex items-center gap-1.5"
             >
               <Plus size={14} />
-              Record first transaction
+              {t('transactions.recordFirst')}
             </button>
           </div>
         ) : (
@@ -138,10 +146,10 @@ export function Transactions() {
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-slate-200 truncate">{tx.description}</p>
                     <div className="flex gap-2 text-xs text-slate-500">
-                      <span>{CATEGORY_LABELS[tx.category]}</span>
+                      <span>{getCategoryLabel(tx.category)}</span>
                       <span>·</span>
                       <span>{formatDate(tx.date, locale)}</span>
-                      {tx.isRecurring && <span className="text-brand-400">recurring</span>}
+                      {tx.isRecurring && <span className="text-brand-400">{t('transactions.recurring')}</span>}
                     </div>
                   </div>
                   <span className={cn('text-sm font-semibold shrink-0', isIncome ? 'text-green-400' : 'text-red-400')}>
@@ -161,25 +169,25 @@ export function Transactions() {
       </Card>
 
       {/* Add transaction modal */}
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Record Transaction">
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)} title={t('transactions.recordTitle')}>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Type</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('transactions.type')}</label>
               <select
                 value={form.type}
                 onChange={e => setForm(f => ({ ...f, type: e.target.value as Transaction['type'] }))}
                 className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               >
-                <option value="expense">Expense</option>
-                <option value="income">Income</option>
-                <option value="debt_payment">Debt payment</option>
-                <option value="savings">Savings</option>
-                <option value="transfer">Transfer</option>
+                <option value="expense">{t('transactions.typeExpense')}</option>
+                <option value="income">{t('transactions.typeIncome')}</option>
+                <option value="debt_payment">{t('transactions.typeDebtPayment')}</option>
+                <option value="savings">{t('transactions.typeSavings')}</option>
+                <option value="transfer">{t('transactions.typeTransfer', { defaultValue: 'Transfer' })}</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Date</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('transactions.date')}</label>
               <input
                 type="date"
                 value={form.date}
@@ -190,7 +198,7 @@ export function Transactions() {
           </div>
 
           <CurrencyInput
-            label="Amount"
+            label={t('transactions.amount')}
             value={form.amount ?? 0}
             onChange={v => setForm(f => ({ ...f, amount: v }))}
             currency={currency}
@@ -198,39 +206,39 @@ export function Transactions() {
           />
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Description</label>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('transactions.description')}</label>
             <input
               type="text"
               value={form.description}
               onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-              placeholder="e.g. Weekly groceries"
+              placeholder={t('transactions.descriptionPlaceholder')}
               className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Category</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('transactions.category')}</label>
               <select
                 value={form.category}
                 onChange={e => setForm(f => ({ ...f, category: e.target.value as ExpenseCategory }))}
                 className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               >
-                {Object.entries(CATEGORY_LABELS).map(([k, v]) => (
-                  <option key={k} value={k}>{v}</option>
+                {CATEGORY_KEYS.map(k => (
+                  <option key={k} value={k}>{getCategoryLabel(k)}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Payment method</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('transactions.paymentMethod')}</label>
               <select
                 value={form.paymentMethod}
                 onChange={e => setForm(f => ({ ...f, paymentMethod: e.target.value as Transaction['paymentMethod'] }))}
                 className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               >
-                <option value="debit">Debit</option>
-                <option value="cash">Cash</option>
-                <option value="credit_card">Credit card</option>
+                <option value="debit">{t('transactions.debit')}</option>
+                <option value="cash">{t('transactions.cash')}</option>
+                <option value="credit_card">{t('transactions.creditCard')}</option>
               </select>
             </div>
           </div>
@@ -238,11 +246,11 @@ export function Transactions() {
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={form.isRecurring} onChange={e => setForm(f => ({ ...f, isRecurring: e.target.checked }))}
               className="w-4 h-4 rounded border-surface-700 bg-surface-800 text-brand-600" />
-            <span className="text-sm text-slate-300">Recurring transaction</span>
+            <span className="text-sm text-slate-300">{t('transactions.recurringTransaction')}</span>
           </label>
 
           <button onClick={addTx} className="w-full bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors shadow-lg shadow-brand-600/20">
-            Record transaction
+            {t('transactions.recordTransaction')}
           </button>
         </div>
       </Modal>
