@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Goal } from '../../store/types';
 import { CurrencyInput } from '../shared/CurrencyInput';
 import { nanoid } from '../shared/nanoid';
@@ -26,14 +27,7 @@ const GOAL_ICONS: { icon: LucideIcon; label: string }[] = [
   { icon: Target, label: 'Target' },
 ];
 
-const GOAL_CATEGORIES: { value: Goal['category']; label: string }[] = [
-  { value: 'purchase', label: 'Compra' },
-  { value: 'travel', label: 'Viaje' },
-  { value: 'education', label: 'Educación' },
-  { value: 'housing', label: 'Vivienda' },
-  { value: 'investment', label: 'Inversión' },
-  { value: 'other', label: 'Otro' },
-];
+const GOAL_CATEGORY_KEYS: Goal['category'][] = ['purchase', 'travel', 'education', 'housing', 'investment', 'other'];
 
 function getGoalIcon(iconLabel: string): LucideIcon {
   const found = GOAL_ICONS.find(g => g.label === iconLabel);
@@ -51,6 +45,7 @@ interface GoalsStepProps {
 }
 
 export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, currency, onBack, onFinish }: GoalsStepProps) {
+  const { t } = useTranslation();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<Partial<Goal>>({
     name: '',
@@ -78,8 +73,8 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-xl font-bold font-heading text-slate-100 mb-1">¿Qué quieres lograr?</h2>
-        <p className="text-sm text-slate-500">Define tus metas financieras — la app las prioriza automáticamente</p>
+        <h2 className="text-xl font-bold font-heading text-slate-100 mb-1">{t('onboarding.goals.title')}</h2>
+        <p className="text-sm text-slate-500">{t('onboarding.goals.subtitle')}</p>
       </div>
 
       {/* Emergency fund */}
@@ -87,8 +82,8 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
         <div className="flex items-center gap-2 mb-3">
           <ShieldCheck className="w-5 h-5 text-green-400" />
           <div>
-            <p className="text-sm font-medium text-green-300">Fondo de emergencia actual</p>
-            <p className="text-xs text-slate-500">¿Cuánto dinero tienes guardado como reserva?</p>
+            <p className="text-sm font-medium text-green-300">{t('onboarding.goals.emergencyFund')}</p>
+            <p className="text-xs text-slate-500">{t('onboarding.goals.emergencyFundDesc')}</p>
           </div>
         </div>
         <CurrencyInput
@@ -110,8 +105,8 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-slate-200">{goal.name}</p>
                   <p className="text-xs text-slate-500">
-                    Meta: {goal.targetAmount.toLocaleString('es-CO')} {currency}
-                    {goal.currentSaved > 0 && ` · Ahorrado: ${goal.currentSaved.toLocaleString('es-CO')}`}
+                    {t('onboarding.goals.target', { amount: `${goal.targetAmount.toLocaleString('es-CO')} ${currency}` })}
+                    {goal.currentSaved > 0 && ` · ${t('onboarding.goals.saved', { amount: goal.currentSaved.toLocaleString('es-CO') })}`}
                   </p>
                 </div>
                 <div className="flex items-center gap-1">
@@ -129,11 +124,11 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
       {/* Add goal form */}
       {showForm ? (
         <div className="bg-surface-800/40 rounded-lg p-4 space-y-4">
-          <h3 className="text-sm font-semibold font-heading text-slate-200">Nueva meta</h3>
+          <h3 className="text-sm font-semibold font-heading text-slate-200">{t('onboarding.goals.newGoal')}</h3>
 
           {/* Icon selector */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Icono</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">{t('onboarding.goals.icon')}</label>
             <div className="flex flex-wrap gap-2">
               {GOAL_ICONS.map(({ icon: Icon, label }) => (
                 <button
@@ -154,37 +149,37 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Nombre de la meta</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('onboarding.goals.goalName')}</label>
               <input
                 type="text"
                 value={form.name}
                 onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                placeholder="Ej: Apartamento, Viaje a Europa"
+                placeholder={t('onboarding.goals.goalNamePlaceholder')}
                 className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Categoría</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('onboarding.goals.goalCategory')}</label>
               <select
                 value={form.category}
                 onChange={e => setForm(f => ({ ...f, category: e.target.value as Goal['category'] }))}
                 className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
               >
-                {GOAL_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+                {GOAL_CATEGORY_KEYS.map(k => <option key={k} value={k}>{t(`onboarding.goals.${k}`)}</option>)}
               </select>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <CurrencyInput
-              label="Costo total"
+              label={t('onboarding.goals.totalCost')}
               value={form.targetAmount ?? 0}
               onChange={v => setForm(f => ({ ...f, targetAmount: v }))}
               currency={currency}
               required
             />
             <CurrencyInput
-              label="Ya tienes ahorrado"
+              label={t('onboarding.goals.alreadySaved')}
               value={form.currentSaved ?? 0}
               onChange={v => setForm(f => ({ ...f, currentSaved: v }))}
               currency={currency}
@@ -193,10 +188,10 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
 
           <div className="flex gap-2">
             <button onClick={addGoal} className="flex-1 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition-colors shadow-lg shadow-brand-600/20">
-              Agregar meta
+              {t('onboarding.goals.addGoal')}
             </button>
             <button onClick={() => setShowForm(false)} className="px-4 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-lg transition-colors">
-              Cancelar
+              {t('common.cancel')}
             </button>
           </div>
         </div>
@@ -206,21 +201,21 @@ export function GoalsStep({ goals, setGoals, currentFund, setCurrentFund, curren
           className="w-full border-2 border-dashed border-surface-700 hover:border-brand-500 rounded-lg py-3 text-sm text-slate-500 hover:text-brand-400 transition-colors flex items-center justify-center gap-2"
         >
           <Plus className="w-4 h-4" />
-          Agregar meta
+          {t('onboarding.goals.addGoal')}
         </button>
       )}
 
       <div className="flex gap-3 pt-6 border-t border-surface-800/40">
         <button onClick={onBack} className="px-5 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm rounded-lg py-3 transition-colors flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" />
-          Atrás
+          {t('common.back')}
         </button>
         <button
           onClick={onFinish}
           className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-3.5 rounded-lg transition-colors shadow-lg shadow-green-600/20 flex items-center justify-center gap-2"
         >
           <Rocket className="w-4 h-4" />
-          Generar mi plan financiero
+          {t('onboarding.goals.generatePlan')}
         </button>
       </div>
     </div>

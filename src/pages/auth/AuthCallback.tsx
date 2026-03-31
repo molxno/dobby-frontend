@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 
@@ -10,6 +11,7 @@ function isPasswordRecoveryUrl(): boolean {
 }
 
 export function AuthCallback() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -58,7 +60,7 @@ export function AuthCallback() {
         <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-600 rounded-lg animate-pulse">
           <Sparkles size={24} className="text-white" />
         </div>
-        <p className="text-sm text-slate-400">Verifying session...</p>
+        <p className="text-sm text-slate-400">{t('auth.verifyingSession')}</p>
       </div>
     </div>
   );

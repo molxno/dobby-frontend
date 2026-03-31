@@ -3,6 +3,8 @@ import {
   Mountain, Snowflake, ArrowRight, Shuffle, AlertTriangle,
   LogOut, RotateCcw, Trash2, UserX,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { localeToLang } from '../i18n';
 import { useFinancialStore } from '../store/useFinancialStore';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -17,6 +19,7 @@ export function Settings() {
     goalMode, setGoalMode,
   } = useFinancialStore();
   const { user, signOut } = useAuth();
+  const { t, i18n } = useTranslation();
 
   const [showResetModal, setShowResetModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -33,7 +36,7 @@ export function Settings() {
 
   const saveProfile = () => {
     setProfile(localProfile);
-    alert('Perfil guardado correctamente');
+    alert(t('settings.profileSaved'));
   };
 
   const handleReset = () => {
@@ -48,7 +51,7 @@ export function Settings() {
       await signOut();
     } catch (err) {
       console.error('Logout failed:', err);
-      setLogoutError('Error al cerrar sesión. Intenta de nuevo.');
+      setLogoutError(t('settings.logoutError'));
     } finally {
       setLoggingOut(false);
     }
@@ -66,7 +69,7 @@ export function Settings() {
       await signOut();
     } catch (err) {
       console.error('Account deletion failed:', err);
-      setDeleteError('Error al eliminar la cuenta. Intenta de nuevo.');
+      setDeleteError(t('settings.deleteError'));
     } finally {
       setDeleting(false);
     }
@@ -75,14 +78,14 @@ export function Settings() {
   return (
     <div className="flex flex-col gap-4">
       {/* Account */}
-      <Card title="Cuenta" subtitle="Tu sesión activa">
+      <Card title={t('settings.account')} subtitle={t('settings.activeSession')}>
         <div className="flex items-center justify-between mt-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-brand-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
               {(profile.name || user?.email || '?')[0].toUpperCase()}
             </div>
             <div>
-              <p className="text-sm font-medium text-slate-200">{profile.name || 'Sin nombre'}</p>
+              <p className="text-sm font-medium text-slate-200">{profile.name || t('common.noName')}</p>
               <p className="text-xs text-slate-500">{user?.email}</p>
             </div>
           </div>
@@ -92,7 +95,7 @@ export function Settings() {
             className="text-xs bg-surface-800 hover:bg-surface-700 text-slate-300 px-4 py-2 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
           >
             <LogOut size={14} />
-            {loggingOut ? 'Cerrando...' : 'Cerrar sesión'}
+            {loggingOut ? t('settings.loggingOut') : t('settings.logout')}
           </button>
         </div>
         {logoutError && (
@@ -101,10 +104,10 @@ export function Settings() {
       </Card>
 
       {/* Profile */}
-      <Card title="Perfil" subtitle="Tu información básica">
+      <Card title={t('settings.profile')} subtitle={t('settings.basicInfo')}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Nombre</label>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('settings.name')}</label>
             <input
               type="text"
               value={localProfile.name}
@@ -113,7 +116,7 @@ export function Settings() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">País</label>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('settings.country')}</label>
             <input
               type="text"
               value={localProfile.country}
@@ -122,33 +125,33 @@ export function Settings() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Moneda</label>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('settings.currency')}</label>
             <select
               value={localProfile.currency}
               onChange={e => setLocalProfile(p => ({ ...p, currency: e.target.value }))}
               className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             >
-              <option value="COP">COP - Peso colombiano</option>
-              <option value="MXN">MXN - Peso mexicano</option>
-              <option value="USD">USD - Dólar americano</option>
-              <option value="EUR">EUR - Euro</option>
-              <option value="ARS">ARS - Peso argentino</option>
-              <option value="CLP">CLP - Peso chileno</option>
-              <option value="PEN">PEN - Sol peruano</option>
+              <option value="COP">{t('settings.currencies.COP')}</option>
+              <option value="MXN">{t('settings.currencies.MXN')}</option>
+              <option value="USD">{t('settings.currencies.USD')}</option>
+              <option value="EUR">{t('settings.currencies.EUR')}</option>
+              <option value="ARS">{t('settings.currencies.ARS')}</option>
+              <option value="CLP">{t('settings.currencies.CLP')}</option>
+              <option value="PEN">{t('settings.currencies.PEN')}</option>
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Locale</label>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('settings.locale')}</label>
             <select
               value={localProfile.locale}
               onChange={e => setLocalProfile(p => ({ ...p, locale: e.target.value }))}
               className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50 transition-all"
             >
-              <option value="es-CO">es-CO (Colombia)</option>
-              <option value="es-MX">es-MX (México)</option>
-              <option value="en-US">en-US (EEUU)</option>
-              <option value="es-AR">es-AR (Argentina)</option>
-              <option value="es-CL">es-CL (Chile)</option>
+              <option value="es-CO">{t('settings.locales.es-CO')}</option>
+              <option value="es-MX">{t('settings.locales.es-MX')}</option>
+              <option value="en-US">{t('settings.locales.en-US')}</option>
+              <option value="es-AR">{t('settings.locales.es-AR')}</option>
+              <option value="es-CL">{t('settings.locales.es-CL')}</option>
             </select>
           </div>
         </div>
@@ -156,15 +159,40 @@ export function Settings() {
           onClick={saveProfile}
           className="mt-4 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-6 py-2.5 rounded-lg transition-colors shadow-lg shadow-brand-600/20"
         >
-          Guardar perfil
+          {t('settings.saveProfile')}
         </button>
       </Card>
 
+      {/* Language selector */}
+      <Card title={t('settings.language')} subtitle={t('settings.languageDesc')}>
+        <div className="grid grid-cols-2 gap-2 mt-3">
+          {(['es', 'en'] as const).map(lang => (
+            <button
+              key={lang}
+              onClick={() => {
+                i18n.changeLanguage(lang);
+                const newLocale = lang === 'en' ? 'en-US' : 'es-CO';
+                setLocalProfile(p => ({ ...p, locale: newLocale }));
+                setProfile({ ...localProfile, locale: newLocale });
+              }}
+              className={cn(
+                'p-3 rounded-lg border text-left transition-all text-sm',
+                i18n.language === lang
+                  ? 'border-brand-500 bg-brand-950/30 text-brand-400'
+                  : 'border-surface-700 bg-surface-900 text-slate-400 hover:border-surface-600'
+              )}
+            >
+              {t(`settings.languages.${lang}`)}
+            </button>
+          ))}
+        </div>
+      </Card>
+
       {/* Strategy settings */}
-      <Card title="Estrategias de Pago">
+      <Card title={t('settings.strategies')}>
         <div className="space-y-4 mt-3">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Estrategia de Deuda</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">{t('settings.debtStrategy')}</label>
             <div className="grid grid-cols-2 gap-2">
               {(['avalanche', 'snowball'] as const).map(s => (
                 <button
@@ -184,7 +212,7 @@ export function Settings() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Modo de Ahorro para Metas</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">{t('settings.savingsGoalMode')}</label>
             <div className="grid grid-cols-2 gap-2">
               {(['sequential', 'parallel'] as const).map(m => (
                 <button
@@ -198,7 +226,7 @@ export function Settings() {
                   )}
                 >
                   {m === 'sequential' ? <ArrowRight size={16} /> : <Shuffle size={16} />}
-                  {m === 'sequential' ? 'Secuencial' : 'Paralelo'}
+                  {m === 'sequential' ? t('settings.sequential') : t('settings.parallel')}
                 </button>
               ))}
             </div>
@@ -207,13 +235,13 @@ export function Settings() {
       </Card>
 
       {/* Data summary */}
-      <Card title="Resumen de Datos">
+      <Card title={t('settings.dataSummary')}>
         <div className="mt-2 space-y-2">
           {[
-            { label: 'Fuentes de ingreso', value: incomes.length },
-            { label: 'Gastos registrados', value: expenses.length },
-            { label: 'Deudas activas', value: debts.length },
-            { label: 'Metas financieras', value: goals.length },
+            { label: t('settings.incomeSources'), value: incomes.length },
+            { label: t('settings.registeredExpenses'), value: expenses.length },
+            { label: t('settings.activeDebts'), value: debts.length },
+            { label: t('settings.financialGoals'), value: goals.length },
           ].map(item => (
             <div key={item.label} className="flex justify-between py-2 border-b border-surface-800 text-sm">
               <span className="text-slate-400">{item.label}</span>
@@ -225,83 +253,83 @@ export function Settings() {
 
       {/* Danger zone */}
       <Card className="border-red-500/30">
-        <h3 className="text-sm font-semibold text-red-400 mb-3 font-heading">Zona de Peligro</h3>
+        <h3 className="text-sm font-semibold text-red-400 mb-3 font-heading">{t('settings.dangerZone')}</h3>
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-300">Re-hacer onboarding</p>
-              <p className="text-xs text-slate-500">Edita tus datos iniciales manteniendo historial</p>
+              <p className="text-sm text-slate-300">{t('settings.redoOnboarding')}</p>
+              <p className="text-xs text-slate-500">{t('settings.redoOnboardingDesc')}</p>
             </div>
             <button
               onClick={() => setOnboardingCompleted(false)}
               className="text-xs bg-amber-600/20 border border-amber-500/40 text-amber-400 px-3 py-1.5 rounded-lg hover:bg-amber-600/30 transition-colors flex items-center gap-1.5"
             >
               <RotateCcw size={12} />
-              Re-hacer
+              {t('settings.redo')}
             </button>
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-300">Resetear datos locales</p>
-              <p className="text-xs text-slate-500">Limpia la caché local. Tus datos en la nube se recargarán al volver a entrar.</p>
+              <p className="text-sm text-slate-300">{t('settings.resetLocal')}</p>
+              <p className="text-xs text-slate-500">{t('settings.resetLocalDesc')}</p>
             </div>
             <button
               onClick={() => setShowResetModal(true)}
               className="text-xs bg-red-600/20 border border-red-500/40 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-600/30 transition-colors flex items-center gap-1.5"
             >
               <Trash2 size={12} />
-              Resetear
+              {t('settings.reset')}
             </button>
           </div>
           <div className="flex items-center justify-between pt-3 border-t border-red-500/20">
             <div>
-              <p className="text-sm text-slate-300">Eliminar cuenta</p>
-              <p className="text-xs text-slate-500">Elimina tu cuenta y todos los datos asociados. Esto es irreversible.</p>
+              <p className="text-sm text-slate-300">{t('settings.deleteAccount')}</p>
+              <p className="text-xs text-slate-500">{t('settings.deleteAccountDesc')}</p>
             </div>
             <button
               onClick={() => { setShowDeleteModal(true); setDeleteConfirm(''); setDeleteError(''); }}
               className="text-xs bg-red-600/20 border border-red-500/40 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-600/30 transition-colors flex items-center gap-1.5"
             >
               <UserX size={12} />
-              Eliminar
+              {t('common.delete')}
             </button>
           </div>
         </div>
       </Card>
 
-      <Modal isOpen={showResetModal} onClose={() => setShowResetModal(false)} title="Confirmar Reset" size="sm">
+      <Modal isOpen={showResetModal} onClose={() => setShowResetModal(false)} title={t('settings.confirmReset')} size="sm">
         <div className="text-center space-y-4">
           <AlertTriangle className="mx-auto text-amber-400" size={40} />
-          <p className="text-sm text-slate-300">Esto limpia los datos locales de tu navegador. Tus datos en la nube no se verán afectados y se recargarán automáticamente.</p>
+          <p className="text-sm text-slate-300">{t('settings.resetWarning')}</p>
           <div className="flex gap-3">
             <button onClick={() => setShowResetModal(false)} className="flex-1 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm py-2.5 rounded-lg transition-colors">
-              Cancelar
+              {t('common.cancel')}
             </button>
             <button onClick={handleReset} className="flex-1 bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors">
-              Sí, limpiar caché
+              {t('settings.clearCache')}
             </button>
           </div>
         </div>
       </Modal>
 
-      <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)} title="Eliminar cuenta" size="sm">
+      <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)} title={t('settings.deleteAccount')} size="sm">
         <div className="space-y-4">
           <div className="bg-red-950/50 border border-red-500/30 rounded-lg p-3">
-            <p className="text-sm text-red-400 font-medium">Esta acción es permanente</p>
+            <p className="text-sm text-red-400 font-medium">{t('settings.permanentAction')}</p>
             <p className="text-xs text-red-400/70 mt-1">
-              Se eliminará tu cuenta, todos tus datos financieros, ingresos, gastos, deudas, metas y transacciones. No se puede deshacer.
+              {t('settings.deleteWarning')}
             </p>
           </div>
 
           <div>
             <label className="block text-sm text-slate-300 mb-1.5">
-              Escribe <span className="font-mono text-red-400 font-semibold">ELIMINAR</span> para confirmar
+              {t('settings.typeToConfirm', { word: t('settings.confirmWord') })}
             </label>
             <input
               type="text"
               value={deleteConfirm}
               onChange={e => setDeleteConfirm(e.target.value)}
-              placeholder="ELIMINAR"
+              placeholder={t('settings.confirmWord')}
               className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-red-500/50 transition-all"
             />
           </div>
@@ -315,14 +343,14 @@ export function Settings() {
               onClick={() => setShowDeleteModal(false)}
               className="flex-1 bg-surface-800 hover:bg-surface-700 text-slate-300 text-sm py-2.5 rounded-lg transition-colors"
             >
-              Cancelar
+              {t('common.cancel')}
             </button>
             <button
               onClick={handleDeleteAccount}
-              disabled={deleteConfirm !== 'ELIMINAR' || deleting}
+              disabled={deleteConfirm !== t('settings.confirmWord') || deleting}
               className="flex-1 bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 rounded-lg transition-colors"
             >
-              {deleting ? 'Eliminando...' : 'Eliminar cuenta'}
+              {deleting ? t('settings.deleting') : t('settings.deleteAccount')}
             </button>
           </div>
         </div>

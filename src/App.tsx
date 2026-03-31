@@ -1,7 +1,10 @@
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useFinancialStore } from './store/useFinancialStore';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { useSupabaseSync } from './lib/useSupabaseSync';
+import { localeToLang } from './i18n';
 import { Layout } from './components/layout/Layout';
 import { OnboardingWizard } from './components/onboarding/OnboardingWizard';
 import { Dashboard } from './pages/Dashboard';
@@ -21,6 +24,16 @@ import { ResetPassword } from './pages/auth/ResetPassword';
 import { AppLoader } from './components/shared/AppLoader';
 import { ErrorBoundary } from './components/shared/ErrorBoundary';
 import { ToastContainer } from './components/shared/ToastContainer';
+
+function LocaleSync() {
+  const { i18n } = useTranslation();
+  const locale = useFinancialStore(s => s.profile.locale);
+  useEffect(() => {
+    const lang = localeToLang(locale);
+    if (i18n.language !== lang) i18n.changeLanguage(lang);
+  }, [locale, i18n]);
+  return null;
+}
 
 function AppRoutes() {
   const { onboardingCompleted } = useFinancialStore();
@@ -51,10 +64,16 @@ function AuthenticatedApp() {
   const { cloudLoading } = useSupabaseSync();
 
   if (cloudLoading) {
-    return <AppLoader message="Sincronizando tu informaci&oacute;n..." />;
+    return <AppLoader />;
+
   }
 
-  return <AppRoutes />;
+  return (
+    <>
+      <LocaleSync />
+      <AppRoutes />
+    </>
+  );
 }
 
 function AppRouter() {

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useFinancialStore } from '../../store/useFinancialStore';
 import { useAuth } from '../../contexts/AuthContext';
 import { IncomeStep } from './IncomeStep';
@@ -9,14 +10,8 @@ import { Sparkles, Wallet, Home, CreditCard, Target, Check } from 'lucide-react'
 import { cn } from '../../lib/utils';
 import type { Income, Expense, Debt, Goal } from '../../store/types';
 
-const STEPS = [
-  { number: 1, title: 'Ingresos', icon: Wallet, description: 'Cuánto y cuándo recibes dinero' },
-  { number: 2, title: 'Gastos', icon: Home, description: 'Tus gastos fijos mensuales' },
-  { number: 3, title: 'Deudas', icon: CreditCard, description: 'Lo que debes actualmente' },
-  { number: 4, title: 'Metas', icon: Target, description: 'Lo que quieres lograr' },
-];
-
 export function OnboardingWizard() {
+  const { t } = useTranslation();
   const [step, setStep] = useState(1);
   const { setIncomes, setExpenses, setDebts, setGoals, setCurrentFund, setOnboardingCompleted, setProfile, profile } = useFinancialStore();
   const { user } = useAuth();
@@ -29,6 +24,13 @@ export function OnboardingWizard() {
   const [debts, setLocalDebts] = useState<Debt[]>([]);
   const [goals, setLocalGoals] = useState<Goal[]>([]);
   const [currentFundLocal, setCurrentFundLocal] = useState(0);
+
+  const STEPS = [
+    { number: 1, title: t('onboarding.steps.income'), icon: Wallet, description: t('onboarding.steps.incomeDesc') },
+    { number: 2, title: t('onboarding.steps.expenses'), icon: Home, description: t('onboarding.steps.expensesDesc') },
+    { number: 3, title: t('onboarding.steps.debts'), icon: CreditCard, description: t('onboarding.steps.debtsDesc') },
+    { number: 4, title: t('onboarding.steps.goals'), icon: Target, description: t('onboarding.steps.goalsDesc') },
+  ];
 
   const handleFinish = () => {
     setProfile({ name: userName, country: 'Colombia', currency, locale: currency === 'COP' ? 'es-CO' : 'en-US' });

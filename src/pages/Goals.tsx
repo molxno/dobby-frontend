@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Home, Car, Plane, BookOpen, Laptop, Heart, Baby, Palmtree,
   Dumbbell, GraduationCap, PiggyBank, Building2, Target,
@@ -37,6 +38,7 @@ function GoalIcon({ iconName, className, size = 20 }: { iconName: string; classN
 }
 
 export function Goals() {
+  const { t } = useTranslation();
   const { financialState, profile, goals, addGoal, removeGoal, updateGoal, goalMode, setGoalMode } = useFinancialStore();
   const [showAddModal, setShowAddModal] = useState(false);
   const [form, setForm] = useState<Partial<Goal>>({
@@ -64,20 +66,20 @@ export function Goals() {
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
         <Card className="text-center">
           <p className="text-lg font-bold text-purple-400 font-heading">{goalPlan.goals.length}</p>
-          <p className="text-xs text-slate-500 mt-1">Metas Activas</p>
+          <p className="text-xs text-slate-500 mt-1">{t('goals.activeGoals')}</p>
         </Card>
         <Card className="text-center">
           <p className="text-lg font-bold text-emerald-400 font-heading">{fmt(goalPlan.totalMonthlySaving)}</p>
-          <p className="text-xs text-slate-500 mt-1">Ahorro Mensual</p>
+          <p className="text-xs text-slate-500 mt-1">{t('goals.monthlySavings')}</p>
         </Card>
         <Card className="text-center lg:col-span-1 col-span-2">
           <p className="text-base font-bold text-brand-400 font-heading">{goalPlan.startDate}</p>
-          <p className="text-xs text-slate-500 mt-1">Inicio del ahorro</p>
+          <p className="text-xs text-slate-500 mt-1">{t('goals.savingsStart')}</p>
         </Card>
       </div>
 
       {/* Mode selector */}
-      <Card title="Modo de Ahorro">
+      <Card title={t('goals.savingsMode')}>
         <div className="grid grid-cols-2 gap-3 mt-2">
           {(['sequential', 'parallel'] as const).map(m => (
             <button
@@ -90,13 +92,11 @@ export function Goals() {
             >
               <div className="flex items-center gap-2 mb-1">
                 {m === 'sequential' ? <ArrowRight size={18} className="text-purple-400" /> : <Shuffle size={18} className="text-purple-400" />}
-                <span className="text-sm font-semibold text-slate-200">{m === 'sequential' ? 'Secuencial' : 'Paralelo'}</span>
-                {goalMode === m && <span className="text-xs text-purple-400 ml-auto">ACTIVO</span>}
+                <span className="text-sm font-semibold text-slate-200">{m === 'sequential' ? t('goals.sequential') : t('goals.parallel')}</span>
+                {goalMode === m && <span className="text-xs text-purple-400 ml-auto">{t('common.active')}</span>}
               </div>
               <p className="text-xs text-slate-500">
-                {m === 'sequential'
-                  ? 'Ahorra para una meta a la vez en orden de prioridad. Más rápido por meta.'
-                  : 'Ahorra para todas las metas al mismo tiempo. Avanza en todas simultáneamente.'}
+                {m === 'sequential' ? t('goals.sequentialDescription') : t('goals.parallelDescription')}
               </p>
             </button>
           ))}
@@ -106,27 +106,27 @@ export function Goals() {
       {/* Goals list */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-slate-200 font-heading">Tus Metas</h3>
+          <h3 className="text-sm font-semibold text-slate-200 font-heading">{t('goals.yourGoals')}</h3>
           <button
             onClick={() => setShowAddModal(true)}
             className="text-xs bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5"
           >
             <Plus size={14} />
-            Agregar meta
+            {t('goals.addGoal')}
           </button>
         </div>
 
         {goalPlan.goals.length === 0 ? (
           <Card className="text-center py-8">
             <Target className="mx-auto text-slate-600 mb-3" size={32} />
-            <p className="text-sm font-semibold text-slate-200">Sin metas definidas</p>
-            <p className="text-xs text-slate-500 mt-1">Agrega tus primeras metas financieras</p>
+            <p className="text-sm font-semibold text-slate-200">{t('goals.noGoals')}</p>
+            <p className="text-xs text-slate-500 mt-1">{t('goals.noGoalsDescription')}</p>
             <button
               onClick={() => setShowAddModal(true)}
               className="mt-3 text-xs bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors inline-flex items-center gap-1.5"
             >
               <Plus size={14} />
-              Agregar primera meta
+              {t('goals.addFirstGoal')}
             </button>
           </Card>
         ) : (
@@ -153,15 +153,15 @@ export function Goals() {
                         goal.status === 'completed' ? 'bg-emerald-500/20 text-emerald-400' :
                         'bg-surface-800 text-slate-500'
                       )}>
-                        {goal.status === 'saving' ? 'Ahorrando' : goal.status === 'completed' ? 'Completada' : 'En espera'}
+                        {goal.status === 'saving' ? t('goals.saving') : goal.status === 'completed' ? t('common.completed') : t('goals.waiting')}
                       </span>
                     </div>
 
                     <div className="flex flex-wrap gap-3 mt-1 text-xs text-slate-500">
-                      <span>Meta: <span className="text-slate-300">{fmt(goal.targetAmount)}</span></span>
-                      {goal.currentSaved > 0 && <span>Ahorrado: <span className="text-emerald-400">{fmt(goal.currentSaved)}</span></span>}
-                      <span>Falta: <span className="text-red-400">{fmt(goal.remaining)}</span></span>
-                      {goal.monthlySaving > 0 && <span>Por mes: <span className="text-purple-400">{fmt(goal.monthlySaving)}</span></span>}
+                      <span>{t('goals.target', { amount: fmt(goal.targetAmount) })}</span>
+                      {goal.currentSaved > 0 && <span>{t('goals.saved', { amount: fmt(goal.currentSaved) })}</span>}
+                      <span>{t('goals.remaining', { amount: fmt(goal.remaining) })}</span>
+                      {goal.monthlySaving > 0 && <span>{t('goals.perMonth', { amount: fmt(goal.monthlySaving) })}</span>}
                     </div>
 
                     <div className="mt-2">
@@ -173,10 +173,10 @@ export function Goals() {
                     </div>
 
                     <div className="flex justify-between text-xs mt-1">
-                      <span className="text-slate-600">{goal.progressPercent.toFixed(0)}% completado</span>
+                      <span className="text-slate-600">{goal.progressPercent.toFixed(0)}% {t('goals.percentComplete')}</span>
                       <span className={goal.status === 'saving' ? 'text-purple-400' : 'text-slate-500'}>
-                        {goal.status === 'waiting' ? `Inicia: ${goalPlan.startDate}` : `Listo: ${goal.estimatedDate}`}
-                        {goal.monthsNeeded > 0 && goal.status === 'saving' && ` (${goal.monthsNeeded} meses)`}
+                        {goal.status === 'waiting' ? t('goals.startsAt', { date: goalPlan.startDate }) : t('goals.readyAt', { date: goal.estimatedDate })}
+                        {goal.monthsNeeded > 0 && goal.status === 'saving' && ` ${t('goals.monthsNeeded', { count: goal.monthsNeeded })}`}
                       </span>
                     </div>
                   </div>
@@ -197,9 +197,9 @@ export function Goals() {
           <div className="flex items-start gap-2">
             <Clock size={18} className="text-amber-400 mt-0.5 shrink-0" />
             <div>
-              <p className="text-sm font-medium text-amber-400">Metas en espera</p>
+              <p className="text-sm font-medium text-amber-400">{t('goals.waitingGoals')}</p>
               <p className="text-xs text-slate-500 mt-1">
-                Las metas empiezan a acumularse en <strong className="text-amber-400">{goalPlan.startDate}</strong> — cuando termines de pagar tus deudas ({fs.debtPlan.debtFreeDate}). Prioriza eliminar las deudas de alto costo primero.
+                {t('goals.waitingDescription', { startDate: goalPlan.startDate, debtFreeDate: fs.debtPlan.debtFreeDate })}
               </p>
             </div>
           </div>
@@ -207,10 +207,10 @@ export function Goals() {
       )}
 
       {/* Add modal */}
-      <Modal isOpen={showAddModal} onClose={() => setShowAddModal(false)} title="Nueva Meta Financiera">
+      <Modal isOpen={showAddModal} onClose={() => setShowAddModal(false)} title={t('goals.newGoalTitle')}>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Icono</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">{t('goals.icon')}</label>
             <div className="flex flex-wrap gap-2">
               {GOAL_ICONS.map(({ icon: Icon, label }) => (
                 <button
@@ -229,17 +229,17 @@ export function Goals() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Nombre de la meta</label>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">{t('goals.goalName')}</label>
             <input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-              placeholder="Ej: Apartamento, Viaje a Europa"
+              placeholder={t('goals.goalNamePlaceholder')}
               className="w-full bg-surface-800 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-600 ring-1 ring-surface-700/50 focus:ring-2 focus:ring-purple-500/50 transition-all" />
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <CurrencyInput label="Costo total" value={form.targetAmount ?? 0} onChange={v => setForm(f => ({ ...f, targetAmount: v }))} currency={currency} required />
-            <CurrencyInput label="Ya tienes ahorrado" value={form.currentSaved ?? 0} onChange={v => setForm(f => ({ ...f, currentSaved: v }))} currency={currency} />
+            <CurrencyInput label={t('goals.totalCost')} value={form.targetAmount ?? 0} onChange={v => setForm(f => ({ ...f, targetAmount: v }))} currency={currency} required />
+            <CurrencyInput label={t('goals.alreadySaved')} value={form.currentSaved ?? 0} onChange={v => setForm(f => ({ ...f, currentSaved: v }))} currency={currency} />
           </div>
           <button onClick={addGoalHandler} className="w-full bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors shadow-lg shadow-purple-600/20">
-            Agregar meta
+            {t('goals.addGoal')}
           </button>
         </div>
       </Modal>

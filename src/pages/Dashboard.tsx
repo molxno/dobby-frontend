@@ -1,6 +1,7 @@
+import { useTranslation } from 'react-i18next';
 import { useFinancialStore } from '../store/useFinancialStore';
 import { formatCurrency } from '../utils/formatters';
-import { HEALTH_LEVEL_CONFIG } from '../utils/constants';
+import { HEALTH_LEVEL_CONFIG, getHealthLevelLabel } from '../utils/constants';
 import { Card } from '../components/shared/Card';
 import { RingChart } from '../components/shared/RingChart';
 import { ProgressBar } from '../components/shared/ProgressBar';
@@ -14,13 +15,14 @@ import {
 } from 'recharts';
 
 export function Dashboard() {
+  const { t } = useTranslation();
   const { financialState, profile } = useFinancialStore();
   const fs = financialState;
 
   if (!fs) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-slate-500">Cargando datos financieros...</p>
+        <p className="text-slate-500">{t('dashboard.loading')}</p>
       </div>
     );
   }
@@ -44,10 +46,10 @@ export function Dashboard() {
   });
 
   const quickStats = [
-    { label: 'Ingreso Mensual', value: fmt(fs.totalMonthlyIncome), icon: Banknote, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-    { label: 'Gastos Fijos', value: fmt(fs.totalMonthlyExpenses), icon: Home, color: 'text-brand-400', bg: 'bg-brand-500/10' },
-    { label: 'Deudas/mes', value: fmt(fs.totalDebtPayments), icon: CreditCard, color: 'text-red-400', bg: 'bg-red-500/10' },
-    { label: 'Flujo Libre', value: fmt(fs.freeFlow), icon: Waves, color: fs.freeFlow >= 0 ? 'text-emerald-400' : 'text-red-400', bg: fs.freeFlow >= 0 ? 'bg-emerald-500/10' : 'bg-red-500/10' },
+    { label: t('dashboard.monthlyIncome'), value: fmt(fs.totalMonthlyIncome), icon: Banknote, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+    { label: t('dashboard.fixedExpenses'), value: fmt(fs.totalMonthlyExpenses), icon: Home, color: 'text-brand-400', bg: 'bg-brand-500/10' },
+    { label: t('dashboard.debtsPerMonth'), value: fmt(fs.totalDebtPayments), icon: CreditCard, color: 'text-red-400', bg: 'bg-red-500/10' },
+    { label: t('dashboard.freeFlow'), value: fmt(fs.freeFlow), icon: Waves, color: fs.freeFlow >= 0 ? 'text-emerald-400' : 'text-red-400', bg: fs.freeFlow >= 0 ? 'bg-emerald-500/10' : 'bg-red-500/10' },
   ];
 
   return (
@@ -88,9 +90,9 @@ export function Dashboard() {
             <div className="text-center">
               <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${healthCfg.bg} ${healthCfg.text}`}>
                 <span className="w-1.5 h-1.5 rounded-full bg-current" />
-                {healthCfg.label}
+                {getHealthLevelLabel(fs.diagnosis.level)}
               </div>
-              <p className="text-xs text-slate-500 mt-3">Salud Financiera</p>
+              <p className="text-xs text-slate-500 mt-3">{t('dashboard.financialHealth')}</p>
             </div>
           </div>
 
@@ -98,7 +100,7 @@ export function Dashboard() {
           <div className="space-y-4 pt-5 mt-2 border-t border-surface-800/40">
             <div>
               <div className="flex justify-between text-xs mb-1.5">
-                <span className="text-slate-400">Gasto/Ingreso</span>
+                <span className="text-slate-400">{t('dashboard.expenseIncome')}</span>
                 <span className={fs.expenseToIncomeRatio > 0.8 ? 'text-red-400' : fs.expenseToIncomeRatio > 0.65 ? 'text-amber-400' : 'text-emerald-400'}>
                   {(fs.expenseToIncomeRatio * 100).toFixed(0)}%
                 </span>
@@ -107,9 +109,9 @@ export function Dashboard() {
             </div>
             <div>
               <div className="flex justify-between text-xs mb-1.5">
-                <span className="text-slate-400">Fondo emergencia</span>
+                <span className="text-slate-400">{t('dashboard.emergencyFund')}</span>
                 <span className={fs.emergencyFundMonths < 1 ? 'text-red-400' : fs.emergencyFundMonths < 3 ? 'text-amber-400' : 'text-emerald-400'}>
-                  {fs.emergencyFundMonths.toFixed(1)} meses
+                  {fs.emergencyFundMonths.toFixed(1)} {t('dashboard.months')}
                 </span>
               </div>
               <ProgressBar value={Math.min(100, (fs.emergencyFundMonths / 6) * 100)} color={fs.emergencyFundMonths < 1 ? '#ef4444' : fs.emergencyFundMonths < 3 ? '#f59e0b' : '#22c55e'} height="h-1.5" />
@@ -118,7 +120,7 @@ export function Dashboard() {
         </Card>
 
         {/* Trend chart */}
-        <Card className="lg:col-span-2" title="Tendencia Mensual" subtitle="Ingresos vs Gastos — últimos 6 meses">
+        <Card className="lg:col-span-2" title={t('dashboard.monthlyTrend')} subtitle={t('dashboard.incomeVsExpenses')}>
           <div className="h-56 mt-4">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={trendData}>
@@ -140,8 +142,8 @@ export function Dashboard() {
                   contentStyle={{ backgroundColor: '#111827', border: 'none', borderRadius: '8px', fontSize: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}
                   formatter={(value: unknown) => [fmt(Number(value)), '']}
                 />
-                <Area type="monotone" dataKey="ingresos" name="Ingresos" stroke="#22c55e" fill="url(#incomeGrad)" strokeWidth={2} />
-                <Area type="monotone" dataKey="gastos" name="Gastos" stroke="#ef4444" fill="url(#expenseGrad)" strokeWidth={2} />
+                <Area type="monotone" dataKey="ingresos" name={t('dashboard.income')} stroke="#22c55e" fill="url(#incomeGrad)" strokeWidth={2} />
+                <Area type="monotone" dataKey="gastos" name={t('dashboard.expenses')} stroke="#ef4444" fill="url(#expenseGrad)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -155,7 +157,7 @@ export function Dashboard() {
           <Card>
             <div className="flex items-center justify-between mb-5">
               <div>
-                <h3 className="text-sm font-semibold text-slate-200 font-heading">Fase Actual</h3>
+                <h3 className="text-sm font-semibold text-slate-200 font-heading">{t('dashboard.currentPhase')}</h3>
                 <p className="text-xs text-slate-500 mt-1">{fs.currentPhase.name}</p>
               </div>
               <div className="w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold text-white" style={{ backgroundColor: fs.currentPhase.color }}>
@@ -179,7 +181,7 @@ export function Dashboard() {
             </div>
 
             <p className="text-xs text-slate-500">
-              {fs.currentPhase.startMonth} → {fs.currentPhase.endMonth} · {fs.currentPhase.durationMonths} meses
+              {fs.currentPhase.startMonth} → {fs.currentPhase.endMonth} · {fs.currentPhase.durationMonths} {t('dashboard.months')}
             </p>
 
             {/* Quick recommendation */}
@@ -193,7 +195,7 @@ export function Dashboard() {
                   </div>
                 </div>
                 <Link to="/insights" className="mt-4 flex items-center gap-1 text-xs text-brand-400 hover:text-brand-300 font-medium">
-                  Ver plan completo <ArrowRight size={12} />
+                  {t('dashboard.viewFullPlan')} <ArrowRight size={12} />
                 </Link>
               </div>
             )}
@@ -201,7 +203,7 @@ export function Dashboard() {
         )}
 
         {/* Allocation pie */}
-        <Card title="Distribución del Ingreso" subtitle="Plan de la fase actual">
+        <Card title={t('dashboard.incomeDistribution')} subtitle={t('dashboard.currentPhasePlan')}>
           <div className="h-56 mt-4">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
