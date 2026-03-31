@@ -1,4 +1,5 @@
-import React from 'react';
+import { AlertTriangle, AlertCircle, Info, CheckCircle2, X, type LucideIcon } from 'lucide-react';
+import { cn } from '../../lib/utils';
 
 type AlertType = 'danger' | 'warning' | 'info' | 'success';
 
@@ -10,28 +11,31 @@ interface AlertProps {
   onDismiss?: () => void;
 }
 
-const CONFIG: Record<AlertType, { bg: string; border: string; title: string; icon: string }> = {
-  danger: { bg: 'bg-red-950/50', border: 'border-red-500/40', title: 'text-red-400', icon: '🚨' },
-  warning: { bg: 'bg-yellow-950/50', border: 'border-yellow-500/40', title: 'text-yellow-400', icon: '⚠️' },
-  info: { bg: 'bg-blue-950/50', border: 'border-blue-500/40', title: 'text-blue-400', icon: 'ℹ️' },
-  success: { bg: 'bg-green-950/50', border: 'border-green-500/40', title: 'text-green-400', icon: '✅' },
+const CONFIG: Record<AlertType, { bg: string; title: string; icon: LucideIcon }> = {
+  danger: { bg: 'bg-red-950/40', title: 'text-red-400', icon: AlertCircle },
+  warning: { bg: 'bg-amber-950/40', title: 'text-amber-400', icon: AlertTriangle },
+  info: { bg: 'bg-brand-950/40', title: 'text-brand-400', icon: Info },
+  success: { bg: 'bg-emerald-950/40', title: 'text-emerald-400', icon: CheckCircle2 },
 };
 
 export function Alert({ type, title, message, action, onDismiss }: AlertProps) {
   const cfg = CONFIG[type];
+  const Icon = cfg.icon;
   return (
-    <div className={`${cfg.bg} ${cfg.border} border rounded-lg p-3`}>
+    <div className={cn(cfg.bg, 'rounded-lg p-4')}>
       <div className="flex items-start justify-between gap-3">
-        <div className="flex items-start gap-2 flex-1">
-          <span className="text-base mt-0.5">{cfg.icon}</span>
+        <div className="flex items-start gap-3 flex-1">
+          <Icon className={cn(cfg.title, 'mt-0.5 shrink-0')} size={16} />
           <div className="flex-1 min-w-0">
-            <p className={`text-sm font-semibold ${cfg.title}`}>{title}</p>
-            <p className="text-xs text-gray-400 mt-0.5 leading-relaxed">{message}</p>
-            {action && <p className="text-xs text-gray-500 mt-1 italic">→ {action}</p>}
+            <p className={cn('text-sm font-semibold', cfg.title)}>{title}</p>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">{message}</p>
+            {action && <p className="text-xs text-slate-500 mt-1.5 italic">{action}</p>}
           </div>
         </div>
         {onDismiss && (
-          <button onClick={onDismiss} className="text-gray-600 hover:text-gray-400 text-xs mt-0.5 shrink-0">✕</button>
+          <button onClick={onDismiss} className="text-slate-600 hover:text-slate-400 shrink-0">
+            <X size={14} />
+          </button>
         )}
       </div>
     </div>

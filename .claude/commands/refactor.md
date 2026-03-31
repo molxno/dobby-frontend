@@ -1,15 +1,15 @@
-Refactoriza el código indicado: $ARGUMENTS
+Refactor the indicated code: $ARGUMENTS
 
-Principios:
-1. Lee TODO el contexto antes de tocar nada — entiende las dependencias
-2. Mantén la misma interfaz pública (exports, props, tipos) a menos que el usuario pida cambiarla
-3. Verifica que los 7 motores de cálculo siguen recibiendo los mismos inputs
-4. Asegura que el store sigue llamando recalculate() correctamente
-5. Corre `npm run typecheck` después de cada cambio significativo
+Principles:
+1. Read ALL the context before touching anything — understand the dependencies
+2. Keep the same public interface (exports, props, types) unless the user asks to change it
+3. Verify that the 7 calculation engines still receive the same inputs
+4. Ensure the store still calls recalculate() correctly
+5. Run `npm run typecheck` after each significant change
 
-Reglas:
-- NO cambies nombres de exports sin actualizar todos los imports
-- NO muevas archivos sin actualizar todas las referencias
-- NO agregues abstracciones innecesarias — menos código > más código
-- Mantén las funciones de los engines como funciones puras
-- Si el refactor toca types.ts, verifica TODOS los archivos que importan de ahí
+Rules:
+- Do NOT rename exports without updating all imports
+- Do NOT move files without updating all references
+- Do NOT add unnecessary abstractions — less code > more code
+- Keep engine functions as pure functions
+- If the refactor touches types.ts, verify ALL files that import from it

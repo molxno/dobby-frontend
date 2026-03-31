@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '../../lib/supabase';
+import { DobbyLogo } from '../../components/shared/DobbyLogo';
 
 function isPasswordRecoveryUrl(): boolean {
   const hash = window.location.hash;
@@ -9,6 +11,7 @@ function isPasswordRecoveryUrl(): boolean {
 }
 
 export function AuthCallback() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,12 +55,12 @@ export function AuthCallback() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+    <div className="min-h-screen bg-surface-950 flex items-center justify-center">
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-600 rounded-2xl animate-pulse">
-          <span className="text-2xl font-bold text-white">TF</span>
+        <div className="inline-flex animate-pulse">
+          <DobbyLogo size={64} showWordmark />
         </div>
-        <p className="text-sm text-gray-400">Verificando sesión...</p>
+        <p className="text-sm text-slate-400">{t('auth.verifyingSession')}</p>
       </div>
     </div>
   );

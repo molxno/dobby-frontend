@@ -1,3 +1,5 @@
+import { cn } from '../../lib/utils';
+
 interface ProgressBarProps {
   value: number; // 0-100
   color?: string;
@@ -10,7 +12,7 @@ interface ProgressBarProps {
 
 export function ProgressBar({
   value,
-  color = '#3b82f6',
+  color = '#6366f1',
   height = 'h-2',
   showLabel = false,
   label,
@@ -23,13 +25,13 @@ export function ProgressBar({
     <div className={className}>
       {(showLabel || label) && (
         <div className="flex justify-between mb-1">
-          {label && <span className="text-xs text-gray-400">{label}</span>}
-          {showLabel && <span className="text-xs text-gray-400">{clamped.toFixed(0)}%</span>}
+          {label && <span className="text-xs text-slate-400">{label}</span>}
+          {showLabel && <span className="text-xs text-slate-400">{clamped.toFixed(0)}%</span>}
         </div>
       )}
-      <div className={`w-full bg-gray-800 rounded-full overflow-hidden ${height}`}>
+      <div className={cn('w-full bg-surface-800 rounded-full overflow-hidden', height)}>
         <div
-          className={`${height} rounded-full ${animate ? 'transition-all duration-700 ease-out' : ''}`}
+          className={cn(height, 'rounded-full', animate && 'transition-all duration-700 ease-out')}
           style={{ width: `${clamped}%`, backgroundColor: color }}
         />
       </div>

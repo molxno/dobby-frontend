@@ -1,5 +1,5 @@
 import type { Income, Expense, Debt, Phase, BudgetPlan, BudgetCategory, BudgetAllocation } from '../store/types';
-import { CATEGORY_LABELS, CATEGORY_COLORS } from '../utils/constants';
+import { getCategoryLabel, CATEGORY_COLORS } from '../utils/constants';
 import type { ExpenseCategory } from '../store/types';
 
 export function runBudgetOptimizer(
@@ -29,7 +29,7 @@ export function runBudgetOptimizer(
       const budgeted = cat === 'debt' ? totalDebtPayments : spent * 1.0;
       return {
         category,
-        label: CATEGORY_LABELS[category] ?? cat,
+        label: getCategoryLabel(category as ExpenseCategory) ?? cat,
         budgeted,
         spent,
         percentage: totalIncome > 0 ? spent / totalIncome : 0,

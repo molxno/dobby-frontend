@@ -1,41 +1,40 @@
 ---
-name: Bug report
-about: Reportar un error en el Tutor Financiero
+name: Bug Report
+about: Report a bug in the Personal Finance Tutor
 title: 'fix: '
 labels: 'bug'
 assignees: ''
-
 ---
 
-## Descripcion del bug
+## Bug Description
 
-<!-- Descripcion clara y concisa del error -->
+<!-- Clear and concise description of the bug -->
 
-## Pasos para reproducir
+## Steps to Reproduce
 
-1. Ir a '...'
-2. Click en '...'
-3. Ver error
+1. Go to '...'
+2. Click on '...'
+3. See error
 
-## Comportamiento esperado
+## Expected Behavior
 
-<!-- Que deberia pasar -->
+<!-- What should happen -->
 
-## Comportamiento actual
+## Actual Behavior
 
-<!-- Que pasa realmente -->
+<!-- What actually happens -->
 
-## Screenshots / Console errors
+## Screenshots / Console Errors
 
-<!-- Si aplica, agrega capturas o errores de consola -->
+<!-- If applicable, add screenshots or console errors -->
 
-## Contexto
+## Context
 
-- **Navegador:** (ej. Chrome 120, Firefox 121)
-- **OS:** (ej. Windows 11, macOS 14)
-- **Pagina afectada:** (ej. Dashboard, Deudas, Quincenal)
-- **Datos en localStorage:** (si puedes exportar el estado, ayuda a reproducir)
+- **Browser:** (e.g. Chrome 120, Firefox 121)
+- **OS:** (e.g. Windows 11, macOS 14)
+- **Affected Page:** (e.g. Dashboard, Debts, Biweekly)
+- **localStorage Data:** (if you can export state, it helps reproduce)
 
-## Informacion adicional
+## Additional Information
 
-<!-- Cualquier otro contexto relevante -->
+<!-- Any other relevant context -->

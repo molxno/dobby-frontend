@@ -1,9 +1,9 @@
-Prepara el entorno de desarrollo:
+Set up the development environment:
 
-1. Verifica que Node.js está instalado y es >=20 (revisar .nvmrc)
-2. Corre `npm install` si node_modules no existe o está desactualizado
-3. Corre `npm run typecheck` para verificar que no hay errores de tipos
-4. Inicia el servidor de desarrollo con `npm run dev` en background
-5. Confirma que el servidor está corriendo y reporta la URL local
+1. Verify that Node.js is installed and is >=20 (check .nvmrc)
+2. Run `npm install` if node_modules does not exist or is outdated
+3. Run `npm run typecheck` to verify there are no type errors
+4. Start the development server with `npm run dev` in the background
+5. Confirm that the server is running and report the local URL
 
-Si hay errores en cualquier paso, diagnostica y sugiere la solución antes de continuar.
+If there are errors at any step, diagnose and suggest the solution before continuing.

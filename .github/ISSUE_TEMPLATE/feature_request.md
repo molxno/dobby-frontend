@@ -1,34 +1,33 @@
 ---
-name: Feature request
-about: Proponer una nueva funcionalidad para el Tutor Financiero
+name: Feature Request
+about: Propose a new feature for the Personal Finance Tutor
 title: 'feat: '
 labels: 'enhancement'
 assignees: ''
-
 ---
 
-## Problema
+## Problem
 
-<!-- Que problema resuelve esta feature? -->
+<!-- What problem does this feature solve? -->
 
-## Solucion propuesta
+## Proposed Solution
 
-<!-- Describe como deberia funcionar -->
+<!-- Describe how it should work -->
 
-## Alternativas consideradas
+## Alternatives Considered
 
-<!-- Otras opciones que evaluaste y por que no las elegiste -->
+<!-- Other options you evaluated and why you didn't choose them -->
 
-## Impacto
+## Impact
 
-- **Pagina(s) afectada(s):** (ej. Dashboard, Deudas, nueva pagina)
-- **Engine(s) afectado(s):** (ej. debtStrategy, goalPlanner, ninguno)
-- **Cambios en tipos:** (si/no — afecta `store/types.ts`?)
+- **Affected Page(s):** (e.g. Dashboard, Debts, new page)
+- **Affected Engine(s):** (e.g. debtStrategy, goalPlanner, none)
+- **Type Changes:** (yes/no — affects `store/types.ts`?)
 
-## Mockup / Ejemplo (opcional)
+## Mockup / Example (optional)
 
-<!-- Sketch, screenshot de referencia, o ejemplo de como se veria -->
+<!-- Sketch, reference screenshot, or example of how it would look -->
 
-## Contexto adicional
+## Additional Context
 
-<!-- Cualquier otro detalle -->
+<!-- Any other details -->

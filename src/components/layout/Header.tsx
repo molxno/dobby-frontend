@@ -1,36 +1,28 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Menu, Settings, LogOut, ChevronDown } from 'lucide-react';
 import { useFinancialStore } from '../../store/useFinancialStore';
 import { useAuth } from '../../contexts/AuthContext';
 import { formatCurrency } from '../../utils/formatters';
-
-const PAGE_TITLES: Record<string, string> = {
-  '/': 'Dashboard',
-  '/presupuesto': 'Presupuesto',
-  '/deudas': 'Deudas',
-  '/metas': 'Metas',
-  '/quincenal': 'Plan Quincenal',
-  '/emergencia': 'Fondo de Emergencia',
-  '/transacciones': 'Transacciones',
-  '/insights': 'Insights del Tutor',
-  '/configuracion': 'Configuración',
-};
+import { cn } from '../../lib/utils';
 
 interface HeaderProps {
   onMenuClick: () => void;
 }
 
 export function Header({ onMenuClick }: HeaderProps) {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const { financialState, profile } = useFinancialStore();
   const { user, signOut } = useAuth();
-  const title = PAGE_TITLES[location.pathname] ?? 'Tutor Financiero';
+
+  const pageTitle = t(`header.pageTitles.${location.pathname}`, { defaultValue: 'Dobby' });
 
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Close menu on click outside
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -46,31 +38,28 @@ export function Header({ onMenuClick }: HeaderProps) {
     try {
       await signOut();
     } catch (error) {
-      console.error('Error al cerrar sesión:', error);
-      // Mostrar feedback básico al usuario y evitar que la excepción se propague
-      window.alert('No se pudo cerrar sesión. Intenta de nuevo.');
+      console.error('Logout error:', error);
+      window.alert(t('header.logoutError'));
     }
   };
 
   return (
-    <header className="flex items-center justify-between h-14 px-4 border-b border-gray-800 bg-gray-950/80 backdrop-blur-md sticky top-0 z-10">
-      <div className="flex items-center gap-3">
+    <header className="flex items-center justify-between h-17 px-6 lg:px-8 border-b border-surface-800/60 bg-surface-950/90 backdrop-blur-md sticky top-0 z-10 shrink-0">
+      <div className="flex items-center gap-4">
         <button
           onClick={onMenuClick}
-          className="lg:hidden text-gray-400 hover:text-gray-200 p-1.5 rounded-lg hover:bg-gray-800"
+          className="lg:hidden text-slate-400 hover:text-slate-200 p-2 rounded-lg hover:bg-surface-800 transition-colors"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+          <Menu size={20} />
         </button>
-        <h2 className="text-sm font-semibold text-gray-100">{title}</h2>
+        <h2 className="text-base font-semibold text-slate-100 font-heading">{pageTitle}</h2>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         {financialState && (
-          <div className="hidden sm:flex items-center gap-2 text-xs">
-            <span className="text-gray-500">Flujo libre:</span>
-            <span className={`font-semibold ${financialState.freeFlow >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+          <div className="hidden sm:flex items-center gap-2.5 px-4 py-2 bg-surface-900/60 rounded-lg border border-surface-800/40">
+            <span className="text-xs text-slate-500">{t('header.freeFlow')}</span>
+            <span className={cn('text-sm font-semibold font-heading', financialState.freeFlow >= 0 ? 'text-emerald-400' : 'text-red-400')}>
               {formatCurrency(financialState.freeFlow, profile.currency, profile.locale)}
             </span>
           </div>
@@ -80,42 +69,47 @@ export function Header({ onMenuClick }: HeaderProps) {
         <div className="relative" ref={menuRef}>
           <button
             onClick={() => setMenuOpen(o => !o)}
-            className="w-8 h-8 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-sm hover:bg-blue-600/30 transition-colors cursor-pointer"
-            aria-label={profile.name ? `Abrir menú de usuario para ${profile.name}` : 'Abrir menú de usuario'}
+            className={cn(
+              'flex items-center gap-2.5 px-3 py-2 rounded-xl transition-colors',
+              'hover:bg-surface-800 border border-transparent',
+              menuOpen && 'bg-surface-800 border-surface-700'
+            )}
+            aria-label={profile.name ? t('header.openUserMenu', { name: profile.name }) : t('header.openUserMenuDefault')}
             aria-haspopup="true"
             aria-expanded={menuOpen}
           >
-            {profile.name ? profile.name.charAt(0).toUpperCase() : '👤'}
+            <div className="w-8 h-8 rounded-full bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-xs font-semibold text-brand-400">
+              {profile.name ? profile.name.charAt(0).toUpperCase() : '?'}
+            </div>
+            <span className="hidden sm:block text-sm text-slate-300 font-medium max-w-30 truncate">
+              {profile.name || user?.email?.split('@')[0] || ''}
+            </span>
+            <ChevronDown size={14} className={cn('text-slate-500 transition-transform', menuOpen && 'rotate-180')} />
           </button>
 
           {menuOpen && (
-            <div className="absolute right-0 mt-2 w-64 bg-gray-900 border border-gray-700 rounded-xl shadow-lg shadow-black/40 py-2 z-50">
+            <div className="absolute right-0 mt-2 w-64 bg-surface-900 rounded-xl shadow-xl shadow-black/40 py-2 z-50 border border-surface-800/60">
               {/* User info */}
-              <div className="px-4 py-3 border-b border-gray-800">
-                <p className="text-sm font-medium text-gray-100 truncate">{profile.name || 'Sin nombre'}</p>
-                <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+              <div className="px-4 py-3.5 border-b border-surface-800">
+                <p className="text-sm font-medium text-slate-100 truncate">{profile.name || t('common.noName')}</p>
+                <p className="text-xs text-slate-500 truncate mt-0.5">{user?.email}</p>
               </div>
 
               {/* Menu items */}
-              <div className="py-1">
+              <div className="py-1.5">
                 <button
                   onClick={() => { setMenuOpen(false); navigate('/configuracion'); }}
-                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 hover:text-gray-100 transition-colors text-left"
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-surface-800 hover:text-slate-100 transition-colors text-left"
                 >
-                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  Configuración
+                  <Settings size={16} className="text-slate-500" />
+                  {t('header.settings')}
                 </button>
                 <button
                   onClick={handleLogout}
                   className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-400 hover:bg-red-950/30 transition-colors text-left"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                  </svg>
-                  Cerrar sesión
+                  <LogOut size={16} />
+                  {t('header.logout')}
                 </button>
               </div>
             </div>

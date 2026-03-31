@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { cn } from '../../lib/utils';
 
 interface CurrencyInputProps {
   value: number;
@@ -35,12 +36,12 @@ export function CurrencyInput({
   return (
     <div className={className}>
       {label && (
-        <label className="block text-sm font-medium text-gray-300 mb-1.5">
+        <label className="block text-sm font-medium text-slate-300 mb-2">
           {label} {required && <span className="text-red-400">*</span>}
         </label>
       )}
       <div className="relative">
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">{currency === 'COP' ? '$' : currency}</span>
+        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-500">{currency === 'COP' ? '$' : currency}</span>
         <input
           type={focused ? 'number' : 'text'}
           value={focused ? (value === 0 ? '' : value) : displayValue}
@@ -49,10 +50,16 @@ export function CurrencyInput({
           onBlur={() => setFocused(false)}
           placeholder={placeholder}
           min={min}
-          className={`w-full bg-gray-800 border ${error ? 'border-red-500' : 'border-gray-700'} rounded-lg pl-8 pr-3 py-2.5 text-sm text-gray-100 placeholder-gray-600 focus:outline-none focus:border-blue-500 transition-colors`}
+          className={cn(
+            'w-full bg-surface-800 rounded-lg pl-9 pr-4 py-3 text-sm text-slate-100 placeholder-slate-600',
+            'ring-1 transition-all',
+            error
+              ? 'ring-red-500/50 focus:ring-2 focus:ring-red-500/60'
+              : 'ring-surface-700/50 focus:ring-2 focus:ring-brand-500/50',
+          )}
         />
       </div>
-      {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
+      {error && <p className="mt-1.5 text-xs text-red-400">{error}</p>}
     </div>
   );
 }

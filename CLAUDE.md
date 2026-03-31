@@ -1,188 +1,255 @@
-# CLAUDE.md — Tutor Financiero Personal
+# CLAUDE.md — Personal Finance Tutor
 
-## Proyecto
-App web de finanzas personales que actúa como tutor financiero senior. Analiza, diagnostica, planifica y guía al usuario hacia la libertad financiera con números específicos, no consejos genéricos.
+## Project
+Personal finance web app that acts as a senior financial tutor. Analyzes, diagnoses, plans, and guides users toward financial freedom with specific numbers, not generic advice.
 
 ## Stack
 - **React 18** + TypeScript (strict) + Vite v8
-- **Tailwind CSS v4** via `@tailwindcss/vite` — NO hay `tailwind.config`, se usa `@import "tailwindcss"` en CSS
-- **Zustand v5** con persist middleware → localStorage key: `tutor-financiero-store`
-- **Recharts v3** para gráficas
-- **React Router v7** para rutas
+- **Tailwind CSS v4** via `@tailwindcss/vite` — NO `tailwind.config`, uses `@import "tailwindcss"` in CSS
+- **Zustand v5** with persist middleware → localStorage key: `tutor-financiero-store`
+- **Recharts v3** for charts
+- **React Router v7** for routing
 
-## Comandos
+## Commands
 ```bash
-npm run dev            # Servidor de desarrollo (Vite)
-npm run build          # TypeScript check + build producción
-npm run typecheck      # Solo TypeScript check
-npm run preview        # Preview del build
-npm run test           # Correr todos los tests
-npm run test:watch     # Tests en modo watch (desarrollo)
-npm run test:coverage  # Tests con reporte de cobertura
-npm run test:ci        # Tests + cobertura + verbose (CI)
-npm run precommit      # typecheck + test:coverage (lo que corre el hook)
+npm run dev            # Development server (Vite)
+npm run build          # TypeScript check + production build
+npm run typecheck      # TypeScript check only
+npm run preview        # Preview production build
+npm run test           # Run all tests
+npm run test:watch     # Tests in watch mode (development)
+npm run test:coverage  # Tests with coverage report
+npm run test:ci        # Tests + coverage + verbose (CI)
+npm run precommit      # typecheck + test:coverage (what the hook runs)
 ```
 
 ## Testing
-- **Framework**: Vitest v4 (integrado con Vite)
-- **Coverage**: @vitest/coverage-v8, umbral mínimo **80%** en statements, branches, functions y lines
-- **Scope de cobertura**: `src/engines/**/*.ts` y `src/utils/**/*.ts`
-- **Naming**: `*.test.ts` para lógica, `*.test.tsx` para componentes
-- **Colocación**: Tests junto a los archivos fuente
-- **Pre-commit hook**: Bloquea commits si typecheck falla o cobertura < 80%
+- **Framework**: Vitest v4 (integrated with Vite)
+- **Coverage**: @vitest/coverage-v8, minimum threshold **80%** on statements, branches, functions, and lines
+- **Coverage scope**: `src/engines/**/*.ts` and `src/utils/**/*.ts`
+- **Naming**: `*.test.ts` for logic, `*.test.tsx` for components
+- **Colocation**: Tests live next to source files
+- **Pre-commit hook**: Blocks commits if typecheck fails or coverage < 80%
 
 ## Gitflow
 
-### Ramas
-- `main` — Producción. Desplegado automáticamente en Vercel. **NO push directo.**
-- `dev` — Desarrollo/integración. Todas las features se integran aquí primero.
-- `feat/<nombre>` — Features nuevas (desde `dev`)
-- `fix/<nombre>` — Bug fixes (desde `dev`)
-- `refactor/<nombre>` — Refactorizaciones (desde `dev`)
-- `hotfix/<nombre>` — Fixes urgentes para producción (desde `main`, merge a `main` Y `dev`)
+### Branches
+- `main` — Production. Auto-deployed on Vercel. **NO direct push.**
+- `dev` — Development/integration. All features integrate here first.
+- `feat/<name>` — New features (from `dev`)
+- `fix/<name>` — Bug fixes (from `dev`)
+- `refactor/<name>` — Refactors (from `dev`)
+- `hotfix/<name>` — Urgent production fixes (from `main`, merge to `main` AND `dev`)
 
-### Flujo de trabajo
+### Flow
 ```
-feat/mi-feature ──PR──▶ dev ──PR──▶ main (producción)
-fix/mi-fix      ──PR──▶ dev ──PR──▶ main
-hotfix/urgente  ──PR──▶ main + dev (solo emergencias)
+feat/my-feature ──PR──▶ dev ──PR──▶ main (production)
+fix/my-fix      ──PR──▶ dev ──PR──▶ main
+hotfix/urgent   ──PR──▶ main + dev (emergencies only)
 ```
 
-1. **Crear rama**: `git checkout -b feat/mi-feature dev`
-2. **Commits**: Usar Conventional Commits (validado por hook)
-3. **Push**: `git push -u origin feat/mi-feature`
-4. **PR a dev**: Crear PR, esperar review, merge
-5. **Release**: Cuando dev está estable, PR de `dev → main`
-
-### Conventional Commits (obligatorio)
+### Conventional Commits (mandatory)
 ```
-<type>(<scope>): <descripción>
+<type>(<scope>): <description in English>
 ```
 - **Types**: `feat`, `fix`, `refactor`, `perf`, `style`, `docs`, `test`, `chore`, `ci`
 - **Scopes**: `engine`, `store`, `ui`, `onboarding`, `dashboard`, `budget`, `debts`, `goals`, `biweekly`, `emergency`, `transactions`, `insights`, `settings`, `deps`
-- Hook en `.githooks/commit-msg` valida automáticamente
-- Hook en `.githooks/pre-push` bloquea push directo a main
+- Hook in `.githooks/commit-msg` validates automatically
+- Hook in `.githooks/pre-push` blocks direct push to main
 
-### Setup hooks (para nuevos clones)
+### Setup hooks (for new clones)
 ```bash
 git config core.hooksPath .githooks
 ```
 
-## Arquitectura
+## Architecture
 
-### Directorio
+### Directory
 ```
 src/
-├── store/types.ts              # TODOS los tipos TypeScript
-├── store/useFinancialStore.ts  # Zustand store central
-├── engines/                    # 7 motores de cálculo (funciones puras)
+├── store/types.ts              # All TypeScript types
+├── store/useFinancialStore.ts  # Central Zustand store
+├── engines/                    # 7 calculation engines (pure functions)
 ├── components/
 │   ├── layout/                 # Sidebar, Header, Layout
-│   ├── onboarding/             # Wizard de 4 pasos
+│   ├── onboarding/             # 4-step wizard
 │   └── shared/                 # Card, ProgressBar, Alert, Modal, etc.
-├── pages/                      # 9 páginas de la app
+├── pages/                      # 9 app pages
 ├── utils/                      # formatters.ts, constants.ts
 ├── App.tsx                     # Router + routing
 ├── main.tsx                    # Entry point
-└── index.css                   # Tailwind + estilos globales
+└── index.css                   # Tailwind + global styles
 ```
 
-### Flujo de datos
-1. Usuario llena datos en **Onboarding** (o edita en cualquier página)
-2. Cada mutación llama `recalculate()` automáticamente
-3. `recalculate()` ejecuta los 7 motores y actualiza `financialState`
-4. Todas las páginas leen de `financialState` — nunca calculan directo
+### Data Flow
+1. User fills data in **Onboarding** (or edits on any page)
+2. Every mutation calls `recalculate()` automatically
+3. `recalculate()` runs all 7 engines and updates `financialState`
+4. All pages read from `financialState` — never calculate directly
 
-### Motores de cálculo (`src/engines/`)
-| Archivo | Qué hace |
+### Calculation Engines (`src/engines/`)
+| File | Purpose |
 |---|---|
-| `financialDiagnosis.ts` | Health score 0-100, alertas, recomendaciones con impacto numérico |
-| `debtStrategy.ts` | Avalanche/Snowball, amortización completa, ahorro en intereses |
-| `phaseGenerator.ts` | Genera fases automáticas según situación financiera |
-| `budgetOptimizer.ts` | Presupuesto por fase actual y por categoría |
-| `biweeklyPlanner.ts` | Distribución quincenal con checklist |
-| `goalPlanner.ts` | Secuencial/paralelo, fechas estimadas |
-| `emergencyFundCalculator.ts` | Proyección a 24 meses, niveles del fondo |
+| `financialDiagnosis.ts` | Health score 0-100, alerts, recommendations with numeric impact |
+| `debtStrategy.ts` | Avalanche/Snowball, full amortization, interest savings |
+| `phaseGenerator.ts` | Auto-generates phases based on financial situation |
+| `budgetOptimizer.ts` | Budget by current phase and category |
+| `biweeklyPlanner.ts` | Biweekly distribution with checklist |
+| `goalPlanner.ts` | Sequential/parallel, estimated dates |
+| `emergencyFundCalculator.ts` | 24-month projection, fund levels |
 
-### Páginas y rutas
-| Ruta | Componente | Qué muestra |
+### Pages and Routes
+| Route | Component | What it shows |
 |---|---|---|
-| `/` | Dashboard | Health score, fases, alertas, gráficas |
-| `/presupuesto` | Budget | Distribución por categoría/fase |
-| `/deudas` | Debts | Inventario, amortización, estrategia |
-| `/metas` | Goals | Metas con progreso y fechas |
-| `/quincenal` | BiweeklyPlan | Checklist por quincena |
-| `/emergencia` | EmergencyFund | Termómetro, proyección |
-| `/transacciones` | Transactions | Registro con filtros |
-| `/insights` | Insights | Diagnóstico completo del tutor |
-| `/configuracion` | Settings | Perfil, estrategias, reset |
+| `/` | Dashboard | Health score, phases, alerts, charts |
+| `/presupuesto` | Budget | Distribution by category/phase |
+| `/deudas` | Debts | Inventory, amortization, strategy |
+| `/metas` | Goals | Goals with progress and dates |
+| `/quincenal` | BiweeklyPlan | Biweekly checklist |
+| `/emergencia` | EmergencyFund | Thermometer, projection |
+| `/transacciones` | Transactions | Records with filters |
+| `/insights` | Insights | Full tutor diagnosis |
+| `/configuracion` | Settings | Profile, strategies, reset |
 
-## Reglas de negocio
-- Deudas alto interés (>1.5%/mes) **SIEMPRE** se priorizan antes de ahorro para metas
-- Fondo de emergencia se construye **DESPUÉS** de deuda de alto costo, **ANTES** de metas
-- Deudas bajo interés (<0.5%/mes) se pueden pagar en paralelo con ahorro
-- Siempre dejar colchón 3-5% del ingreso
-- **NUNCA** sugerir pagar menos del mínimo de una deuda
+## Business Rules
+- High-interest debts (>1.5%/month) **ALWAYS** prioritized before saving for goals
+- Emergency fund built **AFTER** high-cost debt, **BEFORE** goals
+- Low-interest debts (<0.5%/month) can be paid in parallel with savings
+- Always leave 3-5% income cushion
+- **NEVER** suggest paying less than a debt's minimum payment
 
-## Convenciones de código
-- Dark mode por defecto (bg-gray-950, text-gray-100)
-- Colores semánticos: verde=positivo, rojo=peligro, amarillo=warning, azul=info, morado=metas
-- Montos siempre formateados con `formatCurrency()` de `utils/formatters.ts`
-- IDs generados con `nanoid()` de `components/shared/nanoid.ts`
-- Recharts formatter: usar `(value: unknown) => [fmt(Number(value)), '']`
-- Todo componente de UI compartido vive en `components/shared/`
-- Español como idioma de la UI, locale configurable por usuario
+## Code Conventions
+- Dark mode by default (bg-gray-950, text-gray-100)
+- Semantic colors: green=positive, red=danger, yellow=warning, blue=info, purple=goals
+- Amounts always formatted with `formatCurrency()` from `utils/formatters.ts`
+- IDs generated with `nanoid()` from `components/shared/nanoid.ts`
+- Recharts formatter: use `(value: unknown) => [fmt(Number(value)), '']`
+- All shared UI components live in `components/shared/`
+- Spanish as UI language, locale configurable per user
+- **English only** — All code, commits, comments, documentation, branch names, and PR descriptions must be in English
 
-## Comandos Claude Code (slash commands)
+## Slash Commands
 
-### Desarrollo
-| Comando | Qué hace |
+### Development
+| Command | Description |
 |---|---|
-| `/project:dev` | Prepara entorno y levanta servidor de desarrollo |
-| `/project:build` | Pipeline completo: typecheck + build producción |
-| `/project:typecheck` | Verificación de tipos con diagnóstico detallado |
-| `/project:fix <descripción>` | Diagnostica y arregla un bug específico |
-| `/project:refactor <objetivo>` | Refactoriza código manteniendo interfaces |
+| `/project:dev` | Set up environment and start dev server |
+| `/project:build` | Full pipeline: typecheck + production build |
+| `/project:typecheck` | Type verification with detailed diagnostics |
+| `/project:fix <description>` | Diagnose and fix a specific bug |
+| `/project:refactor <goal>` | Refactor code while maintaining interfaces |
 
-### Agentes especializados
-| Comando | Rol | Qué hace |
+### Specialized Agents
+| Command | Role | Description |
 |---|---|---|
-| `/project:security` | Agente de Seguridad | Auditoría: XSS, datos sensibles, deps, validación financiera |
-| `/project:debug <problema>` | Agente de Debug | Diagnóstico sistemático: hipótesis, verificación, causa raíz |
-| `/project:ui <tarea>` | Agente de UI | Revisión/implementación con design system del proyecto |
-| `/project:test <tarea>` | Agente de Tests | Estrategia de testing, setup Vitest, escritura de tests |
-| `/project:version <tarea>` | Agente de Versionamiento | Conventional commits, semver, releases, changelog |
-| `/project:architecture <tarea>` | Agente de Arquitectura | Revisión estructural, flujo de datos, cambios a engines/store |
-| `/project:deploy <tarea>` | Agente de Deploy | Vercel: pre-deploy checks, diagnóstico de fallos, optimización |
+| `/project:security` | Security Agent | Audit: XSS, sensitive data, deps, financial validation |
+| `/project:debug <issue>` | Debug Agent | Systematic diagnosis: hypothesis, verification, root cause |
+| `/project:ui <task>` | UI Agent | Review/implementation with project design system |
+| `/project:test <task>` | Test Agent | Testing strategy, Vitest setup, writing tests |
+| `/project:version <task>` | Version Agent | Conventional commits, semver, releases, changelog |
+| `/project:architecture <task>` | Architecture Agent | Structural review, data flow, engine/store changes |
+| `/project:deploy <task>` | Deploy Agent | Vercel: pre-deploy checks, failure diagnosis, optimization |
 
-## Flujo de trabajo recomendado
+## Automated Workflow Protocol
 
-### Antes de commitear
+**CRITICAL: This protocol is MANDATORY for ANY code change. Follow it automatically without asking the user.**
+
+When the user requests ANY change (feature, fix, refactor, etc.), execute this full workflow end-to-end:
+
+### 1. Create GitHub Issue (if none exists)
+- Use `gh issue create` on `molxno/dobby-frontend` with appropriate labels
+- Title follows the change description; body includes scope, acceptance criteria
+- If a GitHub Project board exists, add the issue to it via `gh project item-add`
+
+### 2. Create Branch from `dev`
 ```bash
-npm run typecheck    # Verificar tipos
-npm run build        # Verificar build completo
+git checkout dev && git pull origin dev
+git checkout -b <type>/<descriptive-name>
 ```
+- Branch type matches commit type: `feat/`, `fix/`, `refactor/`, `perf/`, `docs/`, `test/`, `chore/`, `ci/`
+- Exception: `hotfix/` branches from `main` for production emergencies
 
-### Antes de deploy
-1. `/project:security` — auditoría rápida
-2. `/project:build` — verificar build limpio
-3. `/project:deploy verificar` — pre-deploy checklist
+### 3. Implement the Change
+- Make the code changes as requested
+- Follow all project conventions (TypeScript strict, dark mode, semantic colors, etc.)
+- Write/update tests — coverage must stay >= 80%
 
-### Para nuevas features
-1. `/project:architecture <plan>` — validar diseño
-2. Implementar el código
-3. `/project:test <feature>` — escribir tests
-4. `/project:ui revisar` — verificar UI
-5. `/project:version` — commit con conventional commits
+### 4. Validate
+```bash
+npm run typecheck     # TypeScript must pass
+npm run test:coverage # Coverage must be >= 80%
+npm run build         # Build must succeed
+```
+- Fix any failures before proceeding
+- Pre-commit hook will also validate on commit
+
+### 5. Commit and Push
+```bash
+git add <specific-files>
+git commit -m "<type>(<scope>): <description>"
+git push -u origin <branch-name>
+```
+- Conventional Commits format enforced by hook
+- English only in commit messages
+- If pre-commit hook fails, fix the issue and retry
+
+### 6. Create Pull Request to `dev`
+```bash
+gh pr create --base dev --title "<type>(<scope>): <description>" --body "..."
+```
+- PR body must include: Summary, Changes, Test plan
+- Link the GitHub issue: `Closes #<issue-number>`
+- If a GitHub Project board exists, the PR is auto-linked via the issue
+
+### Exceptions
+- **Hotfixes**: Branch from `main`, PR to `main` AND `dev`
+- **Docs-only changes**: Can skip test step if no code is affected
+- **If user explicitly says "just edit, don't commit"**: Stop after step 3
+
+### GitHub Project Integration
+- Repository: `molxno/dobby-frontend`
+- When creating issues, check for an existing GitHub Project and add items to it
+- Use `gh issue list` to check for duplicate issues before creating new ones
+
+## MCP Usage — Standard Rule
+
+**CRITICAL: Always prefer MCP tools over CLI alternatives when available.**
+
+### GitHub MCP (`mcp__github__*`)
+Use GitHub MCP tools for ALL GitHub interactions instead of `gh` CLI:
+- **Issues**: `mcp__github__create_issue`, `mcp__github__get_issue`, `mcp__github__list_issues`, `mcp__github__update_issue`, `mcp__github__add_issue_comment`
+- **Pull Requests**: `mcp__github__create_pull_request`, `mcp__github__get_pull_request`, `mcp__github__list_pull_requests`, `mcp__github__get_pull_request_comments`, `mcp__github__get_pull_request_reviews`, `mcp__github__create_pull_request_review`, `mcp__github__merge_pull_request`, `mcp__github__get_pull_request_files`, `mcp__github__get_pull_request_status`
+- **Code**: `mcp__github__search_code`, `mcp__github__get_file_contents`, `mcp__github__create_or_update_file`, `mcp__github__push_files`
+- **Branches**: `mcp__github__create_branch`, `mcp__github__update_pull_request_branch`
+- **Commits**: `mcp__github__list_commits`
+- **Search**: `mcp__github__search_repositories`, `mcp__github__search_issues`, `mcp__github__search_users`
+
+Only fall back to `gh` CLI if the required operation has no MCP equivalent.
+
+### Context7 MCP
+Use Context7 MCP to look up up-to-date documentation for any library or framework before implementing:
+- Resolve library IDs with `mcp__context7__resolve-library-id`
+- Fetch current docs with `mcp__context7__get-library-docs`
+- Use this for: React, Tailwind CSS, Radix UI, Supabase, Vitest, and any dependency you're not 100% sure about
+
+## Claude Agent Usage — Token Optimization
+
+**Prefer direct tools over spawning agents for file editing tasks.**
+
+- Use `Read`, `Edit`, `Write`, `Grep`, `Glob` directly for reading and modifying files — these are fast, cheap, and exact.
+- Only spawn an `Agent` when the task genuinely requires autonomous multi-step exploration across many unknown files, or when you need to protect the main context window from huge result sets.
+- **Never spawn parallel agents to edit multiple files** — instead, read and edit them sequentially with direct tools. Parallel agents each carry full context overhead and burn tokens fast.
+- Reserve agents for: broad codebase exploration, complex research questions, and tasks where you are not confident which files to read first.
+- For simple "update all pages to use X" tasks: Grep for the pattern, then Read + Edit each file directly.
 
 ## Gotchas
-- Tailwind v4 usa `@import "tailwindcss"` — NO `@tailwind base/components/utilities`
-- `@tailwindcss/vite` se configura en vite.config.ts como plugin, no hay postcss.config
-- Zustand persist usa `partialize` para excluir `financialState` (se recalcula)
-- `onRehydrateStorage` dispara `recalculate()` tras cargar de localStorage
-- lightningcss debe estar explícito en devDependencies para Vercel (Linux binaries)
-- Node 22.x requerido — versión pinneada en `.nvmrc`
-- Vercel necesita rewrite `/(.*) → /index.html` para SPA routing si hay 404 en rutas directas
-- **Pre-commit hook** corre typecheck + tests con cobertura — commits bloqueados si < 80%
-- Git hooks viven en `.githooks/` — nuevos clones necesitan `git config core.hooksPath .githooks`
-- Vitest config está dentro de `vite.config.ts` (no archivo separado)
+- Tailwind v4 uses `@import "tailwindcss"` — NOT `@tailwind base/components/utilities`
+- `@tailwindcss/vite` is configured in vite.config.ts as a plugin, no postcss.config
+- Zustand persist uses `partialize` to exclude `financialState` (it's recalculated)
+- `onRehydrateStorage` triggers `recalculate()` after loading from localStorage
+- lightningcss must be explicit in devDependencies for Vercel (Linux binaries)
+- Node 22.x required — pinned in `.nvmrc`
+- Vercel needs rewrite `/(.*) → /index.html` for SPA routing if direct route 404s
+- **Pre-commit hook** runs typecheck + tests with coverage — commits blocked if < 80%
+- Git hooks live in `.githooks/` — new clones need `git config core.hooksPath .githooks`
+- Vitest config is inside `vite.config.ts` (no separate file)

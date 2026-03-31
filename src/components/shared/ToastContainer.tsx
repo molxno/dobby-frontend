@@ -1,4 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-react';
+import i18n from '../../i18n';
 
 export interface Toast {
   id: string;
@@ -33,10 +35,8 @@ export function removeToast(id: string) {
 }
 
 function useToasts() {
-  // Initialize from current toasts so pre-mount calls are reflected
   const [state, setState] = useState<Toast[]>(() => [...toasts]);
   useEffect(() => {
-    // Sync with any toasts added between initial render and effect
     setState([...toasts]);
     listeners.push(setState);
     return () => {
@@ -47,10 +47,10 @@ function useToasts() {
 }
 
 const TYPE_CONFIG = {
-  error: { bg: 'bg-red-950/90', border: 'border-red-500/50', title: 'text-red-400', icon: '!' },
-  warning: { bg: 'bg-yellow-950/90', border: 'border-yellow-500/50', title: 'text-yellow-400', icon: '!' },
-  success: { bg: 'bg-green-950/90', border: 'border-green-500/50', title: 'text-green-400', icon: '!' },
-  info: { bg: 'bg-blue-950/90', border: 'border-blue-500/50', title: 'text-blue-400', icon: 'i' },
+  error: { bg: 'bg-red-950/90', border: 'border-red-500/40', title: 'text-red-400', Icon: AlertCircle },
+  warning: { bg: 'bg-amber-950/90', border: 'border-amber-500/40', title: 'text-amber-400', Icon: AlertTriangle },
+  success: { bg: 'bg-emerald-950/90', border: 'border-emerald-500/40', title: 'text-emerald-400', Icon: CheckCircle2 },
+  info: { bg: 'bg-brand-950/90', border: 'border-brand-500/40', title: 'text-brand-400', Icon: Info },
 };
 
 export function ToastContainer() {
@@ -60,7 +60,6 @@ export function ToastContainer() {
     removeToast(id);
   }, []);
 
-  // Auto-dismiss each toast after 8 seconds
   const dismissTimers = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
   useEffect(() => {
     for (const toast of items) {
@@ -72,7 +71,6 @@ export function ToastContainer() {
         dismissTimers.current.set(toast.id, timer);
       }
     }
-    // Clean up timers for removed toasts
     const currentIds = new Set(items.map(t => t.id));
     for (const [id, timer] of dismissTimers.current) {
       if (!currentIds.has(id)) {
@@ -81,7 +79,6 @@ export function ToastContainer() {
       }
     }
 
-    // Clear all timers on unmount
     return () => {
       for (const timer of dismissTimers.current.values()) {
         clearTimeout(timer);
@@ -96,25 +93,24 @@ export function ToastContainer() {
     <div className="fixed bottom-4 right-4 z-50 space-y-2 max-w-sm w-full pointer-events-none">
       {items.map(toast => {
         const cfg = TYPE_CONFIG[toast.type];
+        const { Icon } = cfg;
         return (
           <div
             key={toast.id}
             className={`${cfg.bg} ${cfg.border} border rounded-lg p-3 shadow-lg backdrop-blur-sm pointer-events-auto animate-slide-in`}
           >
-            <div className="flex items-start gap-2">
-              <span className={`${cfg.title} text-sm font-bold mt-0.5 w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${cfg.border}`}>
-                {cfg.icon}
-              </span>
+            <div className="flex items-start gap-2.5">
+              <Icon className={`${cfg.title} mt-0.5 shrink-0`} size={16} />
               <div className="flex-1 min-w-0">
                 <p className={`text-sm font-semibold ${cfg.title}`}>{toast.title}</p>
-                <p className="text-xs text-gray-400 mt-0.5 leading-relaxed">{toast.message}</p>
+                <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">{toast.message}</p>
               </div>
               <button
                 onClick={() => dismiss(toast.id)}
-                aria-label="Cerrar notificación"
-                className="text-gray-600 hover:text-gray-400 text-xs shrink-0"
+                aria-label={i18n.t('common.closeNotification')}
+                className="text-slate-600 hover:text-slate-400 shrink-0"
               >
-                x
+                <X size={14} />
               </button>
             </div>
           </div>
