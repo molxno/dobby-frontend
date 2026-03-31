@@ -380,9 +380,18 @@
     "passwordUpdated": "Password Updated",
     "passwordUpdatedDesc": "Your password has been updated successfully.",
     "goToDashboard": "Go to dashboard",
-    "verifyingSession": "Verifying session..."
+    "verifyingSession": "Verifying session...",
+    "loginHeadline": "Take control of your money.",
+    "loginSubtext": "Dobby gives you a clear, personalized roadmap to get out of debt, build your emergency fund, and reach your financial goals.",
+    "signupHeadline": "Your financial freedom starts here.",
+    "signupSubtext": "Set up your income, expenses, and goals in minutes. Dobby builds a personalized plan to get you where you want to be.",
+    "featureSmartBudget": "Smart budget planning",
+    "featureEmergencyFund": "Emergency fund tracking",
+    "featureGoalRoadmap": "Goal-based financial roadmap"
   },
   "onboarding": {
+    "welcome": "Welcome, {{name}}",
+    "progress": "Progress",
     "steps": {
       "income": "Income",
       "incomeDesc": "How much and when you get paid",

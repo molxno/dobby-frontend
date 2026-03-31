@@ -56,7 +56,7 @@ export function OnboardingWizard() {
           </div>
           {userName && (
             <div className="ml-auto text-sm text-slate-400">
-              {t('onboarding.welcome', { name: userName, defaultValue: `Welcome, ${userName}` })}
+              {t('onboarding.welcome', { name: userName })}
             </div>
           )}
         </div>
@@ -106,7 +106,7 @@ export function OnboardingWizard() {
           {/* Progress */}
           <div className="mt-auto">
             <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
-              <span>{t('onboarding.progress', { defaultValue: 'Progress' })}</span>
+              <span>{t('onboarding.progress')}</span>
               <span>{step - 1}/{STEPS.length}</span>
             </div>
             <div className="h-1.5 bg-surface-800 rounded-full overflow-hidden">

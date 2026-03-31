@@ -5,14 +5,14 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 import { DobbyLogo } from '../../components/shared/DobbyLogo';
 
-const features = [
-  { icon: TrendingUp, label: 'Smart budget planning' },
-  { icon: ShieldCheck, label: 'Emergency fund tracking' },
-  { icon: Target, label: 'Goal-based financial roadmap' },
-];
-
 export function Signup() {
   const { t } = useTranslation();
+
+  const features = [
+    { icon: TrendingUp, label: t('auth.featureSmartBudget') },
+    { icon: ShieldCheck, label: t('auth.featureEmergencyFund') },
+    { icon: Target, label: t('auth.featureGoalRoadmap') },
+  ];
   const { signUp } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -78,10 +78,10 @@ export function Signup() {
           </div>
 
           <h2 className="text-3xl font-bold text-slate-100 font-heading leading-tight mb-4">
-            Your financial freedom starts here.
+            {t('auth.signupHeadline')}
           </h2>
           <p className="text-slate-400 text-base leading-relaxed mb-10">
-            Set up your income, expenses, and goals in minutes. Dobby builds a personalized plan to get you where you want to be.
+            {t('auth.signupSubtext')}
           </p>
 
           <div className="space-y-4">
