@@ -211,6 +211,27 @@ gh pr create --base dev --title "<type>(<scope>): <description>" --body "..."
 - When creating issues, check for an existing GitHub Project and add items to it
 - Use `gh issue list` to check for duplicate issues before creating new ones
 
+## MCP Usage — Standard Rule
+
+**CRITICAL: Always prefer MCP tools over CLI alternatives when available.**
+
+### GitHub MCP (`mcp__github__*`)
+Use GitHub MCP tools for ALL GitHub interactions instead of `gh` CLI:
+- **Issues**: `mcp__github__create_issue`, `mcp__github__get_issue`, `mcp__github__list_issues`, `mcp__github__update_issue`, `mcp__github__add_issue_comment`
+- **Pull Requests**: `mcp__github__create_pull_request`, `mcp__github__get_pull_request`, `mcp__github__list_pull_requests`, `mcp__github__get_pull_request_comments`, `mcp__github__get_pull_request_reviews`, `mcp__github__create_pull_request_review`, `mcp__github__merge_pull_request`, `mcp__github__get_pull_request_files`, `mcp__github__get_pull_request_status`
+- **Code**: `mcp__github__search_code`, `mcp__github__get_file_contents`, `mcp__github__create_or_update_file`, `mcp__github__push_files`
+- **Branches**: `mcp__github__create_branch`, `mcp__github__update_pull_request_branch`
+- **Commits**: `mcp__github__list_commits`
+- **Search**: `mcp__github__search_repositories`, `mcp__github__search_issues`, `mcp__github__search_users`
+
+Only fall back to `gh` CLI if the required operation has no MCP equivalent.
+
+### Context7 MCP
+Use Context7 MCP to look up up-to-date documentation for any library or framework before implementing:
+- Resolve library IDs with `mcp__context7__resolve-library-id`
+- Fetch current docs with `mcp__context7__get-library-docs`
+- Use this for: React, Tailwind CSS, Radix UI, Supabase, Vitest, and any dependency you're not 100% sure about
+
 ## Claude Agent Usage — Token Optimization
 
 **Prefer direct tools over spawning agents for file editing tasks.**
